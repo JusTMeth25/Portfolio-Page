@@ -1,14 +1,16 @@
 import { Download, Mail, Menu, X } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 
-import { profile } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
+import { profiles, type Language } from '../data/profile'
 import { asset } from '../lib/asset'
 import { ScrollProgress } from './effects/ScrollProgress'
 import './navbar.css'
 
-const { nav, cv, monogram, name } = profile
-
 export function Navbar() {
+  const { profile, language, toggleLanguage } = useI18n()
+  const other: Language = language === 'it' ? 'en' : 'it'
+  const { nav, cv, monogram, name } = profile
   const [open, setOpen] = useState(false)
   const menuId = useId()
   const toggleRef = useRef<HTMLButtonElement>(null)
@@ -68,6 +70,24 @@ export function Navbar() {
             </li>
           </ul>
         </nav>
+
+        <button
+          type="button"
+          className="navbar__lang"
+          onClick={toggleLanguage}
+          aria-label={profile.switchToLabel}
+          title={profile.switchToLabel}
+        >
+          <span aria-hidden="true" className="navbar__lang-current">
+            {profile.short}
+          </span>
+          <span aria-hidden="true" className="navbar__lang-sep">
+            /
+          </span>
+          <span aria-hidden="true" className="navbar__lang-other">
+            {profiles[other].short}
+          </span>
+        </button>
 
         <a
           className="btn btn--primary btn--small navbar__cta"

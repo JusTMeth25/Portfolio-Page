@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { renderWithI18n as render } from '../../test/render'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import { Intro } from './Intro'

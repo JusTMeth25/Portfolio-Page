@@ -1,7 +1,8 @@
-import { motion, useInView } from 'motion/react'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { motion } from 'motion/react'
+import type { ReactNode } from 'react'
 
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { useReveal } from '../../hooks/useReveal'
 import './section-intro.css'
 
 type SectionIntroProps = {
@@ -14,9 +15,6 @@ type SectionIntroProps = {
   action?: ReactNode
 }
 
-/** Rete di sicurezza: se l'osservatore non scatta, il testo compare comunque. */
-const FAILSAFE_MS = 1500
-
 /**
  * Testata di sezione con ingresso a tendina: ogni riga del titolo sale da
  * dietro una maschera, mentre una linea si allarga da sinistra.
@@ -24,6 +22,9 @@ const FAILSAFE_MS = 1500
  * Il testo è sempre nel DOM e sempre leggibile dagli screen reader: la
  * maschera è puro `overflow: hidden`, non `visibility` o `opacity: 0`
  * permanenti. Con `prefers-reduced-motion` non c'è alcun movimento.
+ *
+ * L'ingresso è guidato solo dallo scroll: nessun timer che riveli in anticipo
+ * le sezioni ancora lontane.
  */
 export function SectionIntro({
   eyebrow,
@@ -32,17 +33,11 @@ export function SectionIntro({
   aside,
   action,
 }: SectionIntroProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '0px 0px -18% 0px' })
+  const { ref, visible } = useReveal<HTMLDivElement>({
+    amount: 0.2,
+    rootMargin: '0px 0px -12% 0px',
+  })
   const reduced = usePrefersReducedMotion()
-  const [failsafe, setFailsafe] = useState(false)
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setFailsafe(true), FAILSAFE_MS)
-    return () => window.clearTimeout(timer)
-  }, [])
-
-  const visible = inView || failsafe
   const words = title.split(' ')
 
   if (reduced) {

@@ -1,28 +1,24 @@
 import { ArrowUpRight } from 'lucide-react'
 
 import { getFeaturedProjects } from '../data/projects'
-import { profile } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
 import { Reveal } from './effects/Reveal'
 import { SectionIntro } from './effects/SectionIntro'
 import { ProjectCard } from './ProjectCard'
 import './projects-section.css'
 
-const SECTION = {
-  eyebrow: '01 / SELECTED WORK',
-  title: 'Progetti in primo piano',
-  linkLabel: 'Vedi GitHub',
-}
-
 export function ProjectsSection() {
-  const featured = getFeaturedProjects()
+  const { profile, projects } = useI18n()
+  const section = profile.projectsSection
+  const featured = getFeaturedProjects(projects)
 
   return (
     <section className="section" id="progetti" aria-labelledby="progetti-title">
       <div className="container">
         <SectionIntro
           id="progetti-title"
-          eyebrow={SECTION.eyebrow}
-          title={SECTION.title}
+          eyebrow={section.eyebrow}
+          title={section.title}
           aside={
             <a
               className="link"
@@ -32,21 +28,22 @@ export function ProjectsSection() {
               target="_blank"
               rel="noreferrer noopener"
             >
-              {SECTION.linkLabel}
+              {section.linkLabel}
               <ArrowUpRight className="icon" aria-hidden="true" />
             </a>
           }
         />
 
         {featured.length === 0 ? (
-          <p className="lede">Nessun progetto in evidenza al momento.</p>
+          <p className="lede">{profile.ui.emptyProjects}</p>
         ) : (
           <ul className="projects-grid">
             {featured.map((project, index) => (
               <Reveal
                 as="li"
                 key={project.id}
-                delay={index * 0.08}
+                variant="rise"
+                delay={index * 0.12}
                 className="projects-grid__item"
               >
                 <ProjectCard project={project} eager={index === 0} />

@@ -1,8 +1,8 @@
-import { motion } from 'motion/react'
+import { motion, useScroll, useTransform } from 'motion/react'
 import { ArrowDown, FolderGit2 } from 'lucide-react'
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 
-import { profile } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { Equalizer } from './effects/Equalizer'
@@ -26,10 +26,16 @@ function detectWebGL(): boolean {
   }
 }
 
-const { hero } = profile
+type HeroProps = {
+  /** `true` quando l'intro è finita: prima di allora niente WebGL. */
+  ready?: boolean
+}
 
-export function Hero() {
+export function Hero({ ready = true }: HeroProps) {
+  const { profile } = useI18n()
+  const { hero, ui } = profile
   const stageRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
   const [sceneEnabled, setSceneEnabled] = useState(false)
   const [sceneBroken, setSceneBroken] = useState(false)
   const [visible, setVisible] = useState(true)
@@ -39,12 +45,19 @@ export function Hero() {
   const compact = useMediaQuery('(max-width: 900px)')
   const coarse = useMediaQuery('(pointer: coarse)')
 
-  // Il 3D parte solo dopo il primo paint del testo, e solo se WebGL c'è.
+  // Il chunk di Three.js si scarica subito, in parallelo all'intro: quando la
+  // hero compare è già in cache e non c'è alcun salto.
   useEffect(() => {
-    if (!detectWebGL()) return
+    void import('./effects/HeroScene')
+  }, [])
+
+  // Il 3D si monta solo a intro finita, dopo il primo paint del testo, e solo
+  // se WebGL c'è davvero.
+  useEffect(() => {
+    if (!ready || !detectWebGL()) return
     const id = window.setTimeout(() => setSceneEnabled(true), 120)
     return () => window.clearTimeout(id)
-  }, [])
+  }, [ready])
 
   // Rendering in pausa fuori dal viewport.
   useEffect(() => {
@@ -70,6 +83,17 @@ export function Hero() {
   const showScene = sceneEnabled && !sceneBroken && !compact
   const sceneActive = visible && documentVisible && !reduced && !coarse
 
+  // Uscita di scena: scorrendo, il disco sale appena e sfuma. Solo transform e
+  // opacity, quindi niente reflow.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+  const stageY = useTransform(scrollYProgress, [0, 1], ['0%', '-14%'])
+  const stageScale = useTransform(scrollYProgress, [0, 1], [1, 0.9])
+  const stageOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0])
+  const copyY = useTransform(scrollYProgress, [0, 1], ['0%', '18%'])
+
   const titleTransition = (index: number) => ({
     duration: reduced ? 0 : 0.62,
     delay: reduced ? 0 : 0.06 + index * 0.09,
@@ -77,9 +101,17 @@ export function Hero() {
   })
 
   return (
-    <section className="hero" id="hero" aria-labelledby="hero-title">
+    <section
+      className="hero"
+      id="hero"
+      aria-labelledby="hero-title"
+      ref={sectionRef}
+    >
       <div className="container hero__grid">
-        <div className="hero__copy">
+        <motion.div
+          className="hero__copy"
+          style={reduced ? undefined : { y: copyY }}
+        >
           <p className="eyebrow hero__eyebrow">{hero.eyebrow}</p>
 
           <h1 id="hero-title" className="hero__title">
@@ -116,7 +148,7 @@ export function Hero() {
             >
               <FolderGit2 className="icon" aria-hidden="true" />
               {hero.secondaryCta.label}
-              <span className="visually-hidden">(si apre in una nuova scheda)</span>
+              <span className="visually-hidden">{ui.newTab}</span>
             </a>
           </div>
 
@@ -125,9 +157,17 @@ export function Hero() {
           </div>
 
           <p className="hero__note">{hero.note}</p>
-        </div>
+        </motion.div>
 
-        <div className="hero__stage" ref={stageRef}>
+        <motion.div
+          className="hero__stage"
+          ref={stageRef}
+          style={
+            reduced
+              ? undefined
+              : { y: stageY, scale: stageScale, opacity: stageOpacity }
+          }
+        >
           <div className="hero__canvas" data-mode={showScene ? '3d' : 'svg'}>
             {showScene ? (
               <Suspense fallback={<HeroFallback />}>
@@ -149,7 +189,7 @@ export function Hero() {
               </li>
             ))}
           </ul>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

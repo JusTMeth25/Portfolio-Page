@@ -1,9 +1,11 @@
-import { profile } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
 import './footer.css'
 
 const year = new Date().getFullYear()
 
 export function Footer() {
+  const { profile } = useI18n()
+
   return (
     <footer className="footer">
       <div className="container footer__inner">

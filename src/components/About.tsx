@@ -1,11 +1,12 @@
-import { profile } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
 import { asset } from '../lib/asset'
 import { Reveal } from './effects/Reveal'
 import './about.css'
 
-const { about } = profile
-
 export function About() {
+  const { profile } = useI18n()
+  const { about } = profile
+
   return (
     <section className="section" id="profilo" aria-labelledby="profilo-title">
       <div className="container about">

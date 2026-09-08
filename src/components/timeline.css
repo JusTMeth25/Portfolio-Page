@@ -10,6 +10,7 @@
   padding-left: 1.6rem;
 }
 
+/* Binario spento sotto la linea che si disegna. */
 .timeline::before {
   content: '';
   position: absolute;
@@ -17,12 +18,29 @@
   bottom: 0.6rem;
   left: 0.32rem;
   width: 1px;
+  background: var(--border-soft);
+}
+
+/* Linea che cresce con lo scroll della sezione. */
+.timeline__line {
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  left: 0.32rem;
+  width: 1px;
+  transform-origin: top center;
   background: linear-gradient(
     180deg,
     var(--accent),
-    var(--border) 22%,
-    var(--border-soft)
+    var(--accent-blue) 40%,
+    var(--border)
   );
+  box-shadow: 0 0 10px rgb(34 211 238 / 35%);
+}
+
+/* Con movimento ridotto la linea è semplicemente già tutta disegnata. */
+.timeline__line[data-static='true'] {
+  transform: scaleY(1);
 }
 
 .timeline__item {

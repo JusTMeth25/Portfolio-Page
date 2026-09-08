@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { subscribeToTicker } from '../../lib/ticker'
 import './pointer-ring.css'
 
 /**
@@ -10,6 +11,12 @@ import './pointer-ring.css'
  * Si attiva solo con puntatore preciso e movimento non ridotto: su touch e con
  * `prefers-reduced-motion` non viene nemmeno montato. Non sostituisce il
  * cursore di sistema (che resta visibile) e non intercetta i click.
+ *
+ * Non partecipa alla modalità risparmio: costa una `transform` per fotogramma,
+ * e toglierlo a metà sessione lasciava l'anello fermo sullo schermo — visibile
+ * perché il listener del puntatore continuava a mostrarlo mentre il ciclo che
+ * lo muoveva era già stato spento. A degradare sono lo sfondo e la scena 3D,
+ * che pesano davvero.
  */
 export function PointerRing() {
   const ringRef = useRef<HTMLDivElement>(null)
@@ -24,7 +31,6 @@ export function PointerRing() {
 
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
     const current = { ...target }
-    let frame = 0
     let visible = false
 
     function step() {
@@ -32,7 +38,6 @@ export function PointerRing() {
       current.x += (target.x - current.x) * 0.16
       current.y += (target.y - current.y) * 0.16
       ring.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`
-      frame = window.requestAnimationFrame(step)
     }
 
     function onMove(event: PointerEvent) {
@@ -57,10 +62,10 @@ export function PointerRing() {
     window.addEventListener('pointermove', onMove, { passive: true })
     document.addEventListener('pointerleave', onLeave)
     window.addEventListener('blur', onLeave)
-    frame = window.requestAnimationFrame(step)
+    const unsubscribe = subscribeToTicker(step)
 
     return () => {
-      window.cancelAnimationFrame(frame)
+      unsubscribe()
       window.removeEventListener('pointermove', onMove)
       document.removeEventListener('pointerleave', onLeave)
       window.removeEventListener('blur', onLeave)

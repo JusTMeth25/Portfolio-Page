@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
@@ -63,45 +63,48 @@ function createGlowTexture(): THREE.CanvasTexture {
 
 /* --------------------------------------------------------------------- disco */
 
-/** Solchi: anelli sottili appena sopra la faccia superiore del vinile. */
+/**
+ * Solchi: tutti gli anelli in **una sola geometria**.
+ *
+ * Prima era un `lineLoop` per anello, cioè 40 draw call per fotogramma solo
+ * per i solchi. Qui c'è un unico `lineSegments` con i colori per vertice: una
+ * draw call, stesso risultato.
+ */
 function Grooves({ count }: { count: number }) {
-  const geometries = useMemo(() => {
-    const segments = 128
-    return Array.from({ length: count }, (_, index) => {
+  const geometry = useMemo(() => {
+    const segments = 96
+    const positions: number[] = []
+    const colors: number[] = []
+    const plain = new THREE.Color('#8fa6b6')
+    const accent = new THREE.Color(CYAN)
+
+    for (let ring = 0; ring < count; ring += 1) {
       const radius =
-        LABEL_RADIUS + 0.08 + (index / count) * (DISC_RADIUS - LABEL_RADIUS - 0.14)
-      const points: number[] = []
+        LABEL_RADIUS + 0.08 + (ring / count) * (DISC_RADIUS - LABEL_RADIUS - 0.14)
+      const color = ring % 6 === 0 ? accent : plain
       for (let i = 0; i < segments; i += 1) {
-        const angle = (i / segments) * Math.PI * 2
-        points.push(Math.cos(angle) * radius, 0, Math.sin(angle) * radius)
+        const a = (i / segments) * Math.PI * 2
+        const b = ((i + 1) / segments) * Math.PI * 2
+        positions.push(
+          Math.cos(a) * radius, 0, Math.sin(a) * radius,
+          Math.cos(b) * radius, 0, Math.sin(b) * radius,
+        )
+        colors.push(color.r, color.g, color.b, color.r, color.g, color.b)
       }
-      const geometry = new THREE.BufferGeometry()
-      geometry.setAttribute(
-        'position',
-        new THREE.Float32BufferAttribute(points, 3),
-      )
-      return geometry
-    })
+    }
+
+    const buffer = new THREE.BufferGeometry()
+    buffer.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    buffer.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+    return buffer
   }, [count])
 
-  useEffect(
-    () => () => geometries.forEach((geometry) => geometry.dispose()),
-    [geometries],
-  )
+  useEffect(() => () => geometry.dispose(), [geometry])
 
   return (
-    <group position={[0, 0.031, 0]}>
-      {geometries.map((geometry, index) => (
-        <lineLoop key={index} geometry={geometry}>
-          <lineBasicMaterial
-            color={index % 6 === 0 ? CYAN : '#8fa6b6'}
-            transparent
-            opacity={index % 6 === 0 ? 0.34 : 0.12}
-            depthWrite={false}
-          />
-        </lineLoop>
-      ))}
-    </group>
+    <lineSegments geometry={geometry} position={[0, 0.031, 0]}>
+      <lineBasicMaterial vertexColors transparent opacity={0.22} depthWrite={false} />
+    </lineSegments>
   )
 }
 
@@ -110,7 +113,9 @@ function Disc({ grooves }: { grooves: number }) {
   return (
     <group>
       <mesh>
-        <cylinderGeometry args={[DISC_RADIUS, DISC_RADIUS, 0.06, 128]} />
+        <cylinderGeometry args={[DISC_RADIUS, DISC_RADIUS, 0.06, 96]} />
+        {/* Il corpo del disco resta PBR: è il pezzo che si guarda, e con
+            Phong il vinile risultava slavato. Il resto usa Phong, più leggero. */}
         <meshStandardMaterial color="#0d151b" roughness={0.28} metalness={0.35} />
       </mesh>
 
@@ -119,12 +124,11 @@ function Disc({ grooves }: { grooves: number }) {
       {/* Etichetta */}
       <mesh position={[0, 0.032, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[LABEL_RADIUS, 64]} />
-        <meshStandardMaterial
+        <meshPhongMaterial
           color={CYAN}
-          roughness={0.7}
-          metalness={0.1}
           emissive={CYAN}
           emissiveIntensity={0.35}
+          shininess={30}
         />
       </mesh>
 
@@ -145,7 +149,7 @@ function Disc({ grooves }: { grooves: number }) {
 
 /* -------------------------------------------------------------------- onde */
 
-const RIPPLE_COUNT = 7
+const RIPPLE_COUNT = 6
 
 type Ripple = { life: number; x: number; z: number }
 
@@ -247,24 +251,24 @@ function Orbits({ compact }: { compact: boolean }) {
     <group>
       <group ref={first} rotation={[Math.PI / 2, 0, 0]}>
         <mesh>
-          <torusGeometry args={[2.75, 0.006, 8, compact ? 96 : 180]} />
+          <torusGeometry args={[2.75, 0.006, 6, compact ? 80 : 120]} />
           <meshBasicMaterial color={CYAN} transparent opacity={0.55} />
         </mesh>
       </group>
 
       <group ref={second} rotation={[Math.PI / 2.6, 0.5, 0.3]}>
         <mesh>
-          <torusGeometry args={[3.2, 0.004, 8, compact ? 96 : 180]} />
+          <torusGeometry args={[3.2, 0.004, 6, compact ? 80 : 120]} />
           <meshBasicMaterial color={BLUE} transparent opacity={0.4} />
         </mesh>
       </group>
 
       <mesh ref={moonA}>
-        <sphereGeometry args={[0.055, 16, 16]} />
+        <sphereGeometry args={[0.055, 12, 12]} />
         <meshBasicMaterial color={CYAN} />
       </mesh>
       <mesh ref={moonB}>
-        <sphereGeometry args={[0.04, 16, 16]} />
+        <sphereGeometry args={[0.04, 12, 12]} />
         <meshBasicMaterial color={BLUE} />
       </mesh>
     </group>
@@ -313,24 +317,19 @@ function ToneArm({ radius }: { radius: React.RefObject<number> }) {
       {/* Base del perno */}
       <mesh position={[0, -0.1, 0]}>
         <cylinderGeometry args={[0.16, 0.19, 0.16, 24]} />
-        <meshStandardMaterial color="#16222b" roughness={0.4} metalness={0.7} />
+        <meshPhongMaterial color="#16222b" shininess={70} specular="#4a7c90" />
       </mesh>
 
       <group ref={arm}>
         <mesh position={[ARM_LENGTH / 2, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.022, 0.022, ARM_LENGTH, 12]} />
-          <meshStandardMaterial color="#c4d3de" roughness={0.3} metalness={0.85} />
+          <meshPhongMaterial color="#c4d3de" shininess={110} specular="#ffffff" />
         </mesh>
 
         {/* Testina */}
         <mesh position={[ARM_LENGTH - 0.06, -0.06, 0]}>
           <boxGeometry args={[0.16, 0.1, 0.1]} />
-          <meshStandardMaterial
-            color={CYAN}
-            emissive={CYAN}
-            emissiveIntensity={0.9}
-            roughness={0.5}
-          />
+          <meshPhongMaterial color={CYAN} emissive={CYAN} emissiveIntensity={0.9} />
         </mesh>
       </group>
     </group>
@@ -381,12 +380,61 @@ function Dust({ count }: { count: number }) {
   )
 }
 
+/* -------------------------------------------------------- qualità adattiva */
+
+/** 0 = tutto, 1 = senza pulviscolo e a risoluzione piena 1×, 2 = essenziale. */
+type QualityLevel = 0 | 1 | 2
+
+/**
+ * Rete di sicurezza sui fotogrammi.
+ *
+ * Se la scena non regge i 60 fps per due secondi di fila, scende di un livello:
+ * prima toglie il pulviscolo e abbassa il DPR, poi spegne anche le orbite. Su
+ * una GPU normale non scatta mai; su hardware debole è ciò che tiene la pagina
+ * fluida invece di lasciarla arrancare.
+ */
+function useAdaptiveQuality(): QualityLevel {
+  const setDpr = useThree((state) => state.setDpr)
+  const [level, setLevel] = useState<QualityLevel>(0)
+  const window_ = useRef({ time: 0, frames: 0, slowSeconds: 0 })
+
+  useFrame((_, delta) => {
+    const w = window_.current
+    w.time += delta
+    w.frames += 1
+    if (w.time < 1) return
+
+    const fps = w.frames / w.time
+    w.time = 0
+    w.frames = 0
+
+    if (fps < 50) {
+      w.slowSeconds += 1
+      if (w.slowSeconds >= 2) {
+        w.slowSeconds = 0
+        setLevel((current) => (current < 2 ? ((current + 1) as QualityLevel) : current))
+      }
+    } else {
+      w.slowSeconds = 0
+    }
+  })
+
+  useEffect(() => {
+    if (level === 1) setDpr(1)
+    if (level === 2) setDpr(0.85)
+  }, [level, setDpr])
+
+  return level
+}
+
 /* ------------------------------------------------------------------- scena */
 
 function Turntable({
+  active,
   compact,
   reduced,
 }: {
+  active: boolean
   compact: boolean
   reduced: boolean
 }) {
@@ -403,8 +451,36 @@ function Turntable({
   const spawnRipple = useRef<(x: number, z: number) => void>(() => {})
 
   const { viewport } = useThree()
+  const canvas = useThree((state) => state.gl.domElement)
+  const quality = useAdaptiveQuality()
   const glowTexture = useMemo(() => createGlowTexture(), [])
   useEffect(() => () => glowTexture.dispose(), [glowTexture])
+
+  /**
+   * Spegne il bagliore sotto il puntatore e riporta il braccio a riposo.
+   *
+   * `onPointerOut` di R3F scatta solo se il puntatore si muove: uscendo dal
+   * disco scorrendo la pagina non arriva mai, e il bagliore restava acceso
+   * dove l'avevi lasciato. Qui lo si spegne anche quando il puntatore lascia
+   * il canvas e quando la scena va in pausa.
+   */
+  const releasePointer = useCallback(() => {
+    if (cursorGlow.current) cursorGlow.current.visible = false
+    trackRadius.current = ARM_REST_RADIUS
+  }, [])
+
+  useEffect(() => {
+    if (!active) releasePointer()
+  }, [active, releasePointer])
+
+  useEffect(() => {
+    canvas.addEventListener('pointerleave', releasePointer)
+    window.addEventListener('blur', releasePointer)
+    return () => {
+      canvas.removeEventListener('pointerleave', releasePointer)
+      window.removeEventListener('blur', releasePointer)
+    }
+  }, [canvas, releasePointer])
 
   useFrame((state, delta) => {
     const platterNode = platter.current
@@ -476,7 +552,7 @@ function Turntable({
   return (
     <group scale={scale}>
       {/* Alone dietro al disco */}
-      <mesh position={[0, 0, -1.4]} scale={9}>
+      <mesh position={[0, 0, -1.4]} scale={5.6}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial
           map={glowTexture}
@@ -486,10 +562,10 @@ function Turntable({
         />
       </mesh>
 
-      <Dust count={compact ? 140 : 420} />
+      {quality < 1 && <Dust count={compact ? 90 : 150} />}
 
       <group ref={rig} rotation={[TILT, 0, 0.12]}>
-        <Orbits compact={compact} />
+        {quality < 2 && <Orbits compact={compact} />}
 
         {/* Fuori dal piatto: il braccio è fermo, è il disco a girare. */}
         <ToneArm radius={trackRadius} />
@@ -497,12 +573,9 @@ function Turntable({
         <group
           ref={platter}
           onPointerMove={handleMove}
-          onPointerOut={() => {
-            if (cursorGlow.current) cursorGlow.current.visible = false
-            trackRadius.current = ARM_REST_RADIUS
-          }}
+          onPointerOut={releasePointer}
         >
-          <Disc grooves={compact ? 18 : 40} />
+          <Disc grooves={compact ? 16 : 32} />
           <Ripples
             register={(spawn) => {
               spawnRipple.current = spawn
@@ -528,10 +601,13 @@ function Turntable({
         </group>
       </group>
 
+      {/* Due luci in tutto: l'ambiente dà il fondo, la puntiforme che orbita
+          fa scorrere il riflesso sul bordo del vinile. */}
+      {/* Tre luci in tutto: ambiente per il fondo, direzionale per il volume,
+          puntiforme che orbita e fa scorrere il riflesso sul bordo. */}
       <ambientLight intensity={0.55} color="#9fd8e8" />
       <directionalLight position={[-3, 5, 2]} intensity={1.1} color="#eaf6ff" />
-      <pointLight ref={keyLight} intensity={26} distance={12} color={CYAN} />
-      <pointLight position={[3, -2, -3]} intensity={9} distance={14} color={BLUE} />
+      <pointLight ref={keyLight} intensity={24} distance={12} color={CYAN} />
     </group>
   )
 }
@@ -547,9 +623,16 @@ export default function HeroScene({
     <Canvas
       /* 'demand' disegna un fotogramma e si ferma: niente loop inutile. */
       frameloop={active ? 'always' : 'demand'}
-      dpr={compact ? [1, 1.4] : [1, 1.8]}
+      /* Tetto al DPR: su schermi densi il costo cresce col quadrato. */
+      dpr={compact ? [1, 1.25] : [1, 1.5]}
       camera={{ position: [0, 1.15, 6.2], fov: 40 }}
-      gl={{ antialias: !compact, alpha: true, powerPreference: 'low-power' }}
+      gl={{
+        // L'antialias serve solo dove non c'è già un DPR alto a mascherare le
+        // scalettature: altrove è costo puro.
+        antialias: !compact && (window.devicePixelRatio || 1) < 1.5,
+        alpha: true,
+        powerPreference: 'low-power',
+      }}
       style={{ width: '100%', height: '100%' }}
       onCreated={({ gl }) => {
         gl.setClearAlpha(0)
@@ -561,7 +644,7 @@ export default function HeroScene({
         })
       }}
     >
-      <Turntable compact={compact} reduced={reduced} />
+      <Turntable active={active} compact={compact} reduced={reduced} />
     </Canvas>
   )
 }

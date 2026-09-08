@@ -1,12 +1,15 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { profile } from '../../data/profile'
+import { useI18n } from '../../i18n/useI18n'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { INTRO_DURATION_MS, createIntroScene } from './introScene'
 import './intro.css'
 
-const { intro } = profile
+type IntroProps = {
+  /** Chiamata quando il velo non è più di scena (anche se non è mai comparso). */
+  onFinish?: () => void
+}
 
 /**
  * Sequenza d'apertura, a ogni caricamento della pagina.
@@ -20,7 +23,9 @@ const { intro } = profile
  * - con `prefers-reduced-motion: reduce` non compare affatto;
  * - il bagliore finale è una singola campana di luminosità, non un lampeggio.
  */
-export function Intro() {
+export function Intro({ onFinish }: IntroProps) {
+  const { profile } = useI18n()
+  const { intro } = profile
   const reduced = usePrefersReducedMotion()
   const [dismissed, setDismissed] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -29,6 +34,12 @@ export function Intro() {
   const visible = !reduced && !dismissed
 
   const close = useCallback(() => setDismissed(true), [])
+
+  // Il resto della pagina aspetta qui: finché l'intro è di scena, la scena 3D
+  // e lo sfondo animato restano fermi e non rubano fotogrammi.
+  useEffect(() => {
+    if (!visible) onFinish?.()
+  }, [visible, onFinish])
 
   // Ciclo di rendering della scena.
   useEffect(() => {

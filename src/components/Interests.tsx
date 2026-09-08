@@ -1,12 +1,13 @@
-import { profile } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
 import { Equalizer } from './effects/Equalizer'
 import { Reveal } from './effects/Reveal'
 import { SectionIntro } from './effects/SectionIntro'
 import './interests.css'
 
-const { interests } = profile
-
 export function Interests() {
+  const { profile } = useI18n()
+  const { interests } = profile
+
   return (
     <section
       className="section"
@@ -26,7 +27,8 @@ export function Interests() {
             <Reveal
               as="li"
               key={item.id}
-              delay={index * 0.06}
+              variant="rise"
+              delay={index * 0.09}
               className="interests__item"
             >
               <article className="record" data-accent={item.accent}>

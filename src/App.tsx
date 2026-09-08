@@ -1,3 +1,7 @@
+import { useState } from 'react'
+
+import { LanguageProvider } from './i18n/LanguageProvider'
+import { useI18n } from './i18n/useI18n'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { AmbientGrooves } from './components/effects/AmbientGrooves'
@@ -11,18 +15,23 @@ import { ProjectsSection } from './components/ProjectsSection'
 import { Skills } from './components/Skills'
 import { Timeline } from './components/Timeline'
 
-export default function App() {
+function Site() {
+  const { profile } = useI18n()
+  // Finché l'intro è di scena, gli effetti pesanti restano fermi: un solo
+  // carico alla volta, nessuno scatto al primo fotogramma.
+  const [introDone, setIntroDone] = useState(false)
+
   return (
     <>
       <a className="skip-link" href="#main">
-        Salta al contenuto
+        {profile.ui.skipToContent}
       </a>
-      <AmbientGrooves />
+      <AmbientGrooves active={introDone} />
       <PointerRing />
-      <Intro />
+      <Intro onFinish={() => setIntroDone(true)} />
       <Navbar />
       <main id="main">
-        <Hero />
+        <Hero ready={introDone} />
         <ProjectsSection />
         <About />
         <Timeline />
@@ -32,5 +41,13 @@ export default function App() {
       </main>
       <Footer />
     </>
+  )
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <Site />
+    </LanguageProvider>
   )
 }

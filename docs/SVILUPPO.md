@@ -12,6 +12,7 @@ Per la presentazione del profilo vedi il [README](../README.md).
 - [Modificare profilo e contatti](#modificare-profilo-e-contatti)
 - [Modificare i progetti](#modificare-i-progetti)
 - [Sostituire le copertine](#sostituire-le-copertine)
+- [Lingue](#lingue)
 - [CV in PDF](#cv-in-pdf)
 - [Base path e pubblicazione su GitHub Pages](#base-path-e-pubblicazione-su-github-pages)
 - [SEO e anteprima social](#seo-e-anteprima-social)
@@ -47,10 +48,14 @@ src/
   components/effects/    Intro + introScene (canvas 2D), AmbientGrooves,
                          PointerRing, Equalizer, HeroScene (WebGL),
                          HeroFallback (SVG), Reveal, SpotlightCard
-  data/profile.ts        testi, intro, timeline, competenze, interessi, contatti, CV
+  data/profile.ts        tipi dei contenuti e registro delle lingue
+  data/locales/          it.ts e en.ts: gli stessi testi in due lingue
+  i18n/                  LanguageProvider, useI18n
   data/projects.ts       elenco dei progetti (unica sorgente)
   hooks/                 usePrefersReducedMotion, useMediaQuery
   lib/asset.ts           risolve i percorsi rispetto alla base path
+  lib/scrollRestoration.ts  al refresh si riparte dalla hero
+  lib/ticker.ts          il ciclo di animazione condiviso
   styles/                token e stili globali
   test/setup.ts          setup di Vitest
 public/
@@ -156,16 +161,45 @@ hanno `width`/`height` dichiarati per evitare il layout shift.
 
 ---
 
+## Lingue
+
+Il sito è in **italiano e inglese**, con il selettore `IT / EN` in navbar.
+
+- I testi stanno in `src/data/locales/it.ts` e `src/data/locales/en.ts`. I due
+  file hanno la stessa forma: `Profile` è il tipo di `it`, quindi se una chiave
+  manca in inglese il typecheck fallisce subito.
+- I progetti stanno in `src/data/projects.ts`, divisi in due parti: `PROJECT_BASE`
+  con quello che non cambia (id, URL, immagini, tag, ordine) e `COPY` con i testi
+  per lingua. Aggiungere un progetto significa aggiungere una voce in entrambi.
+- La lingua vive in `src/i18n/LanguageProvider.tsx`: viene ricordata in
+  `localStorage`, ricade sulla lingua del browser al primo accesso e aggiorna
+  `<html lang>`, il `<title>` e la meta description.
+- I componenti leggono tutto da `useI18n()`: testi, stringhe d'interfaccia
+  (`profile.ui`) e progetti già tradotti.
+
+**Aggiungere una lingua:** crea `src/data/locales/xx.ts` sulla falsariga di
+`it.ts`, aggiungi `'xx'` al tipo `Language` e la voce in `profiles`, poi la
+colonna corrispondente in `COPY` dentro `projects.ts` e il CV in `public/cv/`.
+
+---
+
 ## CV in PDF
 
-Il file servito è `public/cv/lorenzo-melis-cv.pdf`. Lo stato è controllato da
-`profile.cv` in `src/data/profile.ts`:
+Ci sono **due CV**, uno per lingua, e la pagina scarica quello giusto:
+
+| Lingua | File | Nome proposto |
+|---|---|---|
+| Italiano | `public/cv/lorenzo-melis-cv-it.pdf` | `Lorenzo-Melis-CV-IT.pdf` |
+| Inglese | `public/cv/lorenzo-melis-cv-en.pdf` | `Lorenzo-Melis-CV-EN.pdf` |
+
+Lo stato è controllato da `cv` dentro il file della lingua
+(`src/data/locales/<lingua>.ts`):
 
 ```ts
 cv: {
   available: true,                      // false → il pulsante diventa "Richiedi CV"
-  path: 'cv/lorenzo-melis-cv.pdf',      // relativo a public/
-  fileName: 'Lorenzo-Melis-CV.pdf',     // nome proposto al download
+  path: 'cv/lorenzo-melis-cv-it.pdf',   // relativo a public/
+  fileName: 'Lorenzo-Melis-CV-IT.pdf',  // nome proposto al download
   requestHref: 'mailto:…',              // usato quando available è false
 }
 ```
@@ -176,17 +210,21 @@ cv: {
   contatti mostrano "Richiedi CV" con un `mailto:`, senza link rotti e senza
   cambiare il layout.
 
-Il PDF attuale deriva dall'export Canva fornito
-(`Lorenzo_Melis_CV_Canva_Editable.pptx.pdf`, lasciato nella root come sorgente),
-con la sezione *Selected Development Projects* riscritta sui tre progetti del
-portfolio (Spotify Clone, Vinilshelf, EpiWeather) e i link "Repository"
+Il PDF inglese deriva dall'export Canva, con la sezione
+*Selected Development Projects* riscritta sui tre progetti del portfolio (Spotify Clone, Vinilshelf, EpiWeather) e i link "Repository"
 aggiornati ai repository corrispondenti. Nell'operazione i font incorporati sono
 stati ricostruiti: rispetto all'originale il testo del PDF è ora estraibile
 correttamente anche dai parser automatici (nell'export Canva la mappa
 `ToUnicode` era incompleta e le cifre venivano lette in modo errato).
 
-Lo script che esegue questa riscrittura è in `tools/cv/`, con le istruzioni per
-rigenerare il PDF se aggiorni il CV su Canva.
+La versione italiana si genera **dal PDF inglese** con `tools/cv/cvtranslate.py`,
+che traduce **tutte** le righe del documento mantenendo layout, font, colori,
+sottolineature dei link e annotazioni. Le posizioni orizzontali non vengono
+copiate ma ricalcolate dalle metriche dei glifi, così una traduzione più lunga o
+più corta non sfasa la riga.
+
+Gli script stanno in `tools/cv/`, con le istruzioni per rigenerare entrambi i
+PDF se aggiorni il CV su Canva.
 
 ---
 
@@ -327,9 +365,90 @@ scroll è bloccato e il focus è sul pulsante "Salta intro". Il bagliore finale 
 una singola campana di luminosità — nessun lampeggio ripetuto, quindi resta
 sotto la soglia dei tre flash al secondo.
 
-Gli effetti che seguono il puntatore scrivono direttamente su `style` dentro un
-`requestAnimationFrame`: nessun `setState` di React a ogni movimento del mouse.
-Tutti si fermano quando la tab non è visibile.
+#### Come sono guidati gli ingressi
+
+Tutti i reveal passano da `hooks/useReveal.ts`, che è solo un
+`IntersectionObserver` con `once`. **Nessun timer di sicurezza**: in una
+versione precedente un failsafe da 1,5 s rivelava l'intera pagina subito dopo
+il caricamento, e scorrendo non si vedeva più comparire nulla. L'unico caso in
+cui il contenuto si mostra senza osservatore è quando l'API non esiste.
+
+Le varianti d'ingresso di `Reveal` sono `up` (testi), `rise` (schede: salita,
+scala e una punta di prospettiva), `left` (tappe della timeline) e `zoom`.
+
+Due animazioni sono invece **legate allo scroll**, non a una soglia: la linea
+della timeline si disegna man mano che la sezione attraversa lo schermo
+(`useScroll` + `useTransform` su `scaleY`), e la hero esce di scena salendo e
+sfumando. Entrambe toccano solo `transform` e `opacity`.
+
+#### Budget di rendering
+
+Obiettivo: **60 fps sempre**, misurati sui tempi fra fotogrammi e non sulla media.
+Cosa è servito, in ordine di guadagno:
+
+| Intervento | Prima | Dopo |
+|---|---|---|
+| Buffer dello sfondo a 0,45× invece che a risoluzione piena | 22 fps | 60 fps |
+| Materiali e luci del vinile alleggeriti, alone di fondo più piccolo | 19 fps | 59 fps |
+| Un solo `requestAnimationFrame` condiviso al posto di tre | — | meno punti in cui perdere frame |
+| Solchi del vinile in una sola geometria | 40 draw call | 1 |
+
+
+
+- **Un solo `requestAnimationFrame`** per tutta la pagina: `lib/ticker.ts`
+  raccoglie sfondo, equalizzatore e anello del puntatore. Si ferma da solo
+  quando non ha iscritti, con la tab in background o senza focus, e riprende
+  con il tempo "congelato" invece di saltare in avanti.
+- Gli effetti che seguono il puntatore scrivono direttamente su `style`:
+  nessun `setState` di React a ogni movimento del mouse.
+- Lo sfondo disegna a **30 fps** e riusa il gradiente finché il centro non si
+  sposta davvero; gli equalizzatori vanno a ~40 fps e si fermano fuori dal
+  viewport.
+- I solchi del vinile 3D sono **una sola geometria** (`lineSegments` con colori
+  per vertice): una draw call invece di quaranta.
+- Il DPR del canvas 3D è limitato a 1,5 e l'antialias si attiva solo dove non
+  c'è già un DPR alto a mascherare le scalettature.
+- Se la pagina resta comunque sotto i 50 fps per due secondi, entra in modalità
+  risparmio: `lib/ticker.ts` avvisa gli effetti e lo sfondo dimezza la frequenza;
+  dentro la scena 3D `useAdaptiveQuality` abbassa il DPR e toglie prima il
+  pulviscolo, poi le orbite. Su una GPU normale non scatta mai.
+- **Regola**: la modalità risparmio non deve mai disiscrivere un effetto dal
+  ticker lasciandone attivi i listener. L'anello del puntatore lo faceva e il
+  risultato era un pallino fermo sullo schermo: il listener continuava a
+  mostrarlo mentre il ciclo che lo muoveva era già spento. Ora l'anello non
+  partecipa alla degradazione — costa una `transform` per fotogramma.
+
+#### Posizione dello scroll al ricaricamento
+
+Il browser di suo rimette lo scroll dov'era (`history.scrollRestoration` vale
+`'auto'`): su una pagina unica significa ritrovarsi a metà sito dopo un
+refresh. `lib/scrollRestoration.ts` passa a `'manual'` e riporta in cima, prima
+del render così non si vede alcun salto. Le ancore restano intatte: se
+nell'indirizzo c'è `#percorso` la posizione la decide quella, non il ripristino.
+
+#### Perché il ciclo non può restare fermo
+
+Tre difese, dopo un blocco segnalato dal vivo che qui non si riproduceva:
+
+1. **Eccezioni isolate.** Ogni iscritto gira dentro un `try`/`catch`. Prima un
+   errore in un singolo effetto impediva la richiesta del fotogramma successivo
+   e congelava l'intera pagina.
+2. **Niente `blur`/`focus`.** Fermavano il ciclo anche aprendo i DevTools o
+   cliccando la barra degli indirizzi, e il `focus` di ritorno non è garantito:
+   bastava una volta per restare fermi per sempre. Resta `visibilitychange`,
+   che è il segnale corretto per "scheda non visibile".
+3. **Battito di controllo** ogni due secondi: se la pagina è visibile, ci sono
+   iscritti e l'ultimo fotogramma è più vecchio di un secondo, il ciclo
+   riparte.
+
+Sul lato 3D vale la stessa idea: `onPointerOut` di R3F scatta solo se il
+puntatore si muove, quindi uscendo dal disco *scorrendo* il bagliore restava
+acceso. Ora si spegne anche su `pointerleave` del canvas e quando la scena va
+in pausa.
+- Durante l'intro la scena 3D e lo sfondo animato **non partono**: si carica una
+  cosa alla volta. Nel frattempo il chunk di Three.js viene scaricato in
+  parallelo (`import()` in `Hero.tsx`), così alla fine dell'intro è già in cache
+  e non c'è alcun salto.
 
 ### Regole generali
 
@@ -371,17 +490,29 @@ Ambiente: Windows 11, Node.js 24.16, npm 11.13, Chrome 152 headless
 |---|---|
 | `npm run typecheck` (TypeScript strict) | nessun errore |
 | `npm run lint` | nessun errore, nessun warning |
-| `npm test` | 17 test, 5 file, tutti verdi |
+| `npm test` | 29 test, 9 file, tutti verdi |
 | `npm run build` | build riuscita |
 | Resa visiva a 1440 / 1024 / 768 / 390 px | verificata via screenshot CDP |
 | Overflow orizzontale fino a 320 px | assente |
 | Menu mobile: apertura, `Escape`, chiusura dopo la selezione | ok (anche via test) |
 | Pannello "Dettagli": apertura/chiusura, `aria-expanded` | ok (anche via test) |
+| Dettagli aperti su una scheda | le altre restano chiuse e alla propria altezza (la griglia usa `align-items: start`, non `stretch`) |
+| Anello del puntatore dopo uno scroll lungo | continua a seguire il mouse anche con CPU strozzata 6× (condizione in cui la modalità risparmio scatta di sicuro) |
+| Ciclo condiviso con un effetto che solleva eccezioni a ogni fotogramma | la pagina resta viva, l'anello continua a seguire |
+| Ciclo condiviso dopo un `blur` senza `focus` di ritorno | resta vivo |
+| Refresh a metà pagina | si riparte da `scrollY: 0`, con `scrollRestoration: manual` |
+| Apertura diretta su `#percorso` | porta alla sezione, non in cima |
 | `prefers-reduced-motion: reduce` | contenuto immediato, scena statica |
 | WebGL disabilitato (`--disable-webgl`) | fallback SVG mostrato |
 | Sequenza d'apertura: comparsa a ogni caricamento, skip con click e con tastiera | ok (anche via test) |
 | Build con `BASE_PATH` e servizio in sottocartella | pagina e asset ok |
 | Console del browser | nessun errore, nessuna richiesta fallita |
+| Reveal legati allo scroll | a pagina appena caricata schede e dischi sono a `opacity: 0`, la linea della timeline a `scaleY(0)`; dopo lo scroll tutto a 1 |
+| Fotogrammi durante uno scroll completo | 60 fps, **zero** fotogrammi oltre i 20 ms, il peggiore a 16,8 ms — a 1440, 1024 e 390 px, in Chrome headless con rasterizzatore software |
+| Fotogrammi restando sulla hero con il 3D attivo | 60 fps, zero fotogrammi persi |
+| Cambio lingua | testi, `<html lang>`, titolo e CV scaricato cambiano insieme (anche via test) |
+| Long task e layout shift | un solo long task da ~89 ms (compilazione della scena 3D), CLS 0 |
+| Contenuto del CV italiano e posizione dei link | verificati con rendering PDFium |
 | Link a repository, email, LinkedIn, download del CV | verificati manualmente |
 | Contenuto del PDF e link "Repository" | verificati con rendering PDFium |
 

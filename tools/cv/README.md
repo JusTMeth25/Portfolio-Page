@@ -12,10 +12,24 @@ Se hai un CV nuovo, di solito basta sostituire
 
 ```bash
 pip install pypdf fonttools
-python tools/cv/cvrewrite.py <export-canva.pdf> public/cv/lorenzo-melis-cv.pdf
+
+# 1. sezione progetti riscritta sul CV inglese (parte dall'export Canva)
+python tools/cv/cvrewrite.py <export-canva.pdf> public/cv/lorenzo-melis-cv-en.pdf
+
+# 2. versione italiana, generata dal PDF inglese
+python tools/cv/cvtranslate.py public/cv/lorenzo-melis-cv-en.pdf public/cv/lorenzo-melis-cv-it.pdf
 ```
 
-I testi dei tre progetti stanno nella costante `PROJECTS` in `cvrewrite.py`.
+I testi dei tre progetti stanno nella costante `PROJECTS` in `cvrewrite.py`;
+le traduzioni italiane, riga per riga, in `TRANSLATIONS` dentro `cvtranslate.py`.
+
+`cvtranslate.py` modella il documento come paragrafo → riga → run e **ricalcola**
+le posizioni orizzontali dalle metriche dei glifi invece di copiarle: una
+traduzione più lunga o più corta non sfasa il resto della riga. Sottolineature
+dei link, ritagli dei discendenti e annotazioni seguono il testo. Se una
+traduzione non entra nelle righe disponibili lo script si ferma con un
+`AssertionError` che dice quante righe servirebbero, invece di produrre un PDF
+con il testo tagliato.
 
 ## Cosa fa
 

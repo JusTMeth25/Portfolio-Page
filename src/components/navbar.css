@@ -64,6 +64,42 @@
   display: none;
 }
 
+/* Selettore di lingua: due sigle, quella attiva in evidenza. */
+.navbar__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.4em 0.85em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgb(16 25 32 / 70%);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.navbar__lang:hover {
+  border-color: var(--accent);
+  background: rgb(34 211 238 / 10%);
+}
+
+.navbar__lang-current {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.navbar__lang-sep {
+  color: var(--border);
+}
+
+.navbar__lang-other {
+  color: var(--muted);
+}
+
 .navbar__toggle {
   display: none;
   align-items: center;

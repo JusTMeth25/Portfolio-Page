@@ -2,6 +2,7 @@ import { ChevronDown, ExternalLink, FolderGit2 } from 'lucide-react'
 import { useId, useState } from 'react'
 
 import type { Project } from '../data/projects'
+import { useI18n } from '../i18n/useI18n'
 import { asset } from '../lib/asset'
 import { SpotlightCard } from './effects/SpotlightCard'
 import { ProjectDetails } from './ProjectDetails'
@@ -14,6 +15,7 @@ type ProjectCardProps = {
 }
 
 export function ProjectCard({ project, eager = false }: ProjectCardProps) {
+  const { ui } = useI18n().profile
   const [open, setOpen] = useState(false)
   const [imageFailed, setImageFailed] = useState(false)
   const detailsId = useId()
@@ -38,9 +40,7 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
           />
         )}
         <span className="project-card__kind mono">
-          {project.imageKind === 'screenshot'
-            ? 'Screenshot'
-            : 'Copertina illustrativa'}
+          {project.imageKind === 'screenshot' ? ui.screenshot : ui.illustration}
         </span>
       </div>
 
@@ -51,7 +51,7 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
         </h3>
         <p className="project-card__description">{project.description}</p>
 
-        <ul className="project-card__tags" aria-label="Tecnologie">
+        <ul className="project-card__tags" aria-label={ui.technologies}>
           {project.tags.map((tag) => (
             <li key={tag} className="project-card__tag mono">
               {tag}
@@ -67,8 +67,10 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
             rel="noreferrer noopener"
           >
             <FolderGit2 className="icon" aria-hidden="true" />
-            Repository GitHub
-            <span className="visually-hidden">di {project.title}</span>
+            {ui.repository}
+            <span className="visually-hidden">
+              {ui.of} {project.title}
+            </span>
           </a>
 
           {project.demoUrl && (
@@ -79,8 +81,10 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
               rel="noreferrer noopener"
             >
               <ExternalLink className="icon" aria-hidden="true" />
-              Demo live
-              <span className="visually-hidden">di {project.title}</span>
+              {ui.liveDemo}
+              <span className="visually-hidden">
+                {ui.of} {project.title}
+              </span>
             </a>
           )}
 
@@ -92,8 +96,10 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
               aria-controls={detailsId}
               onClick={() => setOpen((value) => !value)}
             >
-              {open ? 'Chiudi dettagli' : 'Dettagli'}
-              <span className="visually-hidden">di {project.title}</span>
+              {open ? ui.closeDetails : ui.details}
+              <span className="visually-hidden">
+                {ui.of} {project.title}
+              </span>
               <ChevronDown className="icon project-card__chevron" aria-hidden="true" />
             </button>
           )}

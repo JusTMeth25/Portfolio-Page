@@ -2,7 +2,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   gap: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
-  align-items: stretch;
+  /*
+   * `start`, non `stretch`: con lo stretch l'altezza della riga è quella della
+   * scheda più alta, quindi aprendo i dettagli di una scheda anche le altre si
+   * allungavano, sembrando aperte. Così ogni scheda tiene la propria altezza e
+   * solo quella cliccata cresce.
+   */
+  align-items: start;
 }
 
 .projects-grid__item {

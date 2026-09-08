@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { subscribeToTicker } from '../../lib/ticker'
 import './equalizer.css'
 
 type EqualizerProps = {
@@ -34,14 +35,19 @@ export function Equalizer({ bars = 22, label }: EqualizerProps) {
       return
     }
 
-    let frame = 0
-    let running = true
     // Posizione orizzontale del puntatore rispetto alle barre, 0…1.
     let pointer = 0.5
     let pointerStrength = 0
+    // Fuori dal viewport non si disegna: le barre in fondo alla pagina non
+    // devono costare fotogrammi mentre si guarda la hero.
+    let onScreen = true
+    let lastFrame = -Infinity
 
     function step(time: number) {
-      if (!running) return
+      if (!onScreen) return
+      // ~40 fps: sono barre, non un gioco.
+      if (time - lastFrame < 25) return
+      lastFrame = time
       const t = time * 0.0016
       items.forEach((item, index) => {
         const ratio = items.length > 1 ? index / (items.length - 1) : 0
@@ -57,7 +63,6 @@ export function Equalizer({ bars = 22, label }: EqualizerProps) {
         item.style.transform = `scaleY(${height.toFixed(3)})`
       })
       pointerStrength += (0 - pointerStrength) * 0.02
-      frame = window.requestAnimationFrame(step)
     }
 
     function onPointerMove(event: PointerEvent) {
@@ -69,30 +74,24 @@ export function Equalizer({ bars = 22, label }: EqualizerProps) {
       pointerStrength = Math.max(0, 1 - dy / 320)
     }
 
-    function start() {
-      if (running) return
-      running = true
-      frame = window.requestAnimationFrame(step)
-    }
-
-    function stop() {
-      running = false
-      window.cancelAnimationFrame(frame)
-    }
-
-    function onVisibility() {
-      if (document.hidden) stop()
-      else start()
-    }
-
     window.addEventListener('pointermove', onPointerMove, { passive: true })
-    document.addEventListener('visibilitychange', onVisibility)
-    frame = window.requestAnimationFrame(step)
+    const unsubscribe = subscribeToTicker(step)
+
+    const observer =
+      typeof IntersectionObserver === 'undefined'
+        ? null
+        : new IntersectionObserver(
+            ([entry]) => {
+              onScreen = Boolean(entry?.isIntersecting)
+            },
+            { rootMargin: '120px' },
+          )
+    if (observer && list) observer.observe(list)
 
     return () => {
-      stop()
+      unsubscribe()
+      observer?.disconnect()
       window.removeEventListener('pointermove', onPointerMove)
-      document.removeEventListener('visibilitychange', onVisibility)
     }
   }, [reduced, bars])
 

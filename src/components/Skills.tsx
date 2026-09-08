@@ -1,14 +1,14 @@
-import { profile } from '../data/profile'
-import { projects } from '../data/projects'
+import { useI18n } from '../i18n/useI18n'
 import { Reveal } from './effects/Reveal'
 import { SectionIntro } from './effects/SectionIntro'
 import { SpotlightCard } from './effects/SpotlightCard'
 import './skills.css'
 
-const { skills } = profile
-
 /** Titoli dei progetti collegati a un gruppo di competenze. */
-function relatedTitles(ids: readonly string[] | undefined): string[] {
+function relatedTitles(
+  ids: readonly string[] | undefined,
+  projects: { id: string; title: string }[],
+): string[] {
   if (!ids) return []
   return ids
     .map((id) => projects.find((project) => project.id === id)?.title)
@@ -16,6 +16,9 @@ function relatedTitles(ids: readonly string[] | undefined): string[] {
 }
 
 export function Skills() {
+  const { profile, projects } = useI18n()
+  const { skills, ui } = profile
+
   return (
     <section className="section" id="competenze" aria-labelledby="competenze-title">
       <div className="container">
@@ -28,12 +31,13 @@ export function Skills() {
 
         <ul className="skills-grid">
           {skills.groups.map((group, index) => {
-            const related = relatedTitles(group.relatedProjectIds)
+            const related = relatedTitles(group.relatedProjectIds, projects)
             return (
               <Reveal
                 as="li"
                 key={group.id}
-                delay={index * 0.05}
+                variant="rise"
+                delay={index * 0.08}
                 className="skills-grid__item"
               >
                 <SpotlightCard tilt={0}>
@@ -48,7 +52,7 @@ export function Skills() {
                     </ul>
                     {related.length > 0 && (
                       <p className="skills-card__related">
-                        Usate in: <span>{related.join(', ')}</span>
+                        {ui.usedIn} <span>{related.join(', ')}</span>
                       </p>
                     )}
                   </div>

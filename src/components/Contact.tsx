@@ -8,12 +8,11 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-import { profile, type ContactLink } from '../data/profile'
+import type { ContactLink } from '../data/profile'
+import { useI18n } from '../i18n/useI18n'
 import { asset } from '../lib/asset'
 import { Reveal } from './effects/Reveal'
 import './contact.css'
-
-const { contact, cv } = profile
 
 const ICONS = {
   email: Mail,
@@ -26,6 +25,8 @@ function iconFor(kind: ContactLink['kind']) {
 }
 
 export function Contact() {
+  const { profile } = useI18n()
+  const { contact, cv } = profile
   const email = contact.links.find((link) => link.kind === 'email')?.value ?? ''
   const [copyState, setCopyState] = useState<'idle' | 'done' | 'failed'>('idle')
 

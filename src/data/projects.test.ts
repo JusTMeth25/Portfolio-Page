@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { getFeaturedProjects, projects, type Project } from './projects'
+import { getFeaturedProjects, getProjects, type Project } from './projects'
 
 const base: Project = {
   id: 'x',
@@ -44,6 +44,8 @@ describe('getFeaturedProjects', () => {
 })
 
 describe('dati dei progetti', () => {
+  const projects = getProjects('it')
+
   it('non contiene id duplicati né `order` duplicati', () => {
     const ids = projects.map((project) => project.id)
     const orders = projects.map((project) => project.order)
@@ -57,6 +59,22 @@ describe('dati dei progetti', () => {
       if (project.demoUrl !== undefined) {
         expect(project.demoUrl).toMatch(/^https:\/\//)
       }
+    }
+  })
+})
+
+describe('traduzioni dei progetti', () => {
+  it('espone gli stessi progetti in italiano e in inglese', () => {
+    const italian = getProjects('it')
+    const english = getProjects('en')
+
+    expect(english.map((p) => p.id)).toEqual(italian.map((p) => p.id))
+    for (const [index, project] of english.entries()) {
+      // Parte tecnica condivisa: cambia solo la copy.
+      expect(project.repositoryUrl).toBe(italian[index].repositoryUrl)
+      expect(project.image).toBe(italian[index].image)
+      expect(project.description).not.toBe(italian[index].description)
+      expect(project.imageAlt.length).toBeGreaterThan(10)
     }
   })
 })

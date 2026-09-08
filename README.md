@@ -10,7 +10,7 @@ collaborazione con team tecnici.
 
 Cerco un ruolo **full stack, frontend o backend**.
 
-📄 [**CV in PDF**](public/cv/lorenzo-melis-cv.pdf) ·
+📄 CV in PDF: [italiano](public/cv/lorenzo-melis-cv-it.pdf) · [English](public/cv/lorenzo-melis-cv-en.pdf) ·
 ✉️ [lorenzo.melis@yahoo.it](mailto:lorenzo.melis@yahoo.it) ·
 💼 [LinkedIn](https://www.linkedin.com/in/lorenzo-melis97/) ·
 💻 [GitHub](https://github.com/JusTMeth25)
@@ -130,8 +130,14 @@ Sito statico a pagina unica, senza backend, database, login o chiavi API.
 - **Motion for React** per i reveal delle sezioni e la grafica dell'intro
 - Animazioni continue e reattive al puntatore: solchi di vinile sullo sfondo,
   equalizzatore che si alza dove passa il cursore, anello che segue il mouse
-- Sezioni che entrano scorrendo: i titoli salgono da dietro una maschera, una
-  linea si allarga sotto l'eyebrow e una barra in navbar segue l'avanzamento
+- Sezioni che entrano scorrendo: titoli che salgono da dietro una maschera,
+  schede che si alzano in prospettiva, la linea della timeline che si disegna
+  seguendo lo scroll e la hero che esce di scena in parallasse
+- **Sito in italiano e inglese**, con selettore in navbar: cambia anche il CV
+  che viene scaricato
+- 60 fps costanti: un solo `requestAnimationFrame` per tutta la pagina, DPR
+  limitato, scena 3D che parte solo a intro finita e modalità risparmio
+  automatica se l'hardware fatica
 - Tutto disattivabile: con `prefers-reduced-motion: reduce` l'intro non compare
   e il movimento si ferma
 - **CSS con design token**
