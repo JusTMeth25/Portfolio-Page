@@ -31,3 +31,8 @@ if (!window.IntersectionObserver) {
   window.IntersectionObserver =
     MockIntersectionObserver as unknown as typeof window.IntersectionObserver
 }
+
+// jsdom non implementa il canvas 2D. Restituendo `null` esercitiamo il ramo di
+// guardia dei componenti che disegnano, senza il rumore di "Not implemented".
+HTMLCanvasElement.prototype.getContext = (() =>
+  null) as unknown as HTMLCanvasElement['getContext']

@@ -1,0 +1,37 @@
+.pointer-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgb(34 211 238 / 55%);
+  border-radius: 50%;
+  background: rgb(34 211 238 / 6%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition:
+    width var(--dur-mid) var(--ease),
+    height var(--dur-mid) var(--ease),
+    opacity var(--dur-mid) var(--ease),
+    border-color var(--dur-mid) var(--ease),
+    background-color var(--dur-mid) var(--ease);
+}
+
+.pointer-ring[data-visible='true'] {
+  opacity: 1;
+}
+
+.pointer-ring[data-active='true'] {
+  width: 54px;
+  height: 54px;
+  border-color: rgb(34 211 238 / 85%);
+  background: rgb(34 211 238 / 12%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pointer-ring {
+    display: none;
+  }
+}

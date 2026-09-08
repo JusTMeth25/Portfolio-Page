@@ -1,0 +1,32 @@
+.equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 42px;
+  width: 100%;
+  max-width: 26rem;
+}
+
+.equalizer__bar {
+  flex: 1 1 0;
+  height: 100%;
+  min-width: 2px;
+  border-radius: 2px;
+  transform: scaleY(0.3);
+  transform-origin: bottom center;
+  background: linear-gradient(
+    180deg,
+    var(--accent) 0%,
+    rgb(33 150 243 / 75%) 55%,
+    rgb(42 65 79 / 60%) 100%
+  );
+  opacity: 0.75;
+  will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .equalizer {
+    height: 32px;
+    gap: 3px;
+  }
+}

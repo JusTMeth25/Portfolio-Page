@@ -17,6 +17,11 @@
   --border: #2a414f;
   --border-soft: #1d2f3a;
 
+  /* Accenti "colonna sonora": usati solo nella sezione interessi musicali. */
+  --accent-amber: #f0b429;
+  --accent-magenta: #f472b6;
+  --accent-violet: #a78bfa;
+
   /* Bagliori discreti della hero */
   --glow-cyan: rgb(34 211 238 / 14%);
   --glow-blue: rgb(33 150 243 / 12%);
@@ -60,6 +65,7 @@
   /* Tempi */
   --dur-fast: 160ms;
   --dur-mid: 260ms;
+  --dur-slow: 520ms;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 

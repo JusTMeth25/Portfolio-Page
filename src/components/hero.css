@@ -49,6 +49,11 @@
   margin-top: var(--space-xl);
 }
 
+.hero__eq {
+  margin-top: var(--space-xl);
+  max-width: 22rem;
+}
+
 .hero__note {
   margin-top: var(--space-lg);
   font-size: var(--step--1);

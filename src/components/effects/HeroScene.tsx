@@ -62,6 +62,52 @@ function Layer({
   )
 }
 
+/**
+ * Solchi concentrici su ogni piano: la scultura resta una pila di strati
+ * software, ma letta di sbieco ricorda i solchi di un vinile.
+ */
+function Grooves({ count }: { count: number }) {
+  const geometries = useMemo(
+    () =>
+      Array.from({ length: count }, (_, index) => {
+        const radius = 0.34 + index * 0.16
+        const points: number[] = []
+        const segments = 96
+        for (let i = 0; i < segments; i += 1) {
+          const angle = (i / segments) * Math.PI * 2
+          points.push(Math.cos(angle) * radius, 0, Math.sin(angle) * radius)
+        }
+        const geometry = new THREE.BufferGeometry()
+        geometry.setAttribute(
+          'position',
+          new THREE.Float32BufferAttribute(points, 3),
+        )
+        return geometry
+      }),
+    [count],
+  )
+
+  useEffect(
+    () => () => geometries.forEach((geometry) => geometry.dispose()),
+    [geometries],
+  )
+
+  // `lineLoop`, non `line`: in JSX `line` è l'elemento SVG.
+  return (
+    <group>
+      {geometries.map((geometry, index) => (
+        <lineLoop key={index} geometry={geometry}>
+          <lineBasicMaterial
+            color={index % 3 === 0 ? BLUE : CYAN}
+            transparent
+            opacity={0.3 - index * 0.02}
+          />
+        </lineLoop>
+      ))}
+    </group>
+  )
+}
+
 /** Nodi luminosi distribuiti sui piani. */
 function Nodes({ count }: { count: number }) {
   const positions = useMemo(() => {
@@ -190,6 +236,7 @@ function Sculpture({
         opacity={0.16}
       />
       <Connectors />
+      <Grooves count={compact ? 5 : 8} />
       <Nodes count={compact ? 12 : 24} />
       {!compact && <Orbits />}
     </group>

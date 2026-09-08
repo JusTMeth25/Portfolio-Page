@@ -1,0 +1,141 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow: hidden;
+  background: var(--bg);
+  transform-origin: center center;
+}
+
+.intro__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Grana leggerissima sopra al canvas: toglie il "digitale" ai gradienti. */
+.intro::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image: radial-gradient(
+    rgb(243 242 237 / 6%) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 3px 3px;
+}
+
+/* ---------- HUD ---------- */
+
+.intro__hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.intro__hud-item {
+  position: absolute;
+  font-size: clamp(0.62rem, 0.55rem + 0.3vw, 0.78rem);
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.intro__hud-item--tl {
+  top: var(--gutter);
+  left: var(--gutter);
+  color: var(--text);
+}
+
+.intro__hud-item--tr {
+  top: var(--gutter);
+  right: var(--gutter);
+}
+
+.intro__hud-item--bl {
+  bottom: calc(var(--gutter) + 1.6rem);
+  left: var(--gutter);
+}
+
+.intro__hud-item--br {
+  bottom: calc(var(--gutter) + 1.6rem);
+  right: var(--gutter);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.intro__hud-slash {
+  margin-inline: 0.35em;
+  color: var(--border);
+}
+
+.intro__cue {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--gutter) + 1.6rem);
+  transform: translateX(-50%);
+  font-size: clamp(0.6rem, 0.54rem + 0.25vw, 0.72rem);
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ---------- barra di avanzamento ---------- */
+
+.intro__progress {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: var(--gutter);
+  height: 1px;
+  background: var(--border-soft);
+  overflow: hidden;
+}
+
+.intro__progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent));
+  transform-origin: left center;
+}
+
+/* ---------- skip ---------- */
+
+.intro__skip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--gutter) + 3.4rem);
+  transform: translateX(-50%);
+  padding: 0.45em 1.1em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgb(8 14 19 / 70%);
+  color: var(--muted-strong);
+  font-size: var(--step--1);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.intro__skip:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .intro__hud-item--tr,
+  .intro__cue {
+    display: none;
+  }
+
+  .intro__hud-item--bl {
+    max-width: 60vw;
+    white-space: normal;
+    letter-spacing: 0.16em;
+  }
+}

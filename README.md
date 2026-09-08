@@ -18,7 +18,7 @@ Cerco un ruolo **full stack, frontend o backend**.
 > Questo repository contiene il codice del mio portfolio personale.
 > Una volta pubblicato su GitHub Pages, l'indirizzo del sito va inserito qui.
 
-![Il portfolio: hero con la scultura WebGL](docs/preview-hero.png)
+![Il portfolio: hero con la scultura WebGL e l’equalizzatore](docs/preview-hero.jpg)
 
 ---
 
@@ -70,9 +70,20 @@ Meteo e previsioni per città, con geocoding e artwork dinamico.
 - Nel repository sono presenti test Vitest e Testing Library
 - 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-10)
 
-![La griglia dei progetti in primo piano](docs/preview-progetti.png)
+![La griglia dei progetti in primo piano](docs/preview-progetti.jpg)
 
 Altri progetti: [github.com/JusTMeth25](https://github.com/JusTMeth25)
+
+---
+
+## Colonna sonora
+
+Fuori dall'editor colleziono vinili. Il sito ha una sezione dedicata, con quattro
+dischi che girano: **vinili**, **anni 80**, **hip hop**, **rock**. Le stesse cose
+che cerco in un disco — struttura, ritmo, cura dei dettagli — le cerco anche nel
+codice.
+
+![La sezione Colonna sonora, con i quattro dischi](docs/preview-colonna-sonora.jpg)
 
 ---
 
@@ -111,9 +122,15 @@ ITIL v4 Foundation
 Sito statico a pagina unica, senza backend, database, login o chiavi API.
 
 - **React 19 + TypeScript** in modalità `strict`, build con **Vite**
-- **Three.js / React Three Fiber** per la scultura animata della hero
-- **Motion for React** per i reveal delle sezioni, disattivati con
-  `prefers-reduced-motion`
+- **Three.js / React Three Fiber** per la scultura animata della hero, con
+  solchi concentrici che richiamano un vinile
+- **Sequenza d'apertura su canvas 2D**: una fessura di luce diventa un vinile,
+  la puntina appoggia sul solco, poi si attraversa il foro del perno
+- **Motion for React** per i reveal delle sezioni e la grafica dell'intro
+- Animazioni continue e reattive al puntatore: solchi di vinile sullo sfondo,
+  equalizzatore che si alza dove passa il cursore, anello che segue il mouse
+- Tutto disattivabile: con `prefers-reduced-motion: reduce` l'intro non compare
+  e il movimento si ferma
 - **CSS con design token**
 - Contenuti centralizzati in due file (`src/data/profile.ts` e
   `src/data/projects.ts`)

@@ -22,6 +22,14 @@ export type TimelineEntry = {
   current?: boolean
 }
 
+export type Interest = {
+  id: string
+  label: string
+  note: string
+  /** Tinta dell'etichetta: mappata sui token in styles/tokens.css. */
+  accent: 'cyan' | 'amber' | 'magenta' | 'violet'
+}
+
 export type SkillGroup = {
   id: string
   title: string
@@ -34,6 +42,18 @@ export const profile = {
   name: 'Lorenzo Melis',
   role: 'Junior Full-Stack Developer',
   monogram: { light: 'L', accent: 'M' },
+
+  /** Testi della sequenza d'apertura (src/components/effects/Intro.tsx). */
+  intro: {
+    name: 'LORENZO MELIS',
+    edition: 'PORTFOLIO No.001',
+    role: 'JUNIOR FULL-STACK DEVELOPER',
+    cue: 'SCORRI PER CONTINUARE',
+    skipLabel: 'Salta intro',
+    /** Descrizione della sequenza per chi usa uno screen reader. */
+    ariaLabel:
+      'Sequenza di apertura: un disco in vinile si apre e si allarga fino a coprire lo schermo.',
+  },
 
   hero: {
     eyebrow: 'LORENZO MELIS / PORTFOLIO',
@@ -200,8 +220,44 @@ export const profile = {
     },
   },
 
+  /**
+   * Sezione "Colonna sonora": interessi personali, non competenze.
+   * È dichiaratamente una nota di colore, tenuta separata dalle skill.
+   */
+  interests: {
+    eyebrow: '05 / COLONNA SONORA',
+    title: 'Cosa gira mentre scrivo codice',
+    text: 'Fuori dall’editor colleziono vinili. Le stesse cose che cerco in un disco — struttura, ritmo, cura dei dettagli — le cerco anche nel codice.',
+    items: [
+      {
+        id: 'vinili',
+        label: 'Vinili',
+        note: 'Collezione su piatto, non in streaming',
+        accent: 'cyan',
+      },
+      {
+        id: 'anni-80',
+        label: 'Anni 80',
+        note: 'Sintetizzatori, drum machine, riverberi',
+        accent: 'magenta',
+      },
+      {
+        id: 'hip-hop',
+        label: 'Hip hop',
+        note: 'Campionamenti, boom bap, groove',
+        accent: 'amber',
+      },
+      {
+        id: 'rock',
+        label: 'Rock',
+        note: 'Chitarre, dischi suonati dall’inizio alla fine',
+        accent: 'violet',
+      },
+    ] satisfies Interest[],
+  },
+
   contact: {
-    eyebrow: '05 / CONTATTI',
+    eyebrow: '06 / CONTATTI',
     title: 'Parliamo di un ruolo junior full stack',
     text: 'Sono disponibile per posizioni junior full stack, frontend o backend. Scrivimi: rispondo a tutti i messaggi.',
     copyLabel: 'Copia email',

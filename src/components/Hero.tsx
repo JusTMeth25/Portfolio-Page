@@ -5,6 +5,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { profile } from '../data/profile'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { Equalizer } from './effects/Equalizer'
 import { HeroFallback } from './effects/HeroFallback'
 import './hero.css'
 
@@ -117,6 +118,10 @@ export function Hero() {
               {hero.secondaryCta.label}
               <span className="visually-hidden">(si apre in una nuova scheda)</span>
             </a>
+          </div>
+
+          <div className="hero__eq">
+            <Equalizer bars={26} />
           </div>
 
           <p className="hero__note">{hero.note}</p>

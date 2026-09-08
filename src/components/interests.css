@@ -1,0 +1,139 @@
+.interests {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: clamp(0.9rem, 0.6rem + 1vw, 1.5rem);
+}
+
+.interests__item {
+  display: flex;
+  min-width: 0;
+}
+
+.interests__item > * {
+  width: 100%;
+}
+
+.record {
+  --tint: var(--accent);
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: 100%;
+  padding: var(--space-lg);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  transition:
+    border-color var(--dur-mid) var(--ease),
+    transform var(--dur-mid) var(--ease);
+}
+
+.record[data-accent='amber'] {
+  --tint: var(--accent-amber);
+}
+
+.record[data-accent='magenta'] {
+  --tint: var(--accent-magenta);
+}
+
+.record[data-accent='violet'] {
+  --tint: var(--accent-violet);
+}
+
+.record:hover {
+  border-color: color-mix(in srgb, var(--tint) 55%, transparent);
+  transform: translateY(-3px);
+}
+
+/* Il disco: solchi con un conic-gradient, etichetta colorata al centro. */
+.record__disc {
+  position: relative;
+  flex: none;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgb(243 242 237 / 5%) 0 1px,
+      transparent 1px 4px
+    ),
+    radial-gradient(circle at 34% 30%, rgb(243 242 237 / 10%), transparent 46%),
+    #060b0f;
+  box-shadow:
+    inset 0 0 0 1px rgb(42 65 79 / 90%),
+    0 8px 20px rgb(2 8 12 / 55%);
+  animation: record-spin 9s linear infinite;
+}
+
+.record__label {
+  position: absolute;
+  inset: 36%;
+  border-radius: 50%;
+  background: var(--tint);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--tint) 45%, transparent);
+}
+
+.record__label::after {
+  content: '';
+  position: absolute;
+  inset: 42%;
+  border-radius: 50%;
+  background: #060b0f;
+}
+
+.record:hover .record__disc {
+  animation-duration: 2.4s;
+}
+
+.record__title {
+  font-size: var(--step-1);
+}
+
+.record__note {
+  margin-top: var(--space-2xs);
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.interests__eq {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md) var(--space-lg);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-soft);
+}
+
+.interests__eq .equalizer {
+  flex: 1 1 18rem;
+}
+
+.interests__eq-note {
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@keyframes record-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .record__disc {
+    animation: none;
+  }
+
+  .record:hover {
+    transform: none;
+  }
+}

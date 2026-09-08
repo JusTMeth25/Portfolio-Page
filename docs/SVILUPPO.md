@@ -44,8 +44,10 @@ Un solo package manager: **npm**, con `package-lock.json` versionato.
 ```text
 src/
   components/            Navbar, Hero, ProjectCard, ProjectDetails, Timeline, ...
-  components/effects/    HeroScene (WebGL), HeroFallback (SVG), Reveal, SpotlightCard
-  data/profile.ts        testi, timeline, competenze, contatti, stato del CV
+  components/effects/    Intro + introScene (canvas 2D), AmbientGrooves,
+                         PointerRing, Equalizer, HeroScene (WebGL),
+                         HeroFallback (SVG), Reveal, SpotlightCard
+  data/profile.ts        testi, intro, timeline, competenze, interessi, contatti, CV
   data/projects.ts       elenco dei progetti (unica sorgente)
   hooks/                 usePrefersReducedMotion, useMediaQuery
   lib/asset.ts           risolve i percorsi rispetto alla base path
@@ -77,6 +79,11 @@ Tutto in **`src/data/profile.ts`**.
 - `profile.skills.groups` — gruppi di competenze. `relatedProjectIds` collega un
   gruppo ai progetti (la riga "Usate in: …" si costruisce da sola: se un id non
   esiste più, viene semplicemente ignorato).
+- `profile.interests` — sezione "Colonna sonora". Ogni voce ha `label`, `note`
+  e `accent` (`cyan | amber | magenta | violet`), che sceglie il colore
+  dell'etichetta del disco.
+- `profile.intro` — testi della sequenza d'apertura (HUD e descrizione
+  accessibile). La durata è `INTRO_DURATION_MS` in `effects/introScene.ts`.
 - `profile.contact.links` — email, GitHub, LinkedIn. `kind` sceglie l'icona.
 - `profile.nav.items` — voci di navigazione e ancore.
 - `profile.seo` — titolo e descrizione (il `<title>` e la `meta description`
@@ -245,6 +252,52 @@ L'anteprima social è `public/og-image.png` (1200 × 630), generata localmente.
 
 ## Accessibilità e animazioni
 
+### Effetti presenti
+
+| Effetto | File | Quando è attivo |
+|---|---|---|
+| Sequenza d'apertura (canvas 2D) | `effects/Intro.tsx` + `effects/introScene.ts` | a ogni caricamento, mai con movimento ridotto |
+| Solchi di vinile sullo sfondo | `effects/AmbientGrooves.tsx` | sempre; con movimento ridotto disegna un solo fotogramma |
+| Anello che segue il puntatore | `effects/PointerRing.tsx` | solo puntatore preciso e movimento non ridotto |
+| Equalizzatore reattivo | `effects/Equalizer.tsx` | hero e sezione "Colonna sonora"; profilo statico con movimento ridotto |
+| Spotlight e tilt sulle schede | `effects/SpotlightCard.tsx` | solo puntatore preciso |
+| Reveal delle sezioni | `effects/Reveal.tsx` | all'ingresso nel viewport, una volta sola |
+| Dischi che girano | `interests.css` | animazione CSS, accelerata al passaggio del mouse |
+
+#### La sequenza d'apertura
+
+Dura **3,4 s** e va in scena a **ogni caricamento della pagina** (nessuna
+memoria fra una visita e l'altra: è una scelta esplicita, non una svista).
+
+Le fasi, in `effects/introScene.ts`:
+
+1. una fessura di luce si apre al centro;
+2. la fessura diventa un disco, che si inclina e cresce in prospettiva;
+3. il piatto gira — solchi, riflesso radente sul bordo, due orbite inclinate;
+4. la puntina ruota attorno al perno e appoggia sul solco esterno;
+5. la polvere si solleva dal centro;
+6. il foro del perno si allarga fino a coprire lo schermo: si attraversa il
+   disco invece di guardarlo sparire.
+
+È **canvas 2D e non WebGL** di proposito: l'intro è la prima cosa che si vede e
+caricare Three.js prima del primo fotogramma costerebbe ~880 kB. Qui il costo è
+zero, nessuna dipendenza e nessun asset. Il contatore `000/100` viene scritto
+direttamente nel DOM dentro il `requestAnimationFrame`, senza re-render.
+
+**Non è uno splash bloccante**: il contenuto del sito è già nel DOM sotto il
+velo (che è `aria-hidden`, mentre il canvas espone `role="img"` con una
+descrizione), si chiude con un click, con un tasto qualsiasi o a fine sequenza,
+e con `prefers-reduced-motion: reduce` non compare affatto. Mentre è visibile lo
+scroll è bloccato e il focus è sul pulsante "Salta intro". Il bagliore finale è
+una singola campana di luminosità — nessun lampeggio ripetuto, quindi resta
+sotto la soglia dei tre flash al secondo.
+
+Gli effetti che seguono il puntatore scrivono direttamente su `style` dentro un
+`requestAnimationFrame`: nessun `setState` di React a ogni movimento del mouse.
+Tutti si fermano quando la tab non è visibile.
+
+### Regole generali
+
 - HTML semantico (`header`, `nav`, `main`, `section`, `footer`), un solo `h1`.
 - Skip link, focus visibile, navigazione completa da tastiera, menu mobile con
   `aria-expanded`/`aria-controls`, chiusura con `Escape` e ritorno del focus.
@@ -283,7 +336,7 @@ Ambiente: Windows 11, Node.js 24.16, npm 11.13, Chrome 152 headless
 |---|---|
 | `npm run typecheck` (TypeScript strict) | nessun errore |
 | `npm run lint` | nessun errore, nessun warning |
-| `npm test` | 12 test, 4 file, tutti verdi |
+| `npm test` | 17 test, 5 file, tutti verdi |
 | `npm run build` | build riuscita |
 | Resa visiva a 1440 / 1024 / 768 / 390 px | verificata via screenshot CDP |
 | Overflow orizzontale fino a 320 px | assente |
@@ -291,6 +344,7 @@ Ambiente: Windows 11, Node.js 24.16, npm 11.13, Chrome 152 headless
 | Pannello "Dettagli": apertura/chiusura, `aria-expanded` | ok (anche via test) |
 | `prefers-reduced-motion: reduce` | contenuto immediato, scena statica |
 | WebGL disabilitato (`--disable-webgl`) | fallback SVG mostrato |
+| Sequenza d'apertura: comparsa a ogni caricamento, skip con click e con tastiera | ok (anche via test) |
 | Build con `BASE_PATH` e servizio in sottocartella | pagina e asset ok |
 | Console del browser | nessun errore, nessuna richiesta fallita |
 | Link a repository, email, LinkedIn, download del CV | verificati manualmente |
@@ -314,3 +368,8 @@ progetti.
   `demoUrl` solo dopo aver controllato che l'URL risponda.
 - Il sito è solo in italiano: non c'è (e non deve esserci) un selettore di lingua
   fittizio.
+- L'intro a ogni caricamento ha un costo: per i primi 3,4 s la hero è coperta dal
+  velo, quindi una misura di LCP la conteggia. È una scelta voluta a favore
+  dell'impatto; per rimuoverla basta togliere `<Intro />` da `src/App.tsx`, per
+  accorciarla basta abbassare `INTRO_DURATION_MS` in
+  `effects/introScene.ts`.
