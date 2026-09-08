@@ -60,7 +60,7 @@ export function Navbar() {
                 className="btn btn--primary btn--small"
                 href={cvHref}
                 {...(cv.available
-                  ? { download: cv.fileName, target: '_blank', rel: 'noreferrer' }
+                  ? { download: cv.fileName }
                   : {})}
                 onClick={() => setOpen(false)}
               >
@@ -93,7 +93,7 @@ export function Navbar() {
           className="btn btn--primary btn--small navbar__cta"
           href={cvHref}
           {...(cv.available
-            ? { download: cv.fileName, target: '_blank', rel: 'noreferrer' }
+            ? { download: cv.fileName }
             : {})}
         >
           <CvIcon className="icon" aria-hidden="true" />

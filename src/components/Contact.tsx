@@ -97,7 +97,7 @@ export function Contact() {
               className="btn btn--small"
               href={cvHref}
               {...(cv.available
-                ? { download: cv.fileName, target: '_blank', rel: 'noreferrer' }
+                ? { download: cv.fileName }
                 : {})}
             >
               <CvIcon className="icon" aria-hidden="true" />

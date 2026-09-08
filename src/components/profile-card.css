@@ -1,0 +1,126 @@
+.profile-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* La prospettiva sta sul contenitore: l'interno è quello che ruota. */
+  perspective: 1200px;
+}
+
+.profile-card__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.profile-card[data-flipped='true'] .profile-card__inner {
+  transform: rotateY(180deg);
+}
+
+.profile-card__face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  backface-visibility: hidden;
+  transition: border-color var(--dur-mid) var(--ease);
+}
+
+.profile-card__face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-card__face--back {
+  transform: rotateY(180deg);
+}
+
+.profile-card:hover .profile-card__face,
+.profile-card:focus-visible .profile-card__face {
+  border-color: rgb(34 211 238 / 55%);
+}
+
+/* Etichetta d'invito, in basso a destra. */
+.profile-card__hint {
+  position: absolute;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.35em 0.75em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgb(8 14 19 / 82%);
+  color: var(--muted-strong);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.profile-card__hint .icon {
+  width: 0.95em;
+  height: 0.95em;
+  transition: transform var(--dur-mid) var(--ease);
+}
+
+.profile-card:hover .profile-card__hint {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.profile-card:hover .profile-card__hint .icon {
+  transform: rotate(180deg);
+}
+
+/*
+ * Movimento ridotto: niente rotazione. Le facce si scambiano con una
+ * dissolvenza, restando impilate.
+ */
+.profile-card[data-reduced='true'] .profile-card__inner {
+  transform: none;
+  transition: none;
+}
+
+.profile-card[data-reduced='true'] .profile-card__face {
+  backface-visibility: visible;
+  transition: opacity var(--dur-mid) var(--ease);
+}
+
+.profile-card[data-reduced='true'] .profile-card__face--back {
+  transform: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile-card[data-reduced='true'][data-flipped='true'] .profile-card__face--front {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.profile-card[data-reduced='true'][data-flipped='true'] .profile-card__face--back {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 860px) {
+  .profile-card {
+    max-width: 220px;
+  }
+}

@@ -15,8 +15,7 @@ Cerco un ruolo **full stack, frontend o backend**.
 💼 [LinkedIn](https://www.linkedin.com/in/lorenzo-melis97/) ·
 💻 [GitHub](https://github.com/JusTMeth25)
 
-> Questo repository contiene il codice del mio portfolio personale.
-> Una volta pubblicato su GitHub Pages, l'indirizzo del sito va inserito qui.
+🌐 **Sito online: [justmeth25.github.io/Portfolio-Page](https://justmeth25.github.io/Portfolio-Page/)**
 
 ![La hero: un vinile 3D con braccio, orbite e pulviscolo](docs/preview-hero.jpg)
 
@@ -45,7 +44,7 @@ Ricerca musicale, preferiti e playlist con stato gestito in Redux.
 Progetto didattico: non è un prodotto Spotify e non ha alcuna affiliazione con
 Spotify.
 
-### 2. Vinilshelf — settimana 3
+### 2. Vinylshelf — settimana 3
 
 Collezione di vinili con ricerca, filtri e gestione degli acquisti.
 

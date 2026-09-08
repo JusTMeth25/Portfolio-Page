@@ -34,9 +34,11 @@ from pypdf import PdfReader, PdfWriter
 from pypdf.generic import (
     ArrayObject,
     DecodedStreamObject,
+    DictionaryObject,
     FloatObject,
     NameObject,
     NumberObject,
+    TextStringObject,
 )
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -45,6 +47,8 @@ from cvlib import escape_pdf_bytes, find_strings, parse_pdf_string  # noqa: E402
 
 SRC = sys.argv[1]
 DST = sys.argv[2]
+# 'it' traduce tutto; 'en' applica solo le correzioni al CV inglese.
+LANG = sys.argv[3] if len(sys.argv) > 3 else 'it'
 
 SYSTEM_FONTS = {
     '/F9': r'C:\Windows\Fonts\arialbd.ttf',
@@ -60,12 +64,19 @@ BASE_NAMES = {
 SCALE = 3.1249452
 PAGE_SCALE = 0.23999999
 
+# Sito pubblicato. Il link "github" dell'intestazione punta qui: dal CV si
+# arriva al portfolio, e il profilo GitHub resta comunque in fondo, alla riga
+# "Altri progetti". Il blocco 15 è il testo, la seconda annotazione il link.
+PORTFOLIO_URL = 'https://justmeth25.github.io/Portfolio-Page/'
+PORTFOLIO_TEXT = 'justmeth25.github.io/Portfolio-Page'
+HEADER_LINK_BLOCK = 15
+
 # ------------------------------------------------------------------ traduzioni
 
 # `flow`: la riga inizia con delle etichette a testo fisso e prosegue con un
 # testo che va a capo da solo sulle righe disponibili.
 # `map`: sostituzioni puntuali blocco per blocco (le posizioni si ricalcolano).
-TRANSLATIONS = {
+IT = {
     2: {'map': {2: 'Ingegneria Informatica | React | JavaScript | TypeScript | Java | Spring Boot | PostgreSQL | REST API'}},
     16: {'map': {16: 'PROFILO PROFESSIONALE'}},
     17: {'flow': {
@@ -100,7 +111,7 @@ TRANSLATIONS = {
         'text': 'Cisco English for IT 2; certificato di spagnolo B1 - FU International Academy Tenerife',
     }},
     36: {'map': {36: 'FORMAZIONE E PERCORSO DI SVILUPPO'}},
-    38: {'map': {38: 'Mag 2026 - Oggi'}},
+    38: {'map': {38: 'Mag 2026 - In corso'}},
     39: {'flow': {
         'labels': [(39, 'Completamento previsto: nov 2026. ')],
         'text': 'Formazione pratica su HTML/CSS, JavaScript, React, Redux e TypeScript, Java, Spring Framework, database relazionali e SQL, Spring Data JPA, '
@@ -117,7 +128,7 @@ TRANSLATIONS = {
         'text': 'Web app musicale in stile Spotify con React e Redux Toolkit: ricerca brani con debounce sull’API Deezer, player audio con shuffle, loop, seek e '
                 'controllo del volume, brani preferiti e playlist create dall’utente in un layout mobile-first con Bootstrap.',
     }},
-    56: {'map': {56: 'Vinilshelf - Gestione di una collezione di vinili (progetto EPICODE settimana 3)'}},
+    56: {'map': {56: 'Vinylshelf - Gestione di una collezione di vinili (progetto EPICODE settimana 3)'}},
     65: {'flow': {
         'labels': [],
         'text': 'App JavaScript senza framework, costruita sul pattern stato-render-eventi: inserimento dischi, ricerca live, filtri di stato, ordinamenti, contatori e persistenza in localStorage.',
@@ -165,6 +176,34 @@ TRANSLATIONS = {
                 'Auditor Interno Norma UNI EN ISO 9001:2015',
     }},
     138: {'map': {138: 'Autorizzo il trattamento dei miei dati personali ai sensi del D.lgs. 196 del 30 giugno 2003 e del GDPR (Regolamento UE 2016/679).'}},
+}
+
+# Il CV inglese resta in inglese: qui solo le correzioni puntuali.
+EN = {
+    38: {'map': {38: 'May 2026 - In progress'}},
+    56: {'map': {56: 'Vinylshelf - Vinyl Collection Manager (EPICODE Week 3 project)'}},
+}
+
+# Il testo dell'intestazione è uguale nelle due lingue.
+for _table in (IT, EN):
+    _table[3] = {'map': {HEADER_LINK_BLOCK: PORTFOLIO_TEXT}}
+
+TABLES = {'it': IT, 'en': EN}
+TRANSLATIONS = TABLES[LANG]
+
+# Metadati del documento. Il file di partenza porta ancora `/Title` uguale al
+# nome dell'export Canva (`..._Canva_Editable.pptx`): il visore PDF di Chrome
+# lo usa come titolo della scheda e come nome proposto al salvataggio, ed è il
+# motivo per cui il CV finiva sul disco con "pptx" nel nome.
+METADATA = {
+    'it': {
+        '/Title': 'Lorenzo Melis - CV',
+        '/Subject': 'Curriculum vitae di Lorenzo Melis, Junior Full-Stack Developer',
+    },
+    'en': {
+        '/Title': 'Lorenzo Melis - CV',
+        '/Subject': 'Curriculum vitae of Lorenzo Melis, Junior Full-Stack Developer',
+    },
 }
 
 # --------------------------------------------------------------------- lettura
@@ -543,7 +582,22 @@ for annotation in annotations:
             FloatObject(round(left + delta + width, 3)),
             rect[3],
         ])
+        if index == HEADER_LINK_BLOCK:
+            action = obj.get('/A')
+            target = action if isinstance(action, DictionaryObject) else action.get_object()
+            target[NameObject('/URI')] = TextStringObject(PORTFOLIO_URL)
         break
+
+# Metadati: senza questo il file resta intestato all'export Canva e il visore
+# PDF propone quel nome (con "pptx" dentro) al salvataggio.
+writer.add_metadata({
+    '/Title': METADATA[LANG]['/Title'],
+    '/Subject': METADATA[LANG]['/Subject'],
+    '/Author': 'Lorenzo Melis',
+    '/Creator': 'Lorenzo Melis',
+    '/Producer': 'Lorenzo Melis',
+    '/Keywords': '',
+})
 
 os.makedirs(os.path.dirname(DST), exist_ok=True)
 with open(DST, 'wb') as handle:

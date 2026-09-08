@@ -9,16 +9,6 @@
   position: relative;
 }
 
-.about__photo {
-  width: 100%;
-  max-width: 360px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-}
-
 .about__title {
   margin-bottom: var(--space-lg);
   max-width: 20ch;
@@ -59,7 +49,4 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .about__photo {
-    max-width: 220px;
-  }
 }

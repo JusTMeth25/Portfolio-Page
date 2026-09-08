@@ -43,6 +43,10 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          # Attiva GitHub Pages sul repository al primo giro, senza doverlo
+          # fare a mano da Settings.
+          enablement: true
 
       - name: Build
         env:

@@ -75,11 +75,24 @@ export const en = {
       'I am Lorenzo Melis, a Computer Engineering graduate currently completing the EPICODE AI Full-Stack Developer programme. I build projects with React, JavaScript, TypeScript, Java, Spring Boot and PostgreSQL.',
       'I bring my cybersecurity background into development: attention to security, to how data is handled, and to working alongside technical teams. I am looking for a full-stack role where I can contribute to the codebase and keep growing on both frontend and backend.',
     ],
-    photo: {
-      src: 'images/profile/lorenzo-melis.jpg',
-      alt: 'Illustrated anime-style avatar of Lorenzo Melis',
-      width: 640,
-      height: 640,
+    photos: {
+      front: {
+        src: 'images/profile/lorenzo-melis-foto.jpg',
+        alt: 'Photo of Lorenzo Melis',
+        width: 640,
+        height: 640,
+      },
+      back: {
+        src: 'images/profile/lorenzo-melis.jpg',
+        alt: 'Illustrated anime-style avatar of Lorenzo Melis',
+        width: 640,
+        height: 640,
+      },
+    },
+    flip: {
+      toBack: 'Flip: illustrated version',
+      toFront: 'Flip: photo',
+      hint: 'Flip',
     },
     facts: [
       { label: 'Training', value: 'EPICODE AI Full-Stack Developer' },
@@ -96,7 +109,7 @@ export const en = {
     entries: [
       {
         id: 'epicode',
-        period: 'May 2026 — present',
+        period: 'May 2026 — in progress',
         role: 'AI Full-Stack Developer',
         organization: 'EPICODE',
         description:

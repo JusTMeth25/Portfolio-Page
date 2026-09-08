@@ -1,6 +1,6 @@
 import { useI18n } from '../i18n/useI18n'
-import { asset } from '../lib/asset'
 import { Reveal } from './effects/Reveal'
+import { ProfileCard } from './ProfileCard'
 import './about.css'
 
 export function About() {
@@ -11,15 +11,7 @@ export function About() {
     <section className="section" id="profilo" aria-labelledby="profilo-title">
       <div className="container about">
         <Reveal className="about__media">
-          <img
-            className="about__photo"
-            src={asset(about.photo.src)}
-            alt={about.photo.alt}
-            width={about.photo.width}
-            height={about.photo.height}
-            loading="lazy"
-            decoding="async"
-          />
+          <ProfileCard />
         </Reveal>
 
         <Reveal className="about__content" delay={0.06}>

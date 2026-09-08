@@ -211,7 +211,7 @@ cv: {
   cambiare il layout.
 
 Il PDF inglese deriva dall'export Canva, con la sezione
-*Selected Development Projects* riscritta sui tre progetti del portfolio (Spotify Clone, Vinilshelf, EpiWeather) e i link "Repository"
+*Selected Development Projects* riscritta sui tre progetti del portfolio (Spotify Clone, Vinylshelf, EpiWeather) e i link "Repository"
 aggiornati ai repository corrispondenti. Nell'operazione i font incorporati sono
 stati ricostruiti: rispetto all'originale il testo del PDF è ora estraibile
 correttamente anche dai parser automatici (nell'export Canva la mappa
@@ -258,11 +258,11 @@ GitHub Pages tramite `actions/deploy-pages`, con i permessi minimi
 `github-pages`. `BASE_PATH` e `SITE_URL` arrivano dagli output di
 `actions/configure-pages`, quindi **non serve impostare nulla a mano**.
 
-Per attivarlo:
+Il sito è pubblicato su **https://justmeth25.github.io/Portfolio-Page/**.
 
-1. su GitHub: *Settings → Pages → Build and deployment → Source: **GitHub Actions***;
-2. push sul branch `main` (il workflow parte anche manualmente da
-   *Actions → Deploy su GitHub Pages → Run workflow*).
+Il passo `actions/configure-pages` usa `enablement: true`, quindi attiva Pages
+sul repository da solo al primo giro: basta il push su `main`. Il workflow parte
+anche a mano da *Actions → Deploy su GitHub Pages → Run workflow*.
 
 Un push successivo su `main` riesegue il workflow e ripubblica il sito.
 

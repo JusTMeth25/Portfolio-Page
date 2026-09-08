@@ -83,11 +83,26 @@ export const it = {
       'Sono Lorenzo Melis, laureato in ingegneria informatica e attualmente in formazione nel percorso EPICODE AI Full-Stack Developer. Sviluppo progetti con React, JavaScript, TypeScript, Java, Spring Boot e PostgreSQL.',
       'Porto nello sviluppo l’esperienza maturata nella cybersecurity, con attenzione alla sicurezza, alla gestione dei dati e alla collaborazione con team tecnici. Cerco un ruolo come full stack in cui contribuire al codice e continuare a crescere su frontend e backend.',
     ],
-    photo: {
-      src: 'images/profile/lorenzo-melis.jpg',
-      alt: 'Avatar illustrato in stile anime di Lorenzo Melis',
-      width: 640,
-      height: 640,
+    photos: {
+      /** Faccia iniziale: la foto vera. */
+      front: {
+        src: 'images/profile/lorenzo-melis-foto.jpg',
+        alt: 'Foto di Lorenzo Melis',
+        width: 640,
+        height: 640,
+      },
+      /** Retro: la versione illustrata. */
+      back: {
+        src: 'images/profile/lorenzo-melis.jpg',
+        alt: 'Avatar illustrato in stile anime di Lorenzo Melis',
+        width: 640,
+        height: 640,
+      },
+    },
+    flip: {
+      toBack: 'Gira: versione illustrata',
+      toFront: 'Gira: foto',
+      hint: 'Gira',
     },
     facts: [
       { label: 'Formazione', value: 'EPICODE AI Full-Stack Developer' },

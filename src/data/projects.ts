@@ -57,7 +57,7 @@ const PROJECT_BASE: ProjectBase[] = [
   },
   {
     id: 'vinilshelf',
-    title: 'Vinilshelf',
+    title: 'Vinylshelf',
     tags: ['JavaScript', 'HTML', 'CSS'],
     repositoryUrl:
       'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-3',
@@ -112,7 +112,7 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
       description:
         'Collezione di vinili con ricerca, filtri e gestione degli acquisti.',
       imageAlt:
-        'Screenshot di Vinilshelf: form di inserimento vinili, filtri, contatori e lista della collezione.',
+        'Screenshot di Vinylshelf: form di inserimento vinili, filtri, contatori e lista della collezione.',
       details: {
         overview:
           'Applicazione in JavaScript senza framework, costruita sul pattern stato → render() → eventi. Gestisce una collezione di vinili posseduti o da acquistare, interamente lato client.',
@@ -177,7 +177,7 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
       label: 'EPICODE · WEEK 3',
       description: 'A vinyl collection with search, filters and buying status.',
       imageAlt:
-        'Screenshot of Vinilshelf: the add-record form, filters, counters and the collection list.',
+        'Screenshot of Vinylshelf: the add-record form, filters, counters and the collection list.',
       details: {
         overview:
           'A framework-free JavaScript app built on the state → render() → events pattern. It tracks a collection of records already owned or still to buy, entirely on the client.',
