@@ -1,0 +1,287 @@
+@import '@fontsource-variable/inter/index.css';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Le ancore non finiscono sotto la navbar sticky. */
+  scroll-padding-top: calc(var(--nav-height) + 1.25rem);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Bagliori ambientali molto discreti, sotto a tutto il contenuto. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 78% -8%, var(--glow-cyan), transparent 62%),
+    radial-gradient(52rem 38rem at 4% 22%, var(--glow-blue), transparent 60%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  font-weight: 650;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-4);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+h2 {
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-size: var(--step-1);
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- utility di layout ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--space-2xl);
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-md) var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.section-title {
+  max-width: 22ch;
+}
+
+.lede {
+  color: var(--muted-strong);
+  font-size: var(--step-1);
+  max-width: 62ch;
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- pulsanti ---------- */
+
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  --btn-border: var(--border);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  padding: 0.72em 1.35em;
+  border: 1px solid var(--btn-border);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: var(--step-0);
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  background: rgb(34 211 238 / 10%);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  --btn-bg: var(--accent);
+  --btn-fg: var(--accent-ink);
+  --btn-border: var(--accent);
+  font-weight: 700;
+}
+
+.btn--primary:hover {
+  background: #67e6f8;
+  border-color: #67e6f8;
+  color: var(--accent-ink);
+}
+
+.btn--ghost {
+  --btn-bg: rgb(16 25 32 / 70%);
+}
+
+.btn--small {
+  padding: 0.5em 1em;
+  font-size: var(--step--1);
+}
+
+.btn .icon {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+}
+
+/* ---------- link testuali ---------- */
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.link:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- riduzione del movimento ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- skip link ---------- */
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  padding: 0.7em 1.2em;
+  border: 1px solid var(--accent);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+}

@@ -1,0 +1,70 @@
+/* Design token del portfolio: colori, tipografia, spazi, raggi, ombre. */
+
+:root {
+  color-scheme: dark;
+
+  /* Colori base */
+  --bg: #080e13;
+  --bg-soft: #0b1319;
+  --surface: #101920;
+  --surface-2: #142029;
+  --text: #f3f2ed;
+  --muted: #a7bac9;
+  --muted-strong: #c4d3de;
+  --accent: #22d3ee;
+  --accent-blue: #2196f3;
+  --accent-ink: #06222a;
+  --border: #2a414f;
+  --border-soft: #1d2f3a;
+
+  /* Bagliori discreti della hero */
+  --glow-cyan: rgb(34 211 238 / 14%);
+  --glow-blue: rgb(33 150 243 / 12%);
+
+  /* Tipografia */
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, 'SFMono-Regular', 'JetBrains Mono', 'Cascadia Mono', Menlo,
+    Consolas, monospace;
+
+  --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+  --step-0: clamp(0.95rem, 0.91rem + 0.2vw, 1.05rem);
+  --step-1: clamp(1.1rem, 1.02rem + 0.4vw, 1.3rem);
+  --step-2: clamp(1.35rem, 1.18rem + 0.85vw, 1.85rem);
+  --step-3: clamp(1.75rem, 1.4rem + 1.75vw, 2.75rem);
+  --step-4: clamp(2.4rem, 1.6rem + 4vw, 5rem);
+
+  /* Spazi */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: clamp(3.5rem, 2rem + 6vw, 6.5rem);
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: clamp(1.15rem, 0.6rem + 2.4vw, 2.75rem);
+  --nav-height: 68px;
+
+  /* Forme */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-card: 0 18px 40px rgb(2 8 12 / 45%);
+  --shadow-nav: 0 10px 30px rgb(2 8 12 / 40%);
+
+  /* Tempi */
+  --dur-fast: 160ms;
+  --dur-mid: 260ms;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --nav-height: 60px;
+  }
+}

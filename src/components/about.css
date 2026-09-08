@@ -1,0 +1,65 @@
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(1.5rem, 0.8rem + 3vw, 3.5rem);
+  align-items: start;
+}
+
+.about__media {
+  position: relative;
+}
+
+.about__photo {
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.about__title {
+  margin-bottom: var(--space-lg);
+  max-width: 20ch;
+}
+
+.about__paragraph {
+  color: var(--muted-strong);
+  max-width: 62ch;
+}
+
+.about__paragraph + .about__paragraph {
+  margin-top: var(--space-md);
+}
+
+.about__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: var(--space-md);
+  margin: var(--space-xl) 0 0;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-soft);
+}
+
+.about__fact dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.about__fact dd {
+  margin: var(--space-2xs) 0 0;
+  color: var(--muted-strong);
+}
+
+@media (max-width: 860px) {
+  .about {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about__photo {
+    max-width: 220px;
+  }
+}

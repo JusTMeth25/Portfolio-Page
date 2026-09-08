@@ -1,0 +1,71 @@
+name: Deploy su GitHub Pages
+
+on:
+  # Pubblicazione automatica a ogni push sul branch principale.
+  push:
+    branches: [main]
+  # Pubblicazione manuale dalla tab "Actions".
+  workflow_dispatch:
+
+# Permessi minimi necessari al deploy su Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Una pubblicazione alla volta; le run in coda non vengono annullate.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build
+        env:
+          # `base_path` di actions/configure-pages vale "" per il user site
+          # (JusTMeth25.github.io) e "/NOME-REPO" per un project site.
+          # vite.config.ts normalizza barre iniziali e finali.
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          # URL finale reale: abilita canonical, Open Graph, sitemap e robots.
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
