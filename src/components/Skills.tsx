@@ -1,6 +1,7 @@
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
 import { Reveal } from './effects/Reveal'
+import { SectionIntro } from './effects/SectionIntro'
 import { SpotlightCard } from './effects/SpotlightCard'
 import './skills.css'
 
@@ -18,15 +19,12 @@ export function Skills() {
   return (
     <section className="section" id="competenze" aria-labelledby="competenze-title">
       <div className="container">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">{skills.eyebrow}</p>
-            <h2 className="section-title" id="competenze-title">
-              {skills.title}
-            </h2>
-          </div>
-          <p className="timeline__intro">{skills.note}</p>
-        </div>
+        <SectionIntro
+          id="competenze-title"
+          eyebrow={skills.eyebrow}
+          title={skills.title}
+          aside={<p>{skills.note}</p>}
+        />
 
         <ul className="skills-grid">
           {skills.groups.map((group, index) => {

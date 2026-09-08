@@ -18,7 +18,7 @@ Cerco un ruolo **full stack, frontend o backend**.
 > Questo repository contiene il codice del mio portfolio personale.
 > Una volta pubblicato su GitHub Pages, l'indirizzo del sito va inserito qui.
 
-![Il portfolio: hero con la scultura WebGL e l’equalizzatore](docs/preview-hero.jpg)
+![La hero: un vinile 3D con braccio, orbite e pulviscolo](docs/preview-hero.jpg)
 
 ---
 
@@ -122,13 +122,16 @@ ITIL v4 Foundation
 Sito statico a pagina unica, senza backend, database, login o chiavi API.
 
 - **React 19 + TypeScript** in modalità `strict`, build con **Vite**
-- **Three.js / React Three Fiber** per la scultura animata della hero, con
-  solchi concentrici che richiamano un vinile
+- **Three.js / React Three Fiber** per la hero: un vinile 3D che gira, con
+  braccio, orbite, satelliti e pulviscolo. Passando il mouse sul disco si
+  lasciano onde sui solchi e il braccio segue la traccia toccata
 - **Sequenza d'apertura su canvas 2D**: una fessura di luce diventa un vinile,
   la puntina appoggia sul solco, poi si attraversa il foro del perno
 - **Motion for React** per i reveal delle sezioni e la grafica dell'intro
 - Animazioni continue e reattive al puntatore: solchi di vinile sullo sfondo,
   equalizzatore che si alza dove passa il cursore, anello che segue il mouse
+- Sezioni che entrano scorrendo: i titoli salgono da dietro una maschera, una
+  linea si allarga sotto l'eyebrow e una barra in navbar segue l'avanzamento
 - Tutto disattivabile: con `prefers-reduced-motion: reduce` l'intro non compare
   e il movimento si ferma
 - **CSS con design token**

@@ -3,6 +3,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 
 import { profile } from '../data/profile'
 import { asset } from '../lib/asset'
+import { ScrollProgress } from './effects/ScrollProgress'
 import './navbar.css'
 
 const { nav, cv, monogram, name } = profile
@@ -95,6 +96,7 @@ export function Navbar() {
           )}
         </button>
       </div>
+      <ScrollProgress />
     </header>
   )
 }

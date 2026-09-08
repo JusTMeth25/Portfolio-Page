@@ -260,9 +260,44 @@ L'anteprima social è `public/og-image.png` (1200 × 630), generata localmente.
 | Solchi di vinile sullo sfondo | `effects/AmbientGrooves.tsx` | sempre; con movimento ridotto disegna un solo fotogramma |
 | Anello che segue il puntatore | `effects/PointerRing.tsx` | solo puntatore preciso e movimento non ridotto |
 | Equalizzatore reattivo | `effects/Equalizer.tsx` | hero e sezione "Colonna sonora"; profilo statico con movimento ridotto |
+| Vinile 3D della hero | `effects/HeroScene.tsx` | solo desktop con WebGL; statico con movimento ridotto |
+| Onde sul disco e braccio che segue il puntatore | `effects/HeroScene.tsx` | al passaggio del puntatore sul vinile |
+| Ingresso delle testate di sezione | `effects/SectionIntro.tsx` | all'entrata nel viewport, una volta sola |
+| Barra di avanzamento nella navbar | `effects/ScrollProgress.tsx` | sempre; senza molla con movimento ridotto |
 | Spotlight e tilt sulle schede | `effects/SpotlightCard.tsx` | solo puntatore preciso |
 | Reveal delle sezioni | `effects/Reveal.tsx` | all'ingresso nel viewport, una volta sola |
 | Dischi che girano | `interests.css` | animazione CSS, accelerata al passaggio del mouse |
+
+#### La hero
+
+La scena è un **vinile 3D** (React Three Fiber): piatto che gira, solchi come
+`lineLoop`, etichetta emissiva, foro del perno, due orbite inclinate con
+satelliti, pulviscolo additivo e una luce che orbita per far scorrere il
+riflesso sul bordo.
+
+L'interazione avviene **sul disco**, non attorno:
+
+- il raycast di R3F dà il punto toccato sul vinile; lì compare un bagliore e
+  parte un'onda che si allarga (pool fisso di sette anelli riusati);
+- il **braccio** calcola l'angolo che porta la testina sul solco toccato e ci
+  arriva con un lerp — la formula è documentata in `armAngleFor`;
+- una "carezza" sul disco lo accelera un po', poi torna alla velocità di regime.
+
+Il braccio sta fuori dal gruppo che ruota: è il disco a girare, non il braccio.
+La polvere usa un generatore pseudo-casuale con seme fisso, così il calcolo
+resta puro e la scena è riproducibile.
+
+Su schermi ≤ 900 px e senza WebGL resta la composizione SVG di
+`effects/HeroFallback.tsx`, che disegna lo stesso vinile inclinato.
+
+#### Le sezioni allo scroll
+
+`effects/SectionIntro.tsx` è la testata condivisa di Progetti, Percorso,
+Competenze e Colonna sonora: l'eyebrow entra da sinistra, una linea si allarga
+sotto, e ogni parola del titolo sale da dietro una maschera (`overflow: hidden`,
+niente `visibility`, quindi il testo resta sempre leggibile dagli screen reader
+e dai motori di ricerca). Vale la stessa rete di sicurezza dei reveal: se
+l'osservatore non scatta, dopo 1,5 s il testo compare comunque.
 
 #### La sequenza d'apertura
 

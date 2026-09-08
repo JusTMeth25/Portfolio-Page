@@ -99,19 +99,20 @@
   white-space: nowrap;
 }
 
+/* Le etichette stanno a sinistra e in basso: il braccio occupa il lato destro. */
 .hero__label:nth-child(1) {
-  top: 12%;
-  left: 2%;
+  top: 10%;
+  left: 1%;
 }
 
 .hero__label:nth-child(2) {
-  top: 47%;
-  right: 0%;
+  top: 48%;
+  left: -1%;
 }
 
 .hero__label:nth-child(3) {
-  bottom: 12%;
-  left: 8%;
+  bottom: 11%;
+  right: 2%;
 }
 
 /* ---------- tablet ---------- */

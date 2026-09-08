@@ -1,0 +1,61 @@
+.section-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-md) var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.section-intro__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+/* Linea che si allarga sotto l'eyebrow. */
+.section-intro__rule {
+  display: block;
+  width: min(100%, 9rem);
+  height: 1px;
+  margin-bottom: var(--space-sm);
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform-origin: left center;
+}
+
+.section-intro .eyebrow {
+  margin-bottom: 0;
+}
+
+/* Ogni parola sale da dietro la propria maschera. */
+.section-intro__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Spazio per accenti e discendenti: la maschera non deve tagliare i glifi. */
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+}
+
+/*
+ * Spazio DOPO la parola, non prima: così una riga che va a capo resta
+ * allineata al margine invece di partire rientrata.
+ */
+.section-intro__mask {
+  margin-right: 0.28em;
+}
+
+.section-intro__mask:last-child {
+  margin-right: 0;
+}
+
+.section-intro__word {
+  display: inline-block;
+  will-change: transform;
+}
+
+.section-intro__aside {
+  max-width: 40ch;
+  color: var(--muted);
+}

@@ -66,7 +66,8 @@ export const profile = {
     primaryCta: { label: 'Esplora i progetti', href: '#progetti' },
     secondaryCta: { label: 'GitHub', href: 'https://github.com/JusTMeth25' },
     note: 'In formazione · EPICODE AI Full-Stack Developer',
-    sceneLabels: ['Frontend', 'API', 'Database'],
+    /** Etichette HTML sopra la scena: le "tracce" del disco. */
+    sceneLabels: ['A1 · Frontend', 'A2 · API', 'A3 · Database'],
   },
 
   about: {

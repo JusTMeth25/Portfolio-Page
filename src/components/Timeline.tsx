@@ -1,5 +1,6 @@
 import { profile } from '../data/profile'
 import { Reveal } from './effects/Reveal'
+import { SectionIntro } from './effects/SectionIntro'
 import './timeline.css'
 
 const { timeline } = profile
@@ -8,15 +9,12 @@ export function Timeline() {
   return (
     <section className="section" id="percorso" aria-labelledby="percorso-title">
       <div className="container">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">{timeline.eyebrow}</p>
-            <h2 className="section-title" id="percorso-title">
-              {timeline.title}
-            </h2>
-          </div>
-          <p className="timeline__intro">{timeline.intro}</p>
-        </div>
+        <SectionIntro
+          id="percorso-title"
+          eyebrow={timeline.eyebrow}
+          title={timeline.title}
+          aside={<p>{timeline.intro}</p>}
+        />
 
         <ol className="timeline">
           {timeline.entries.map((entry, index) => (

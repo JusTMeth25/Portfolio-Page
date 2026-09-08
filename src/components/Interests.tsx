@@ -1,6 +1,7 @@
 import { profile } from '../data/profile'
 import { Equalizer } from './effects/Equalizer'
 import { Reveal } from './effects/Reveal'
+import { SectionIntro } from './effects/SectionIntro'
 import './interests.css'
 
 const { interests } = profile
@@ -13,15 +14,12 @@ export function Interests() {
       aria-labelledby="colonna-sonora-title"
     >
       <div className="container">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">{interests.eyebrow}</p>
-            <h2 className="section-title" id="colonna-sonora-title">
-              {interests.title}
-            </h2>
-          </div>
-          <p className="timeline__intro">{interests.text}</p>
-        </div>
+        <SectionIntro
+          id="colonna-sonora-title"
+          eyebrow={interests.eyebrow}
+          title={interests.title}
+          aside={<p>{interests.text}</p>}
+        />
 
         <ul className="interests">
           {interests.items.map((item, index) => (
