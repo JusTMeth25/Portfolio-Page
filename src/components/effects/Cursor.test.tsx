@@ -1,11 +1,11 @@
 import { render, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import { PointerRing } from './PointerRing'
+import { Cursor } from './Cursor'
 
 const originalMatchMedia = window.matchMedia
 
-/** Puntatore preciso e movimento non ridotto: le condizioni in cui l'anello vive. */
+/** Puntatore preciso e movimento non ridotto: le condizioni in cui vive. */
 function useFinePointer() {
   window.matchMedia = ((query: string) => ({
     matches: query.includes('hover: hover'),
@@ -19,74 +19,97 @@ function useFinePointer() {
   })) as unknown as typeof window.matchMedia
 }
 
-function movePointer(x: number, y: number) {
-  window.dispatchEvent(
-    new MouseEvent('pointermove', { clientX: x, clientY: y, bubbles: true }),
-  )
+function useCoarsePointer() {
+  window.matchMedia = ((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  })) as unknown as typeof window.matchMedia
 }
 
-function ring() {
-  return document.querySelector<HTMLDivElement>('.pointer-ring')
+function movePointer(x: number, y: number, target?: Element) {
+  const event = new MouseEvent('pointermove', {
+    clientX: x,
+    clientY: y,
+    bubbles: true,
+  })
+  ;(target ?? window).dispatchEvent(event)
 }
+
+const cursor = () => document.querySelector<HTMLElement>('.cursor')
+const dot = () => document.querySelector<HTMLElement>('.cursor__dot')
+const ring = () => document.querySelector<HTMLElement>('.cursor__ring')
 
 beforeEach(useFinePointer)
 
 afterEach(() => {
   window.matchMedia = originalMatchMedia
+  document.documentElement.classList.remove('has-custom-cursor')
 })
 
-describe('PointerRing', () => {
-  it('continua a inseguire il puntatore anche dopo molti fotogrammi', async () => {
-    render(<PointerRing />)
-    expect(ring()).not.toBeNull()
+describe('Cursor', () => {
+  it('nasconde la freccia di sistema solo mentre è montato', () => {
+    const view = render(<Cursor />)
+    expect(document.documentElement).toHaveClass('has-custom-cursor')
 
-    movePointer(120, 140)
-    await waitFor(
-      () => expect(ring()?.style.transform).toMatch(/translate3d\(\d/),
-      { timeout: 2000 },
+    view.unmount()
+    expect(document.documentElement).not.toHaveClass('has-custom-cursor')
+  })
+
+  it('tiene il punto esattamente sul puntatore e l’anello indietro', async () => {
+    render(<Cursor />)
+    movePointer(400, 300)
+
+    await waitFor(() =>
+      expect(dot()?.style.transform).toContain('translate3d(400px, 300px, 0)'),
     )
-    const first = ring()?.style.transform
+    // L'anello insegue: non è ancora arrivato dove sta il punto.
+    expect(ring()?.style.transform).not.toBe(dot()?.style.transform)
+  })
 
-    // Secondo spostamento, lontano: la trasformazione deve cambiare ancora.
-    // Qui si rompeva: il ciclo che muove l'anello veniva spento e il pallino
-    // restava fermo sullo schermo.
-    movePointer(900, 620)
-    await waitFor(
-      () => expect(ring()?.style.transform).not.toBe(first),
-      { timeout: 2000 },
+  it('continua a seguire su movimenti successivi', async () => {
+    render(<Cursor />)
+
+    movePointer(200, 200)
+    await waitFor(() =>
+      expect(dot()?.style.transform).toContain('translate3d(200px, 200px, 0)'),
     )
 
-    const second = ring()?.style.transform
-    movePointer(200, 180)
-    await waitFor(
-      () => expect(ring()?.style.transform).not.toBe(second),
-      { timeout: 2000 },
+    movePointer(900, 640)
+    await waitFor(() =>
+      expect(dot()?.style.transform).toContain('translate3d(900px, 640px, 0)'),
     )
   })
 
-  it('si mostra al primo movimento e si nasconde quando il puntatore esce', async () => {
-    render(<PointerRing />)
+  it('mostra la manina sugli elementi cliccabili e non altrove', async () => {
+    const link = document.createElement('a')
+    link.href = '#progetti'
+    document.body.append(link)
+    const plain = document.createElement('p')
+    document.body.append(plain)
 
-    movePointer(300, 300)
-    await waitFor(() => expect(ring()).toHaveAttribute('data-visible', 'true'))
+    render(<Cursor />)
 
-    document.dispatchEvent(new MouseEvent('pointerleave', { bubbles: false }))
-    await waitFor(() => expect(ring()).toHaveAttribute('data-visible', 'false'))
+    movePointer(10, 10, link)
+    await waitFor(() => expect(cursor()).toHaveAttribute('data-active', 'true'))
+
+    movePointer(20, 20, plain)
+    await waitFor(() => expect(cursor()).toHaveAttribute('data-active', 'false'))
+
+    link.remove()
+    plain.remove()
   })
 
-  it('non viene montato senza puntatore preciso', () => {
-    window.matchMedia = ((query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      addListener: () => {},
-      removeListener: () => {},
-      dispatchEvent: () => false,
-    })) as unknown as typeof window.matchMedia
+  it('senza puntatore preciso resta il cursore di sistema', () => {
+    useCoarsePointer()
+    render(<Cursor />)
 
-    render(<PointerRing />)
-    expect(ring()).toBeNull()
+    expect(cursor()).toBeNull()
+    expect(document.documentElement).not.toHaveClass('has-custom-cursor')
   })
 })

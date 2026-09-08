@@ -46,7 +46,7 @@ Un solo package manager: **npm**, con `package-lock.json` versionato.
 src/
   components/            Navbar, Hero, ProjectCard, ProjectDetails, Timeline, ...
   components/effects/    Intro + introScene (canvas 2D), AmbientGrooves,
-                         PointerRing, Equalizer, HeroScene (WebGL),
+                         Cursor, Equalizer, HeroScene (WebGL),
                          HeroFallback (SVG), Reveal, SpotlightCard
   data/profile.ts        tipi dei contenuti e registro delle lingue
   data/locales/          it.ts e en.ts: gli stessi testi in due lingue
@@ -296,7 +296,7 @@ L'anteprima social è `public/og-image.png` (1200 × 630), generata localmente.
 |---|---|---|
 | Sequenza d'apertura (canvas 2D) | `effects/Intro.tsx` + `effects/introScene.ts` | a ogni caricamento, mai con movimento ridotto |
 | Solchi di vinile sullo sfondo | `effects/AmbientGrooves.tsx` | sempre; con movimento ridotto disegna un solo fotogramma |
-| Anello che segue il puntatore | `effects/PointerRing.tsx` | solo puntatore preciso e movimento non ridotto |
+| Cursore del sito | `effects/Cursor.tsx` | solo puntatore preciso e movimento non ridotto |
 | Equalizzatore reattivo | `effects/Equalizer.tsx` | hero e sezione "Colonna sonora"; profilo statico con movimento ridotto |
 | Vinile 3D della hero | `effects/HeroScene.tsx` | solo desktop con WebGL; statico con movimento ridotto |
 | Onde sul disco e braccio che segue il puntatore | `effects/HeroScene.tsx` | al passaggio del puntatore sul vinile |
@@ -418,6 +418,31 @@ Cosa è servito, in ordine di guadagno:
   mostrarlo mentre il ciclo che lo muoveva era già spento. Ora l'anello non
   partecipa alla degradazione — costa una `transform` per fotogramma.
 
+#### Il cursore
+
+`effects/Cursor.tsx` sostituisce la freccia di sistema, invece di affiancarla.
+Tre pezzi con tracciamenti diversi:
+
+- il **punto** sta esattamente sul puntatore, così mirare resta preciso;
+- l'**anello** insegue con un ritardo morbido ed è la parte che dà carattere;
+- la **manina** ciano — indice teso, stile "seleziona collegamento" — prende il
+  posto degli altri due sugli elementi cliccabili, con il punto sensibile sulla
+  punta del dito.
+
+La manina è disegnata due volte sullo stesso profilo: prima un alone chiaro,
+poi il riempimento ciano con contorno scuro. Serve perché sui pulsanti ciano
+una mano ciano sparirebbe. Anello e punto hanno un contorno scuro per lo stesso
+motivo, sopra il titolo della hero.
+
+La freccia di sistema viene nascosta con `html.has-custom-cursor`, classe che
+il componente aggiunge **solo quando è montato davvero**: su touch, senza
+puntatore preciso o con `prefers-reduced-motion` non si monta e resta il cursore
+del sistema operativo. Se lo script non parte, la classe non compare e la pagina
+resta usabile.
+
+Conseguenza voluta: sparisce anche il cursore a I per la selezione del testo.
+Selezionare si può ancora, semplicemente senza cambio di puntatore.
+
 #### Posizione dello scroll al ricaricamento
 
 Il browser di suo rimette lo scroll dov'era (`history.scrollRestoration` vale
@@ -490,14 +515,16 @@ Ambiente: Windows 11, Node.js 24.16, npm 11.13, Chrome 152 headless
 |---|---|
 | `npm run typecheck` (TypeScript strict) | nessun errore |
 | `npm run lint` | nessun errore, nessun warning |
-| `npm test` | 29 test, 9 file, tutti verdi |
+| `npm test` | 31 test, 9 file, tutti verdi |
 | `npm run build` | build riuscita |
 | Resa visiva a 1440 / 1024 / 768 / 390 px | verificata via screenshot CDP |
 | Overflow orizzontale fino a 320 px | assente |
 | Menu mobile: apertura, `Escape`, chiusura dopo la selezione | ok (anche via test) |
 | Pannello "Dettagli": apertura/chiusura, `aria-expanded` | ok (anche via test) |
 | Dettagli aperti su una scheda | le altre restano chiuse e alla propria altezza (la griglia usa `align-items: start`, non `stretch`) |
-| Anello del puntatore dopo uno scroll lungo | continua a seguire il mouse anche con CPU strozzata 6× (condizione in cui la modalità risparmio scatta di sicuro) |
+| Cursore dopo uno scroll lungo | continua a seguire il mouse anche con CPU strozzata 6× (condizione in cui la modalità risparmio scatta di sicuro) |
+| Cursore: freccia di sistema | `cursor: none` su body e pulsanti, `html.has-custom-cursor` presente solo con puntatore preciso |
+| Cursore: manina | compare sui cliccabili e sparisce altrove, leggibile sia su fondo scuro sia sui pulsanti ciano (verificato con screenshot ravvicinati) |
 | Ciclo condiviso con un effetto che solleva eccezioni a ogni fotogramma | la pagina resta viva, l'anello continua a seguire |
 | Ciclo condiviso dopo un `blur` senza `focus` di ritorno | resta vivo |
 | Refresh a metà pagina | si riparte da `scrollY: 0`, con `scrollRestoration: manual` |

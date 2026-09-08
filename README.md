@@ -129,7 +129,7 @@ Sito statico a pagina unica, senza backend, database, login o chiavi API.
   la puntina appoggia sul solco, poi si attraversa il foro del perno
 - **Motion for React** per i reveal delle sezioni e la grafica dell'intro
 - Animazioni continue e reattive al puntatore: solchi di vinile sullo sfondo,
-  equalizzatore che si alza dove passa il cursore, anello che segue il mouse
+  equalizzatore che si alza dove passa il cursore, cursore personalizzato al posto della freccia di sistema
 - Sezioni che entrano scorrendo: titoli che salgono da dietro una maschera,
   schede che si alzano in prospettiva, la linea della timeline che si disegna
   seguendo lo scroll e la hero che esce di scena in parallasse

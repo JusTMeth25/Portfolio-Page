@@ -6,7 +6,7 @@ import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { AmbientGrooves } from './components/effects/AmbientGrooves'
 import { Intro } from './components/effects/Intro'
-import { PointerRing } from './components/effects/PointerRing'
+import { Cursor } from './components/effects/Cursor'
 import { Footer } from './components/Footer'
 import { Hero } from './components/Hero'
 import { Interests } from './components/Interests'
@@ -27,7 +27,7 @@ function Site() {
         {profile.ui.skipToContent}
       </a>
       <AmbientGrooves active={introDone} />
-      <PointerRing />
+      <Cursor />
       <Intro onFinish={() => setIntroDone(true)} />
       <Navbar />
       <main id="main">
