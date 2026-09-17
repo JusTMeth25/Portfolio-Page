@@ -24,7 +24,7 @@ Cerco un ruolo **full stack, frontend o backend**.
 ## Progetti in primo piano
 
 Tre progetti del percorso EPICODE. Le immagini nel sito sono **screenshot reali**
-delle app, catturati in locale.
+delle app.
 
 ### 1. Spotify Clone — settimana 11
 
@@ -44,17 +44,22 @@ Ricerca musicale, preferiti e playlist con stato gestito in Redux.
 Progetto didattico: non è un prodotto Spotify e non ha alcuna affiliazione con
 Spotify.
 
-### 2. Vinylshelf — settimana 3
+### 2. Nova — esercizio U5W6D3
 
-Collezione di vinili con ricerca, filtri e gestione degli acquisti.
+Clone di ChatGPT: chat salvate, streaming e conteggio dei token.
 
-- **Stack:** JavaScript, HTML5, CSS3, localStorage — nessun framework
-- Costruito sul pattern *stato → render() → eventi*
-- Inserimento di titolo, artista e anno, con stato "posseduto" o "da acquistare"
-- Ricerca live, filtro per stato, ordinamento per anno o titolo, contatori e
-  barra di completamento
-- Tema chiaro/scuro e persistenza in `localStorage`
-- 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-3)
+- **Stack:** React 19, TypeScript, Vite, Spring Boot, PostgreSQL, OpenRouter
+  (modello NVIDIA Nemotron)
+- Più conversazioni salvate nel database: crea, rinomina, cerca ed elimina, con
+  titolo generato dal primo messaggio
+- Risposte in streaming con Server-Sent Events, pulsanti Stop e Rigenera,
+  Markdown con evidenziazione del codice
+- Contesto inviato a ogni richiesta con gli ultimi 20 messaggi e personalità
+  dell'agente definita in un file di istruzioni
+- Token registrati per ogni chiamata; nuovi tentativi e modelli di riserva se il
+  modello gratuito è sovraccarico
+- La chiave API resta sul server: il browser non la riceve mai
+- 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---U5W6D3)
 
 ### 3. EpiWeather — settimana 10
 

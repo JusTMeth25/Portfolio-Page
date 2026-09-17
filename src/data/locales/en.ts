@@ -186,7 +186,7 @@ export const en = {
           'Bootstrap',
           'Sass',
         ],
-        relatedProjectIds: ['spotify-clone', 'vinilshelf', 'epiweather'],
+        relatedProjectIds: ['spotify-clone', 'nova', 'epiweather'],
       },
       {
         id: 'backend',
@@ -201,6 +201,7 @@ export const en = {
           'SQL',
           'PostgreSQL',
         ],
+        relatedProjectIds: ['nova'],
       },
       {
         id: 'tools',

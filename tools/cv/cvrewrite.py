@@ -70,12 +70,11 @@ PROJECTS = [
                 'and user-created playlists in a mobile-first Bootstrap layout.',
     },
     {
-        'title': 'Vinilshelf - Vinyl Collection Manager (EPICODE Week 3 project)',
-        'tags': 'JavaScript | HTML5 | CSS3 | localStorage',
-        'url': 'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-3',
-        'body': 'Framework-free JavaScript app built on a state-render-events '
-                'pattern: add records, live search, status filters, sorting, '
-                'counters and localStorage persistence.',
+        'title': 'Nova - ChatGPT Clone (EPICODE exercise U5W6D3)',
+        'tags': 'React | TypeScript | Spring Boot | PostgreSQL | OpenRouter',
+        'url': 'https://github.com/JusTMeth25/FS0226IT---U5W6D3',
+        'body': 'Full-stack AI chat app: conversations saved in PostgreSQL, '
+                'answers streamed over SSE from Spring Boot, token usage tracking.',
         'max_lines': 1,
     },
     {
@@ -368,6 +367,11 @@ for spec, project in zip(LAYOUT, PROJECTS):
     for index in spec['sep1'][1:] + spec['sep2'][1:]:
         replacements[index] = make_block(tags_key, tags_size, 0, baseline, '')
 
+    # Titolo, tag e "Repository" stanno su una riga sola: se non entrano nella
+    # colonna meglio fermarsi che produrre un link fuori dal margine.
+    line_end = x_repo + width_of(REPO_LABEL, repo_key, repo_size)
+    assert line_end <= BODY_LIMIT, (project['title'], round(line_end), round(BODY_LIMIT))
+
     old_repo_x = block_tm(spec['repo'])[0]
     replacements[spec['repo']] = make_block(
         repo_key, repo_size, x_repo, baseline, REPO_LABEL)
@@ -400,22 +404,25 @@ for old_x, new_x in repo_moves:
 
 # I "buchi" nella sottolineatura (discendenti di p e y) sono disegnati in
 # coordinate pagina: si spostano insieme al testo, riscalati.
+# Ogni fascia y appartiene a una sola riga progetto: le fasce x delle righe si
+# sovrappongono, quindi la riga va decisa dalla y e non dalla x.
+DESCENDER_BANDS = [(4150, 4180), (4590, 4620), (5020, 5060)]
 lines = new_data.split(b'\n')
 for i, line in enumerate(lines):
     match = re.fullmatch(rb'([-\d.]+) ([-\d.]+) (m|l)', line)
     if not match:
         continue
     y = float(match.group(2))
-    if not (4150 < y < 4180 or 4590 < y < 4620 or 5020 < y < 5060):
+    row = next((r for r, (low, high) in enumerate(DESCENDER_BANDS) if low < y < high), None)
+    if row is None:
         continue
     x = float(match.group(1))
-    for old_x, new_x in repo_moves:
-        base = 212.22752 + old_x * SCALE
-        if base - 40 <= x <= base + 40 + 140.5625 * SCALE:
-            lines[i] = ('%s %s %s' % (fmt(x + (new_x - old_x) * SCALE),
-                                      match.group(2).decode(),
-                                      match.group(3).decode())).encode()
-            break
+    old_x, new_x = repo_moves[row]
+    base = 212.22752 + old_x * SCALE
+    if base - 40 <= x <= base + 40 + 140.5625 * SCALE:
+        lines[i] = ('%s %s %s' % (fmt(x + (new_x - old_x) * SCALE),
+                                  match.group(2).decode(),
+                                  match.group(3).decode())).encode()
 new_data = b'\n'.join(lines)
 
 # ---- 6. scrittura del PDF ---------------------------------------------------

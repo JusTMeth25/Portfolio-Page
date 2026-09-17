@@ -128,10 +128,10 @@ IT = {
         'text': 'Web app musicale in stile Spotify con React e Redux Toolkit: ricerca brani con debounce sull’API Deezer, player audio con shuffle, loop, seek e '
                 'controllo del volume, brani preferiti e playlist create dall’utente in un layout mobile-first con Bootstrap.',
     }},
-    56: {'map': {56: 'Vinylshelf - Gestione di una collezione di vinili (progetto EPICODE settimana 3)'}},
+    56: {'map': {56: 'Nova - Clone di ChatGPT (esercizio EPICODE U5W6D3)'}},
     65: {'flow': {
         'labels': [],
-        'text': 'App JavaScript senza framework, costruita sul pattern stato-render-eventi: inserimento dischi, ricerca live, filtri di stato, ordinamenti, contatori e persistenza in localStorage.',
+        'text': 'App di chat AI full stack: conversazioni salvate in PostgreSQL, risposte in streaming SSE da Spring Boot, conteggio dei token.',
     }},
     66: {'map': {66: 'EpiWeather - Dashboard meteo (progetto EPICODE settimana 10)'}},
     75: {'flow': {
@@ -181,7 +181,6 @@ IT = {
 # Il CV inglese resta in inglese: qui solo le correzioni puntuali.
 EN = {
     38: {'map': {38: 'May 2026 - In progress'}},
-    56: {'map': {56: 'Vinylshelf - Vinyl Collection Manager (EPICODE Week 3 project)'}},
 }
 
 # Il testo dell'intestazione è uguale nelle due lingue.

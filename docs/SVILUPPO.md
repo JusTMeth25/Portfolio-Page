@@ -211,7 +211,7 @@ cv: {
   cambiare il layout.
 
 Il PDF inglese deriva dall'export Canva, con la sezione
-*Selected Development Projects* riscritta sui tre progetti del portfolio (Spotify Clone, Vinylshelf, EpiWeather) e i link "Repository"
+*Selected Development Projects* riscritta sui tre progetti del portfolio (Spotify Clone, Nova, EpiWeather) e i link "Repository"
 aggiornati ai repository corrispondenti. Nell'operazione i font incorporati sono
 stati ricostruiti: rispetto all'originale il testo del PDF è ora estraibile
 correttamente anche dai parser automatici (nell'export Canva la mappa

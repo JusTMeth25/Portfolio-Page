@@ -54,8 +54,8 @@ del componente, la versione e la licenza MIT + Commons Clause.
   a scopo didattico: il progetto **non** è affiliato a Spotify e i marchi
   eventualmente visibili appartengono ai rispettivi proprietari. Le copertine
   degli album provengono dall'API Deezer (proxy pubblico di Strive School).
-- `public/images/projects/vinilshelf.jpg` — screenshot reale di
-  `FS0226IT---PROGETTO-SETTIMANA-3`, acquisito aprendo `index.html` in locale.
+- `public/images/projects/nova.jpg` — screenshot reale di `FS0226IT---U5W6D3`
+  (`docs/screenshots/home.png` di quel repository), ridimensionato a 1200×750.
 - `public/images/projects/epiweather.jpg` — screenshot reale della **home** di
   `FS0226IT---PROGETTO-SETTIMANA-10`, acquisito in locale. La dashboard meteo
   non è stata catturata perché richiede chiavi API personali.

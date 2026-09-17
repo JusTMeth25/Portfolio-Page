@@ -13,12 +13,20 @@ Se hai un CV nuovo, di solito basta sostituire
 ```bash
 pip install pypdf fonttools
 
-# 1. sezione progetti riscritta sul CV inglese (parte dall'export Canva)
-python tools/cv/cvrewrite.py <export-canva.pdf> public/cv/lorenzo-melis-cv-en.pdf
+# L'export Canva è nella storia git, nel primo commit del repository
+git show ca7398d:Lorenzo_Melis_CV_Canva_Editable.pptx.pdf > canva.pdf
 
-# 2. versione italiana, generata dal PDF inglese
-python tools/cv/cvtranslate.py public/cv/lorenzo-melis-cv-en.pdf public/cv/lorenzo-melis-cv-it.pdf
+# 1. sezione progetti riscritta sul CV inglese: file intermedio
+python tools/cv/cvrewrite.py canva.pdf cv-progetti.pdf
+
+# 2. entrambe le lingue partono dallo STESSO file intermedio
+python tools/cv/cvtranslate.py cv-progetti.pdf public/cv/lorenzo-melis-cv-en.pdf en
+python tools/cv/cvtranslate.py cv-progetti.pdf public/cv/lorenzo-melis-cv-it.pdf it
 ```
+
+`cvtranslate.py` **non va mai rilanciato su un PDF già prodotto da lui**: non è
+idempotente e una seconda passata sposta di nuovo le sottolineature dei link
+(per esempio quella di "Altri progetti" finiva oltre il testo).
 
 I testi dei tre progetti stanno nella costante `PROJECTS` in `cvrewrite.py`;
 le traduzioni italiane, riga per riga, in `TRANSLATIONS` dentro `cvtranslate.py`.

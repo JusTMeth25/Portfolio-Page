@@ -56,12 +56,11 @@ const PROJECT_BASE: ProjectBase[] = [
     order: 1,
   },
   {
-    id: 'vinilshelf',
-    title: 'Vinylshelf',
-    tags: ['JavaScript', 'HTML', 'CSS'],
-    repositoryUrl:
-      'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-3',
-    image: 'images/projects/vinilshelf.jpg',
+    id: 'nova',
+    title: 'Nova',
+    tags: ['React', 'Spring Boot', 'PostgreSQL'],
+    repositoryUrl: 'https://github.com/JusTMeth25/FS0226IT---U5W6D3',
+    image: 'images/projects/nova.jpg',
     imageKind: 'screenshot',
     imageWidth: 1200,
     imageHeight: 750,
@@ -107,23 +106,24 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
         ],
       },
     },
-    vinilshelf: {
-      label: 'EPICODE · SETTIMANA 3',
+    nova: {
+      label: 'EPICODE · U5W6D3',
       description:
-        'Collezione di vinili con ricerca, filtri e gestione degli acquisti.',
+        'Clone di ChatGPT: chat salvate, streaming e conteggio dei token.',
       imageAlt:
-        'Screenshot di Vinylshelf: form di inserimento vinili, filtri, contatori e lista della collezione.',
+        'Screenshot di Nova: barra laterale con le chat salvate, saluto dell’agente e campo per scrivere il messaggio.',
       details: {
         overview:
-          'Applicazione in JavaScript senza framework, costruita sul pattern stato → render() → eventi. Gestisce una collezione di vinili posseduti o da acquistare, interamente lato client.',
+          'Applicazione full stack per conversare con un agente AI. Frontend in React e TypeScript, backend in Spring Boot con PostgreSQL; il modello è un NVIDIA Nemotron gratuito raggiunto tramite OpenRouter, chiamato solo dal backend.',
         features: [
-          'Inserimento di titolo, artista e anno con stato “posseduto” o “da acquistare”.',
-          'Ricerca live per titolo o artista, filtro per stato e ordinamento per anno o titolo.',
-          'Contatori totali/posseduti/da acquistare e barra di completamento della collezione.',
-          'Tema chiaro/scuro e persistenza dei dati in localStorage.',
+          'Più conversazioni salvate nel database: crea, rinomina, cerca ed elimina, con titolo generato dal primo messaggio.',
+          'Risposte in streaming con Server-Sent Events, pulsante Stop e Rigenera, rendering Markdown con evidenziazione del codice.',
+          'Contesto inviato a ogni richiesta con gli ultimi 20 messaggi (configurabile) e personalità dell’agente in un file di istruzioni.',
+          'Token consumati registrati per ogni chiamata; nuovi tentativi e modelli di riserva quando il modello gratuito è sovraccarico.',
         ],
         notes: [
-          'Nessun framework e nessun database: solo HTML, CSS e JavaScript con localStorage.',
+          'La chiave OpenRouter resta sul server, in una variabile d’ambiente: il browser non la riceve mai.',
+          'Per avviarlo servono Java 25, PostgreSQL e una chiave OpenRouter personale.',
         ],
       },
     },
@@ -173,22 +173,24 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
         ],
       },
     },
-    vinilshelf: {
-      label: 'EPICODE · WEEK 3',
-      description: 'A vinyl collection with search, filters and buying status.',
+    nova: {
+      label: 'EPICODE · U5W6D3',
+      description:
+        'A ChatGPT clone: saved chats, streaming and token counting.',
       imageAlt:
-        'Screenshot of Vinylshelf: the add-record form, filters, counters and the collection list.',
+        'Screenshot of Nova: sidebar with saved chats, the agent’s greeting and the message input.',
       details: {
         overview:
-          'A framework-free JavaScript app built on the state → render() → events pattern. It tracks a collection of records already owned or still to buy, entirely on the client.',
+          'A full-stack app for chatting with an AI agent. React and TypeScript on the frontend, Spring Boot with PostgreSQL on the backend; the model is a free NVIDIA Nemotron reached through OpenRouter, called only from the backend.',
         features: [
-          'Add title, artist and year with an “owned” or “to buy” status.',
-          'Live search by title or artist, filter by status and sorting by year or title.',
-          'Total / owned / to-buy counters and a collection completion bar.',
-          'Light and dark theme, with data persisted in localStorage.',
+          'Multiple conversations stored in the database: create, rename, search and delete, with a title generated from the first message.',
+          'Streamed answers over Server-Sent Events, Stop and Regenerate buttons, Markdown rendering with code highlighting.',
+          'Context sent with every request using the last 20 messages (configurable), and the agent’s personality defined in an instructions file.',
+          'Token usage recorded for every call; automatic retries and fallback models when the free model is overloaded.',
         ],
         notes: [
-          'No framework and no database: just HTML, CSS and JavaScript with localStorage.',
+          'The OpenRouter key stays on the server in an environment variable: the browser never receives it.',
+          'Running it requires Java 25, PostgreSQL and a personal OpenRouter key.',
         ],
       },
     },
