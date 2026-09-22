@@ -26,23 +26,23 @@ Cerco un ruolo **full stack, frontend o backend**.
 Tre progetti del percorso EPICODE. Le immagini nel sito sono **screenshot reali**
 delle app.
 
-### 1. Spotify Clone — settimana 11
+### 1. Solco — esercizio U5W7D2
 
-Ricerca musicale, preferiti e playlist con stato gestito in Redux.
+Vetrina di vinili con tre livelli di accesso e giradischi 3D.
 
-- **Stack:** React 19, Redux Toolkit, React-Bootstrap, Vite
-- Ricerca brani con debounce di 400 ms sull'API Deezer, con stato e risultati in
-  Redux
-- Player audio: play/pausa, brano precedente e successivo, shuffle, loop, barra
-  di avanzamento con seek, controllo del volume
-- Preferiti e playlist multiple create dall'utente, con vista dedicata
-- Layout mobile-first: sidebar su desktop, barra di navigazione inferiore su
-  mobile
-- Lo stato vive in memoria: il progetto non usa persistenza
-- 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-11)
-
-Progetto didattico: non è un prodotto Spotify e non ha alcuna affiliazione con
-Spotify.
+- **Stack:** React 19, TypeScript, Three.js, Spring Boot, Spring Security, JWT,
+  PostgreSQL
+- Tre livelli di accesso (ospite, utente, amministratore): stessi indirizzi,
+  risposte diverse decise dal server
+- Sicurezza su tre livelli: catena dei filtri (401), `@PreAuthorize` sulle
+  operazioni da amministratore (403), query ristrette al proprietario (404)
+- Bozze e campi riservati non escono dal server se chi li chiede non è
+  amministratore
+- Giradischi 3D con 33⅓ e 45 giri, anteprime di 30 secondi da iTunes e scratch
+  a velocità variabile tramite `AudioWorklet`
+- 🌐 [Demo online](https://justmeth25.github.io/FS0226IT---U5W7D2/) (backend
+  gratuito su Render: la prima apertura può richiedere fino a un minuto)
+- 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---U5W7D2)
 
 ### 2. Nova — esercizio U5W6D3
 

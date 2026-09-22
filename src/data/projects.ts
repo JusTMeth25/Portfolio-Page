@@ -43,12 +43,13 @@ export type Project = ProjectBase & ProjectCopy
 
 const PROJECT_BASE: ProjectBase[] = [
   {
-    id: 'spotify-clone',
-    title: 'Spotify Clone',
-    tags: ['React', 'Redux Toolkit', 'Vite'],
-    repositoryUrl:
-      'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-11',
-    image: 'images/projects/spotify-clone.jpg',
+    id: 'solco',
+    title: 'Solco',
+    tags: ['React', 'Three.js', 'Spring Security'],
+    repositoryUrl: 'https://github.com/JusTMeth25/FS0226IT---U5W7D2',
+    // Verificata il 2026-09-22: frontend su GitHub Pages, API su Render.
+    demoUrl: 'https://justmeth25.github.io/FS0226IT---U5W7D2/',
+    image: 'images/projects/solco.jpg',
     imageKind: 'screenshot',
     imageWidth: 1200,
     imageHeight: 750,
@@ -84,25 +85,24 @@ const PROJECT_BASE: ProjectBase[] = [
 
 const COPY: Record<Language, Record<string, ProjectCopy>> = {
   it: {
-    'spotify-clone': {
-      label: 'EPICODE · SETTIMANA 11',
+    solco: {
+      label: 'EPICODE · U5W7D2',
       description:
-        'Ricerca musicale, preferiti e playlist con stato gestito in Redux.',
+        'Vetrina di vinili con tre livelli di accesso e giradischi 3D.',
       imageAlt:
-        'Screenshot dell’app: interfaccia musicale scura con navigazione laterale, caroselli di copertine e barra del player.',
+        'Screenshot di Solco: titolo “Ogni disco ha un solco da raccontare” e, a destra, un disco 3D che esce dalla sua copertina.',
       details: {
         overview:
-          'Clone dell’interfaccia web di Spotify realizzato durante la settimana 11 del percorso EPICODE. L’app consuma l’API Deezer tramite il proxy pubblico di Strive School e organizza tutto lo stato applicativo in cinque slice di Redux Toolkit.',
+          'Sito vetrina full stack per un negozio di dischi, con tre livelli di accesso: ospite, utente registrato e amministratore. Stessi indirizzi, risposte diverse: è il backend Spring Boot a decidere cosa vede ognuno, il frontend React mostra solo quello che riceve.',
         features: [
-          'Ricerca brani con debounce di 400 ms, stato e risultati in Redux.',
-          'Player con play/pausa, brano precedente e successivo, shuffle, loop, barra di avanzamento con seek e controllo del volume.',
-          'Preferiti e playlist multiple create dall’utente, con vista dedicata per ognuna.',
-          'Layout mobile-first con sidebar su desktop e barra di navigazione inferiore su mobile.',
+          'Sicurezza su tre livelli con Spring Security e JWT: catena dei filtri (401), @PreAuthorize sulle operazioni da amministratore (403) e query ristrette al proprietario per i preferiti (404).',
+          'Bozze e campi riservati, come prezzo d’acquisto e fornitore, non escono dal server se chi li chiede non è amministratore.',
+          'Giradischi 3D in Three.js con braccio animato, 33⅓ e 45 giri e anteprime di 30 secondi da iTunes, con scratch a velocità variabile tramite AudioWorklet.',
+          'Area riservata per l’amministratore: pubblicare o riportare in bozza, creare, modificare ed eliminare i dischi.',
         ],
         notes: [
-          'Progetto didattico: non è un prodotto Spotify e non ha alcuna affiliazione con Spotify.',
-          'Le anteprime audio sono quelle da ~30 secondi fornite da Deezer; i dati dipendono dal proxy Strive School.',
-          'Lo stato è solo in memoria: il README del repository dichiara l’assenza di persistenza, quindi preferiti e playlist si azzerano al refresh.',
+          'La demo online usa un database H2 in memoria su Render: a ogni riavvio i dati tornano quelli iniziali.',
+          'Il backend gratuito si sospende dopo circa 15 minuti senza visite: la prima apertura può richiedere fino a un minuto.',
         ],
       },
     },
@@ -152,24 +152,23 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
   },
 
   en: {
-    'spotify-clone': {
-      label: 'EPICODE · WEEK 11',
-      description: 'Music search, likes and playlists with state kept in Redux.',
+    solco: {
+      label: 'EPICODE · U5W7D2',
+      description: 'Vinyl showcase with three access levels and a 3D turntable.',
       imageAlt:
-        'Screenshot of the app: dark music interface with a sidebar, cover art carousels and a player bar.',
+        'Screenshot of Solco: the Italian headline “Ogni disco ha un solco da raccontare” and, on the right, a 3D record sliding out of its sleeve.',
       details: {
         overview:
-          'A clone of the Spotify web interface built during week 11 of the EPICODE programme. The app consumes the Deezer API through the public Strive School proxy and keeps all application state in five Redux Toolkit slices.',
+          'A full-stack showcase site for a record shop with three access levels: guest, registered user and administrator. Same URLs, different answers: the Spring Boot backend decides what each visitor sees, and the React frontend only shows what it receives.',
         features: [
-          'Track search with a 400 ms debounce, state and results in Redux.',
-          'Player with play/pause, previous and next track, shuffle, loop, a seekable progress bar and volume control.',
-          'Liked tracks and multiple user-created playlists, each with its own view.',
-          'Mobile-first layout: sidebar on desktop, bottom navigation bar on mobile.',
+          'Three layers of security with Spring Security and JWT: the filter chain (401), @PreAuthorize on admin operations (403) and owner-scoped queries for favourites (404).',
+          'Drafts and restricted fields, such as purchase price and supplier, never leave the server unless the caller is an administrator.',
+          'A 3D turntable in Three.js with an animated tonearm, 33⅓ and 45 rpm and 30-second iTunes previews, with variable-speed scratching through an AudioWorklet.',
+          'An admin area to publish or unpublish, create, edit and delete records.',
         ],
         notes: [
-          'Student project: it is not a Spotify product and has no affiliation with Spotify.',
-          'Audio previews are the ~30 second clips provided by Deezer; the data depends on the Strive School proxy.',
-          'State lives in memory only: the repository README states there is no persistence, so likes and playlists reset on refresh.',
+          'The live demo runs on an in-memory H2 database on Render: every restart resets the data.',
+          'The free backend sleeps after about 15 minutes without visits: the first load can take up to a minute.',
         ],
       },
     },

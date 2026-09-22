@@ -48,12 +48,11 @@ del componente, la versione e la licenza MIT + Commons Clause.
 
 ## Immagini e contenuti
 
-- `public/images/projects/spotify-clone.jpg` — screenshot reale dell'app
-  `FS0226IT---PROGETTO-SETTIMANA-11`, acquisito in locale il 2026-09-08 con la
-  build di sviluppo del repository. L'interfaccia riproduce il layout di Spotify
-  a scopo didattico: il progetto **non** è affiliato a Spotify e i marchi
-  eventualmente visibili appartengono ai rispettivi proprietari. Le copertine
-  degli album provengono dall'API Deezer (proxy pubblico di Strive School).
+- `public/images/projects/solco.jpg` — screenshot reale della demo pubblicata di
+  `FS0226IT---U5W7D2` (https://justmeth25.github.io/FS0226IT---U5W7D2/),
+  acquisito il 2026-09-22 e ridimensionato a 1200×750. La copertina visibile
+  (*All Eyez on Me*, 2Pac) proviene da Wikimedia ed è dei rispettivi
+  proprietari.
 - `public/images/projects/nova.jpg` — screenshot reale di `FS0226IT---U5W6D3`
   (`docs/screenshots/home.png` di quel repository), ridimensionato a 1200×750.
 - `public/images/projects/epiweather.jpg` — screenshot reale della **home** di

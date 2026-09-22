@@ -59,15 +59,20 @@ SEPARATOR = '  |  '
 LINE_HEIGHT = 32.0          # distanza fra le due righe di corpo (unità testo)
 SCALE = 3.1249452           # scala del gruppo di testo nel form XObject
 
+# `lines`: righe ESATTE del corpo. Ogni riga è un blocco BT/ET in più o in
+# meno nel PDF prodotto, e gli indici dei blocchi usati da `cvtranslate.py`
+# (44, 53, 56, 65, 66, 75...) valgono solo con 2 + 1 + 1 righe.
 PROJECTS = [
     {
-        'title': 'Spotify Clone (EPICODE Week 11 project)',
-        'tags': 'React | Redux Toolkit | Vite | Deezer API',
-        'url': 'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-11',
-        'body': 'Built a Spotify-style music web app with React and Redux Toolkit: '
-                'track search with debounced queries against the Deezer API, an audio '
-                'player with shuffle, loop, seek and volume control, plus liked tracks '
-                'and user-created playlists in a mobile-first Bootstrap layout.',
+        'title': 'Solco - Vinyl Showcase (EPICODE exercise U5W7D2)',
+        'tags': 'React | Three.js | Spring Boot | Spring Security | JWT',
+        'url': 'https://github.com/JusTMeth25/FS0226IT---U5W7D2',
+        'body': 'Record shop showcase with three access levels (guest, user, admin) '
+                'enforced by Spring Security and JWT at filter, method and query level: '
+                'the server decides what each role sees. React front end with a Three.js '
+                '3D turntable, 30-second iTunes previews and scratching, deployed on '
+                'GitHub Pages with the API on Render.',
+        'lines': 2,
     },
     {
         'title': 'Nova - ChatGPT Clone (EPICODE exercise U5W6D3)',
@@ -75,7 +80,7 @@ PROJECTS = [
         'url': 'https://github.com/JusTMeth25/FS0226IT---U5W6D3',
         'body': 'Full-stack AI chat app: conversations saved in PostgreSQL, '
                 'answers streamed over SSE from Spring Boot, token usage tracking.',
-        'max_lines': 1,
+        'lines': 1,
     },
     {
         'title': 'EpiWeather - Weather Dashboard (EPICODE Week 10 project)',
@@ -84,7 +89,7 @@ PROJECTS = [
         'body': 'Weather app using the OpenWeather Geocoding API to disambiguate '
                 'cities, with routed detail pages for current weather, forecasts '
                 'and Vitest component tests.',
-        'max_lines': 1,
+        'lines': 1,
     },
 ]
 
@@ -378,7 +383,7 @@ for spec, project in zip(LAYOUT, PROJECTS):
     repo_moves.append((old_repo_x, x_repo))
 
     lines = wrap(project['body'], body_key, body_size, BODY_LIMIT)
-    assert len(lines) <= project.get('max_lines', 2), (project['title'], lines)
+    assert len(lines) == project['lines'], (project['title'], len(lines), lines)
     replacements[spec['body'][0]] = make_block(
         body_key, body_size, 0, body_baseline, lines)
     for index in spec['body'][1:]:

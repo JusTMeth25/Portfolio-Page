@@ -122,11 +122,12 @@ IT = {
         'text': 'Il lavoro pratico comprende esercizi individuali, progetti settimanali e sviluppo su GitHub.',
     }},
     43: {'map': {43: 'PROGETTI DI SVILUPPO SELEZIONATI'}},
-    44: {'map': {44: 'Spotify Clone (progetto EPICODE settimana 11)'}},
+    44: {'map': {44: 'Solco - Vetrina di vinili (esercizio EPICODE U5W7D2)'}},
     53: {'flow': {
         'labels': [],
-        'text': 'Web app musicale in stile Spotify con React e Redux Toolkit: ricerca brani con debounce sull’API Deezer, player audio con shuffle, loop, seek e '
-                'controllo del volume, brani preferiti e playlist create dall’utente in un layout mobile-first con Bootstrap.',
+        'text': 'Vetrina di un negozio di dischi con tre livelli di accesso (ospite, utente, amministratore) gestiti da Spring Security e JWT su filtri, metodi e query: '
+                'è il server a decidere cosa vede ogni ruolo. Frontend React con giradischi 3D in Three.js, anteprime iTunes di 30 secondi e scratch, online su '
+                'GitHub Pages con API su Render.',
     }},
     56: {'map': {56: 'Nova - Clone di ChatGPT (esercizio EPICODE U5W6D3)'}},
     65: {'flow': {
@@ -261,6 +262,13 @@ for match in BLOCK_RE.finditer(data):
         'cmy': float(cm[-1][3]) if cm else 0.0,
         'text': text,
     })
+
+# Gli indici delle tabelle valgono solo per il PDF prodotto da `cvrewrite.py`
+# con 2 + 1 + 1 righe di corpo nei progetti: se la struttura cambia, meglio
+# fermarsi che tradurre il blocco sbagliato.
+assert blocks[43]['text'] == 'SELECTED DEVELOPMENT PROJECTS', blocks[43]['text']
+for _index in (44, 56, 66):
+    assert 'EPICODE' in blocks[_index]['text'], (_index, blocks[_index]['text'])
 
 # Paragrafi: stesso `cm`. Righe: stessa `Tm.y`.
 paragraphs = {}
@@ -563,7 +571,11 @@ for key in SYSTEM_FONTS:
     font_dict[NameObject('/ToUnicode')] = writer._add_object(tounicode)
 
 # Annotazioni: seguono lo spostamento del testo che le sottolinea.
+# Il blocco va riconosciuto sia dalla x sia dalla riga: con la sola x un
+# separatore di un'altra sezione che cade per caso sulla stessa colonna
+# "ruba" il link e gli impone la sua larghezza.
 annotations = out_page.get('/Annots') or []
+page_height = float(out_page.mediabox.height)
 for annotation in annotations:
     obj = annotation.get_object()
     rect = obj['/Rect']
@@ -571,7 +583,8 @@ for annotation in annotations:
     for index, (old_x, new_x, old_text, new_text) in moved.items():
         block = blocks[index]
         page_x = (block['cmx'] + old_x * SCALE) * PAGE_SCALE
-        if abs(page_x - left) > 3:
+        baseline = page_height - (block['cmy'] + block['y'] * SCALE) * PAGE_SCALE
+        if abs(page_x - left) > 3 or not float(rect[1]) - 15 <= baseline <= float(rect[3]):
             continue
         delta = (new_x - old_x) * SCALE * PAGE_SCALE
         width = width_of(new_text, block['font'], block['size']) * SCALE * PAGE_SCALE
