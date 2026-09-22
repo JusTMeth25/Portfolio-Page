@@ -50,6 +50,42 @@
   text-transform: uppercase;
 }
 
+/* Link alla demo, in basso a sinistra sullo screenshot. */
+.project-card__demo {
+  position: absolute;
+  left: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.4em 0.85em;
+  border: 1px solid rgb(34 211 238 / 55%);
+  border-radius: 999px;
+  background: rgb(8 14 19 / 88%);
+  color: var(--accent);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.project-card__demo .icon {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+.project-card__demo:hover,
+.project-card__demo:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
 .project-card__body {
   display: flex;
   flex-direction: column;

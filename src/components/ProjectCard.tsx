@@ -42,6 +42,23 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
         <span className="project-card__kind mono">
           {project.imageKind === 'screenshot' ? ui.screenshot : ui.illustration}
         </span>
+
+        {/* Sull'immagine e non fra i pulsanti: così una scheda con la demo
+            resta alta quanto le altre. */}
+        {project.demoUrl && (
+          <a
+            className="project-card__demo"
+            href={project.demoUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <ExternalLink className="icon" aria-hidden="true" />
+            {ui.liveDemo}
+            <span className="visually-hidden">
+              {ui.of} {project.title}
+            </span>
+          </a>
+        )}
       </div>
 
       <div className="project-card__body">
@@ -72,21 +89,6 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
               {ui.of} {project.title}
             </span>
           </a>
-
-          {project.demoUrl && (
-            <a
-              className="btn btn--small"
-              href={project.demoUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <ExternalLink className="icon" aria-hidden="true" />
-              {ui.liveDemo}
-              <span className="visually-hidden">
-                {ui.of} {project.title}
-              </span>
-            </a>
-          )}
 
           {project.details && (
             <button
