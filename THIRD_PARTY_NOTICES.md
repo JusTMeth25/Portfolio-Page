@@ -55,11 +55,10 @@ del componente, la versione e la licenza MIT + Commons Clause.
   proprietari.
 - `public/images/projects/nova.jpg` — screenshot reale di `FS0226IT---U5W6D3`
   (`docs/screenshots/home.png` di quel repository), ridimensionato a 1200×750.
-- `public/images/projects/epiweather.jpg` — screenshot reale della **home** di
-  `FS0226IT---PROGETTO-SETTIMANA-10`, acquisito in locale. La dashboard meteo
-  non è stata catturata perché richiede chiavi API personali.
-  Le immagini `docs/screenshots/` presenti in quel repository sono dichiarate
-  "preview illustrative" dal suo stesso README e non sono state usate.
+- `public/images/projects/vinyldex.jpg` — screenshot reale della home di
+  `FS0226IT--CAPSTONE` (`docs/screenshots/home.webp` di quel repository),
+  ridimensionato a 1200×750. L'illustrazione del gatto con la chitarra
+  appartiene a quel repository.
 - `public/images/profile/lorenzo-melis.jpg` — avatar illustrato fornito da
   Lorenzo Melis (ridimensionato a 640×640).
 - `public/og-image.png` — anteprima social generata localmente a partire dai

@@ -211,7 +211,7 @@ cv: {
   cambiare il layout.
 
 Il PDF inglese deriva dall'export Canva, con la sezione
-*Selected Development Projects* riscritta sui tre progetti del portfolio (Solco, Nova, EpiWeather) e i link "Repository"
+*Selected Development Projects* riscritta sui tre progetti del portfolio (Solco, Nova, VinylDex) e i link "Repository"
 aggiornati ai repository corrispondenti. Nell'operazione i font incorporati sono
 stati ricostruiti: rispetto all'originale il testo del PDF è ora estraibile
 correttamente anche dai parser automatici (nell'export Canva la mappa
@@ -555,8 +555,6 @@ progetti.
   in lazy e solo su desktop. Su mobile e con movimento ridotto non si scarica.
 - Gli screenshot dei progetti sono catture reali ma statiche: se aggiorni un
   progetto, ricattura l'immagine.
-- Lo screenshot di EpiWeather mostra la home, non la dashboard meteo: quella
-  richiede chiavi API personali.
 - Nessuna demo live è indicata perché nessuna è stata verificata. Aggiungi
   `demoUrl` solo dopo aver controllato che l'URL risponda.
 - Il sito è solo in italiano: non c'è (e non deve esserci) un selettore di lingua

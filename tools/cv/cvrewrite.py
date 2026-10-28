@@ -83,12 +83,11 @@ PROJECTS = [
         'lines': 1,
     },
     {
-        'title': 'EpiWeather - Weather Dashboard (EPICODE Week 10 project)',
-        'tags': 'React | React Router | Vite | OpenWeather API | Vitest',
-        'url': 'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-10',
-        'body': 'Weather app using the OpenWeather Geocoding API to disambiguate '
-                'cities, with routed detail pages for current weather, forecasts '
-                'and Vitest component tests.',
+        'title': 'VinylDex - Music Card Game (EPICODE Capstone project)',
+        'tags': 'React | Spring Boot | WebSocket | PostgreSQL | Docker',
+        'url': 'https://github.com/JusTMeth25/FS0226IT--CAPSTONE',
+        'body': 'Live collectible card game with a real-time WebSocket pixel-art hotel, '
+                'server-side card draws, trades, online battles and 2FA.',
         'lines': 1,
     },
 ]

@@ -114,8 +114,17 @@ def find_strings(body):
 
 
 def escape_pdf_bytes(b):
+    # CR e LF vanno sempre con escape: in una stringa letterale il lettore PDF
+    # trasforma un CR grezzo in LF, quindi il glifo 13 diventava il glifo 10
+    # (nel CV inglese "Spring Boot" usciva come "Spring :oot").
     out = bytearray()
     for x in b:
+        if x == 0x0D:
+            out += b'\\r'
+            continue
+        if x == 0x0A:
+            out += b'\\n'
+            continue
         if x in (0x28, 0x29, 0x5C):
             out.append(0x5C)
         out.append(x)

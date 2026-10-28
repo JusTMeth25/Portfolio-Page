@@ -134,10 +134,10 @@ IT = {
         'labels': [],
         'text': 'App di chat AI full stack: conversazioni salvate in PostgreSQL, risposte in streaming SSE da Spring Boot, conteggio dei token.',
     }},
-    66: {'map': {66: 'EpiWeather - Dashboard meteo (progetto EPICODE settimana 10)'}},
+    66: {'map': {66: 'VinylDex - Gioco di carte musicali (progetto capstone EPICODE)'}},
     75: {'flow': {
         'labels': [],
-        'text': 'App meteo con Geocoding API di OpenWeather per città omonime, pagine di dettaglio su rotta con meteo e previsioni, test di componente con Vitest.',
+        'text': 'Gioco di carte online con hotel in pixel art in tempo reale via WebSocket, estrazioni decise dal server, scambi, battaglie online e 2FA.',
     }},
     76: {'flow': {
         'labels': [(76, 'Altri progetti: ')],

@@ -69,12 +69,13 @@ const PROJECT_BASE: ProjectBase[] = [
     order: 2,
   },
   {
-    id: 'epiweather',
-    title: 'EpiWeather',
-    tags: ['React', 'Vite', 'OpenWeather'],
-    repositoryUrl:
-      'https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-10',
-    image: 'images/projects/epiweather.jpg',
+    id: 'vinyldex',
+    title: 'VinylDex',
+    tags: ['React', 'Spring Boot', 'WebSocket'],
+    repositoryUrl: 'https://github.com/JusTMeth25/FS0226IT--CAPSTONE',
+    // Verificata il 2026-10-28: frontend e API sullo stesso server (Docker Compose + Caddy).
+    demoUrl: 'https://vinyldex.duckdns.org',
+    image: 'images/projects/vinyldex.jpg',
     imageKind: 'screenshot',
     imageWidth: 1200,
     imageHeight: 750,
@@ -127,25 +128,26 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
         ],
       },
     },
-    epiweather: {
-      label: 'EPICODE · SETTIMANA 10',
+    vinyldex: {
+      label: 'EPICODE · CAPSTONE',
       description:
-        'Meteo e previsioni per città, con geocoding e artwork dinamico.',
+        'Gioco di carte collezionabili con hotel in pixel art.',
       imageAlt:
-        'Screenshot della home di EpiWeather: intestazione dell’app e tre card che descrivono ricerca città, dettagli meteo e previsioni.',
+        'Screenshot della home di VinylDex: titolo “Ogni carta, un assolo”, un gatto rocker con la chitarra elettrica e, a sinistra, il menu del gioco.',
       details: {
         overview:
-          'Web app meteo in React con React Router: la ricerca città usa la Geocoding API di OpenWeather e propone la scelta fra omonimi prima di aprire la dashboard con coordinate esatte.',
+          'Progetto finale del corso: un gioco di carte collezionabili full stack, online. Backend in Java 25 con Spring Boot 4.1 e PostgreSQL (schema versionato con Flyway), frontend in React 19 con Vite, in produzione con Docker Compose e Caddy.',
         features: [
-          'Ricerca città al submit del form, con lista di suggerimenti per gli omonimi.',
-          'Dashboard con temperatura, percepita, umidità, vento, pressione e previsioni.',
-          'Classi grafiche dinamiche in base alla condizione meteo e artwork della città da Unsplash.',
-          'Navigazione Home / Ricerca / Dettaglio con React Router.',
+          'Il server decide tutto ciò che ha valore: carte estratte, probabilità, ricompense ed esiti delle partite. I gold passano solo da un servizio con blocco della riga e registro dei movimenti.',
+          'Hotel in pixel art in tempo reale via WebSocket: stanze isometriche, avatar, chat e NPC con intelligenza artificiale.',
+          'Oltre 140.000 carte da 23 fonti importate da API pubbliche, apertura dei pacchetti in 3D con Three.js, raccoglitore da sfogliare, mercato e scambi fra giocatori.',
+          'Battaglie a 3 carte contro NPC o online in tempo reale e torneo a eliminazione diretta da 16 posti.',
+          'Sicurezza: JWT in cookie HttpOnly con protezione CSRF, verifica in due passaggi (TOTP), accesso con Google, freno ai tentativi e Content-Security-Policy.',
         ],
         notes: [
-          'Lo screenshot mostra la home dell’app: la dashboard meteo richiede chiavi API personali e non è stata catturata.',
-          'Richiede chiavi API personali (OpenWeather e Unsplash) in un file .env locale.',
-          'Il repository include test Vitest e Testing Library per Navbar, Home e Search: non li ho eseguiti in questa sessione, quindi non riporto risultati.',
+          'Solo gold di gioco: nessun denaro reale. Le carte dei giochi importati restano dei rispettivi proprietari.',
+          'Il repository dichiara 296 test backend (JUnit) e 147 frontend (Vitest), eseguiti in CI con GitHub Actions: non li ho rilanciati io, quindi non riporto risultati.',
+          'Il frontend è anche un’app iOS e Android con Capacitor.',
         ],
       },
     },
@@ -193,25 +195,26 @@ const COPY: Record<Language, Record<string, ProjectCopy>> = {
         ],
       },
     },
-    epiweather: {
-      label: 'EPICODE · WEEK 10',
+    vinyldex: {
+      label: 'EPICODE · CAPSTONE',
       description:
-        'Weather and forecasts by city, with geocoding and dynamic artwork.',
+        'A music-themed collectible card game with a real-time pixel-art hotel.',
       imageAlt:
-        'Screenshot of the EpiWeather home page: the app header and three cards describing city search, weather details and forecasts.',
+        'Screenshot of the VinylDex home page: the Italian headline “Ogni carta, un assolo”, a rocker cat with an electric guitar and the game menu on the left.',
       details: {
         overview:
-          'A React weather app with React Router: city search uses the OpenWeather Geocoding API and lets you pick between same-named places before opening the dashboard on exact coordinates.',
+          'The final project of the course: a full-stack collectible card game, live online. Java 25 backend with Spring Boot 4.1 and PostgreSQL (schema versioned with Flyway), React 19 frontend with Vite, deployed with Docker Compose and Caddy.',
         features: [
-          'City search on form submit, with a suggestion list for duplicate names.',
-          'Dashboard with temperature, feels-like, humidity, wind, pressure and forecasts.',
-          'Dynamic styling based on the weather condition, plus city artwork from Unsplash.',
-          'Home / Search / Detail navigation with React Router.',
+          'The server decides everything that has value: card draws, odds, rewards and match results. Gold only moves through one service, with row locking and a ledger of every transaction.',
+          'A real-time pixel-art hotel over WebSocket: isometric rooms, avatars, chat and AI-driven NPCs.',
+          'More than 140,000 cards from 23 sources imported from public APIs, 3D pack opening with Three.js, a binder you can flip through, a marketplace and player-to-player trades.',
+          'Three-card battles against NPCs or online in real time, plus a 16-player knockout tournament.',
+          'Security: JWT in an HttpOnly cookie with CSRF protection, two-factor authentication (TOTP), Google sign-in, login rate limiting and a Content-Security-Policy.',
         ],
         notes: [
-          'The screenshot shows the app home page: the weather dashboard needs personal API keys and was not captured.',
-          'Requires personal API keys (OpenWeather and Unsplash) in a local .env file.',
-          'The repository includes Vitest and Testing Library tests for Navbar, Home and Search: I did not run them in this session, so I report no results.',
+          'In-game gold only: no real money. Cards from imported games belong to their respective owners.',
+          'The repository reports 296 backend tests (JUnit) and 147 frontend tests (Vitest), run in CI with GitHub Actions: I did not rerun them myself, so I report no results.',
+          'The frontend also ships as an iOS and Android app with Capacitor.',
         ],
       },
     },

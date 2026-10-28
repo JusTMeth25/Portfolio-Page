@@ -61,18 +61,25 @@ Clone di ChatGPT: chat salvate, streaming e conteggio dei token.
 - La chiave API resta sul server: il browser non la riceve mai
 - 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---U5W6D3)
 
-### 3. EpiWeather — settimana 10
+### 3. VinylDex — progetto capstone
 
-Meteo e previsioni per città, con geocoding e artwork dinamico.
+Gioco di carte collezionabili a tema musicale con hotel in pixel art in tempo
+reale. Progetto finale del corso.
 
-- **Stack:** React, React Router, Vite, OpenWeather API, Unsplash, Vitest
-- Ricerca città tramite Geocoding API di OpenWeather, con scelta fra omonimi
-  prima di aprire la dashboard sulle coordinate esatte
-- Dashboard con temperatura, percepita, umidità, vento, pressione e previsioni
-- Classi grafiche dinamiche in base alla condizione meteo, artwork della città
-  da Unsplash
-- Nel repository sono presenti test Vitest e Testing Library
-- 📦 [Repository](https://github.com/JusTMeth25/FS0226IT---PROGETTO-SETTIMANA-10)
+- **Stack:** Java 25, Spring Boot 4.1, Spring Security, WebSocket, PostgreSQL,
+  Flyway, React 19, Vite, Three.js, Capacitor, Docker Compose, Caddy
+- Il server decide tutto ciò che ha valore: carte estratte, probabilità,
+  ricompense ed esiti delle partite; i gold passano solo da un servizio con
+  blocco della riga e registro dei movimenti
+- Hotel in pixel art in tempo reale via WebSocket, con avatar, chat e NPC con
+  intelligenza artificiale
+- Oltre 140.000 carte da 23 fonti, apertura pacchetti in 3D, mercato, scambi,
+  battaglie online e torneo a eliminazione diretta
+- JWT in cookie `HttpOnly` con protezione CSRF, verifica in due passaggi (TOTP),
+  accesso con Google, freno ai tentativi e Content-Security-Policy
+- Solo gold di gioco, nessun denaro reale
+- 🌐 [Demo online](https://vinyldex.duckdns.org)
+- 📦 [Repository](https://github.com/JusTMeth25/FS0226IT--CAPSTONE)
 
 ![La griglia dei progetti in primo piano](docs/preview-progetti.jpg)
 
