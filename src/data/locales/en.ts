@@ -290,8 +290,8 @@ export const en = {
       {
         id: 'linkedin',
         label: 'LinkedIn',
-        value: 'linkedin.com/in/lorenzo-melis97',
-        href: 'https://www.linkedin.com/in/lorenzo-melis97/',
+        value: 'linkedin.com/in/lorenzo-melis-',
+        href: 'https://www.linkedin.com/in/lorenzo-melis-/',
         kind: 'linkedin',
       },
     ] satisfies ContactLink[],

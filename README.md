@@ -12,7 +12,7 @@ Cerco un ruolo **full stack, frontend o backend**.
 
 📄 CV in PDF: [italiano](public/cv/lorenzo-melis-cv-it.pdf) · [English](public/cv/lorenzo-melis-cv-en.pdf) ·
 ✉️ [lorenzo.melis@yahoo.it](mailto:lorenzo.melis@yahoo.it) ·
-💼 [LinkedIn](https://www.linkedin.com/in/lorenzo-melis97/) ·
+💼 [LinkedIn](https://www.linkedin.com/in/lorenzo-melis-/) ·
 💻 [GitHub](https://github.com/JusTMeth25)
 
 🌐 **Sito online: [justmeth25.github.io/Portfolio-Page](https://justmeth25.github.io/Portfolio-Page/)**

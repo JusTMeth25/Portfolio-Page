@@ -71,6 +71,16 @@ PORTFOLIO_URL = 'https://justmeth25.github.io/Portfolio-Page/'
 PORTFOLIO_TEXT = 'justmeth25.github.io/Portfolio-Page'
 HEADER_LINK_BLOCK = 15
 
+# Profilo LinkedIn. Il blocco 11 è il testo, la prima annotazione il link.
+# L'export Canva porta ancora il vecchio indirizzo: oltre al testo visibile e al
+# link va cambiato nei tag di accessibilità, che i parser ATS leggono.
+LINKEDIN_URL = 'https://www.linkedin.com/in/lorenzo-melis-/'
+LINKEDIN_TEXT = 'linkedin.com/in/lorenzo-melis-'
+LINKEDIN_OLD_TEXT = 'linkedin.com/in/lorenzo-melis97'
+LINKEDIN_BLOCK = 11
+
+HEADER_URLS = {HEADER_LINK_BLOCK: PORTFOLIO_URL, LINKEDIN_BLOCK: LINKEDIN_URL}
+
 # ------------------------------------------------------------------ traduzioni
 
 # `flow`: la riga inizia con delle etichette a testo fisso e prosegue con un
@@ -186,7 +196,8 @@ EN = {
 
 # Il testo dell'intestazione è uguale nelle due lingue.
 for _table in (IT, EN):
-    _table[3] = {'map': {HEADER_LINK_BLOCK: PORTFOLIO_TEXT}}
+    _table[3] = {'map': {LINKEDIN_BLOCK: LINKEDIN_TEXT,
+                         HEADER_LINK_BLOCK: PORTFOLIO_TEXT}}
 
 TABLES = {'it': IT, 'en': EN}
 TRANSLATIONS = TABLES[LANG]
@@ -267,6 +278,7 @@ for match in BLOCK_RE.finditer(data):
 # con 2 + 1 + 1 righe di corpo nei progetti: se la struttura cambia, meglio
 # fermarsi che tradurre il blocco sbagliato.
 assert blocks[43]['text'] == 'SELECTED DEVELOPMENT PROJECTS', blocks[43]['text']
+assert blocks[LINKEDIN_BLOCK]['text'] == LINKEDIN_OLD_TEXT, blocks[LINKEDIN_BLOCK]['text']
 for _index in (44, 56, 66):
     assert 'EPICODE' in blocks[_index]['text'], (_index, blocks[_index]['text'])
 
@@ -594,11 +606,36 @@ for annotation in annotations:
             FloatObject(round(left + delta + width, 3)),
             rect[3],
         ])
-        if index == HEADER_LINK_BLOCK:
+        if index in HEADER_URLS:
             action = obj.get('/A')
             target = action if isinstance(action, DictionaryObject) else action.get_object()
-            target[NameObject('/URI')] = TextStringObject(PORTFOLIO_URL)
+            target[NameObject('/URI')] = TextStringObject(HEADER_URLS[index])
+        if index == LINKEDIN_BLOCK:
+            obj[NameObject('/Contents')] = TextStringObject(LINKEDIN_TEXT)
         break
+
+
+def update_linkedin_tags(node):
+    """Sostituisce il vecchio indirizzo nei tag; restituisce quanti ne ha cambiati."""
+    node = node.get_object()
+    if isinstance(node, ArrayObject):
+        return sum(update_linkedin_tags(child) for child in node)
+    if not isinstance(node, DictionaryObject):
+        return 0
+    changed = 0
+    for name in ('/E', '/Alt'):
+        if LINKEDIN_OLD_TEXT in str(node.get(name, '')):
+            node[NameObject(name)] = TextStringObject(
+                str(node[name]).replace(LINKEDIN_OLD_TEXT, LINKEDIN_TEXT))
+            changed += 1
+    if '/K' in node:
+        changed += update_linkedin_tags(node['/K'])
+    return changed
+
+
+# Due tag: il testo dell'intera riga di contatti (/E) e il link (/Alt).
+tags = update_linkedin_tags(writer.root_object['/StructTreeRoot'])
+assert tags == 2, f'tag LinkedIn aggiornati: {tags}, attesi 2'
 
 # Metadati: senza questo il file resta intestato all'export Canva e il visore
 # PDF propone quel nome (con "pptx" dentro) al salvataggio.
