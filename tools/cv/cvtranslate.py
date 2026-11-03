@@ -80,6 +80,15 @@ LINKEDIN_OLD_TEXT = 'linkedin.com/in/lorenzo-melis97'
 LINKEDIN_BLOCK = 11
 
 HEADER_URLS = {HEADER_LINK_BLOCK: PORTFOLIO_URL, LINKEDIN_BLOCK: LINKEDIN_URL}
+HEADER_TEXTS = {HEADER_LINK_BLOCK: PORTFOLIO_TEXT, LINKEDIN_BLOCK: LINKEDIN_TEXT}
+# Testo del link nell'export Canva, sostituito da PORTFOLIO_TEXT.
+PORTFOLIO_OLD_TEXT = 'github.com/JusTMeth25'
+
+# La sottolineatura si interrompe sotto i discendenti. I margini, in coordinate
+# del form XObject, sono quelli del buco che Canva disegna attorno alla "g".
+DESCENDERS = 'gjpqy'
+HOLE_LEFT = 4.2
+HOLE_RIGHT = 0.85
 
 # ------------------------------------------------------------------ traduzioni
 
@@ -531,6 +540,31 @@ for block in blocks:
         out_lines.append(line)
     new_data = b'\n'.join(out_lines)
 
+# Il ritaglio del link portfolio ha ancora il buco della "g" di "github.com",
+# che ora cade su "ju": va ricostruito sui discendenti del testo nuovo.
+link_x = moved[HEADER_LINK_BLOCK][1]
+link = blocks[HEADER_LINK_BLOCK]
+underline = new_data.index(('%s 25 ' % fmt(link_x)).encode())
+clip_start = new_data.rindex(b'7017 -1 l\nh\n', 0, underline) + len(b'7017 -1 l\nh\n')
+clip_end = new_data.index(b'W*', clip_start)
+old_hole = re.fullmatch(
+    rb'[-\d.]+ ([-\d.]+) m\n[-\d.]+ [-\d.]+ l\n[-\d.]+ ([-\d.]+) l\n'
+    rb'[-\d.]+ [-\d.]+ l\n[-\d.]+ [-\d.]+ l\nh\n',
+    new_data[clip_start:clip_end])
+assert old_hole, new_data[clip_start:clip_end]
+hole_top, hole_bottom = old_hole.group(1).decode(), old_hole.group(2).decode()
+holes = ''
+for position, char in enumerate(PORTFOLIO_TEXT):
+    if char not in DESCENDERS:
+        continue
+    glyph_x = link['cmx'] + (
+        link_x + width_of(PORTFOLIO_TEXT[:position], link['font'], link['size'])) * SCALE
+    left = fmt(glyph_x - HOLE_LEFT)
+    right = fmt(glyph_x + width_of(char, link['font'], link['size']) * SCALE + HOLE_RIGHT)
+    holes += (f'{right} {hole_top} m\n{left} {hole_top} l\n{left} {hole_bottom} l\n'
+              f'{right} {hole_bottom} l\n{right} {hole_top} l\nh\n')
+new_data = new_data[:clip_start] + holes.encode() + new_data[clip_end:]
+
 # ------------------------------------------------------------ scrittura PDF
 
 writer = PdfWriter(clone_from=SRC)
@@ -610,32 +644,50 @@ for annotation in annotations:
             action = obj.get('/A')
             target = action if isinstance(action, DictionaryObject) else action.get_object()
             target[NameObject('/URI')] = TextStringObject(HEADER_URLS[index])
-        if index == LINKEDIN_BLOCK:
-            obj[NameObject('/Contents')] = TextStringObject(LINKEDIN_TEXT)
+        if index in HEADER_TEXTS:
+            obj[NameObject('/Contents')] = TextStringObject(HEADER_TEXTS[index])
         break
 
 
-def update_linkedin_tags(node):
-    """Sostituisce il vecchio indirizzo nei tag; restituisce quanti ne ha cambiati."""
-    node = node.get_object()
-    if isinstance(node, ArrayObject):
-        return sum(update_linkedin_tags(child) for child in node)
-    if not isinstance(node, DictionaryObject):
-        return 0
-    changed = 0
-    for name in ('/E', '/Alt'):
-        if LINKEDIN_OLD_TEXT in str(node.get(name, '')):
-            node[NameObject(name)] = TextStringObject(
-                str(node[name]).replace(LINKEDIN_OLD_TEXT, LINKEDIN_TEXT))
-            changed += 1
-    if '/K' in node:
-        changed += update_linkedin_tags(node['/K'])
-    return changed
+def children(node):
+    """Figli di un elemento dei tag: /K può essere un elemento o una lista."""
+    kids = node.get('/K')
+    kids = kids.get_object() if kids is not None else []
+    kids = kids if isinstance(kids, ArrayObject) else [kids]
+    found = [kid.get_object() for kid in kids]
+    return [kid for kid in found if isinstance(kid, DictionaryObject)]
 
 
-# Due tag: il testo dell'intera riga di contatti (/E) e il link (/Alt).
-tags = update_linkedin_tags(writer.root_object['/StructTreeRoot'])
-assert tags == 2, f'tag LinkedIn aggiornati: {tags}, attesi 2'
+def find_contact_row(node):
+    """L'elemento dei tag con il testo dell'intera riga di contatti (/E)."""
+    if LINKEDIN_OLD_TEXT in str(node.get('/E', '')):
+        return node
+    for kid in children(node):
+        found = find_contact_row(kid)
+        if found is not None:
+            return found
+    return None
+
+
+# Solo dentro la riga di contatti: "github.com/JusTMeth25" compare anche nei tag
+# della riga "Altri progetti", dove è ancora il testo giusto.
+TAG_TEXTS = {LINKEDIN_OLD_TEXT: LINKEDIN_TEXT, PORTFOLIO_OLD_TEXT: PORTFOLIO_TEXT}
+
+
+def replace_tag_text(node, name):
+    text = str(node[name])
+    for old, new in TAG_TEXTS.items():
+        text = text.replace(old, new)
+    node[NameObject(name)] = TextStringObject(text)
+
+
+contact_row = find_contact_row(writer.root_object['/StructTreeRoot'])
+assert contact_row is not None, 'riga di contatti non trovata nei tag'
+replace_tag_text(contact_row, '/E')
+link_tags = [kid for kid in children(contact_row) if '/Alt' in kid]
+assert len(link_tags) == 2, f'link nei tag: {len(link_tags)}, attesi 2'
+for link_tag in link_tags:
+    replace_tag_text(link_tag, '/Alt')
 
 # Metadati: senza questo il file resta intestato all'export Canva e il visore
 # PDF propone quel nome (con "pptx" dentro) al salvataggio.
