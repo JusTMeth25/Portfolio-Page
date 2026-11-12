@@ -4,6 +4,9 @@ Script one-off usato per riscrivere la sezione **Selected Development Projects**
 del CV PDF esportato da Canva, mantenendo layout, font, colori e link del
 documento originale.
 
+> Nota: i CV attuali in `public/cv/` non derivano più dall'export Canva; questi
+> script restano solo come storico.
+
 Serve solo se vuoi rigenerare il PDF partendo di nuovo dall'export Canva.
 Se hai un CV nuovo, di solito basta sostituire
 `public/cv/lorenzo-melis-cv.pdf`.

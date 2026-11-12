@@ -18,7 +18,7 @@ export const en = {
   switchToLabel: 'Switch to Italian',
 
   name: 'Lorenzo Melis',
-  role: 'Junior Full-Stack Developer',
+  role: 'Full-Stack Developer',
   monogram: { light: 'L', accent: 'M' },
 
   ui: {
@@ -49,7 +49,7 @@ export const en = {
   intro: {
     name: 'LORENZO MELIS',
     edition: 'PORTFOLIO No.001',
-    role: 'JUNIOR FULL-STACK DEVELOPER',
+    role: 'FULL-STACK DEVELOPER',
     cue: 'SCROLL TO CONTINUE',
     skipLabel: 'Skip intro',
     ariaLabel:
@@ -58,13 +58,13 @@ export const en = {
 
   hero: {
     eyebrow: 'LORENZO MELIS / PORTFOLIO',
-    titleLines: ['Junior Full-Stack', 'Developer.'],
+    titleLines: ['Full-Stack', 'Developer.'],
     accentWord: 'Developer.',
     description: 'From cybersecurity to building complete applications.',
     stack: 'React · TypeScript · Spring Boot · PostgreSQL',
     primaryCta: { label: 'Explore the projects', href: '#progetti' },
     secondaryCta: { label: 'GitHub', href: 'https://github.com/JusTMeth25' },
-    note: 'Currently training · EPICODE AI Full-Stack Developer',
+    note: 'Training completed · EPICODE AI Full-Stack Developer',
     sceneLabels: ['A1 · Frontend', 'A2 · API', 'A3 · Database'],
   },
 
@@ -72,8 +72,9 @@ export const en = {
     eyebrow: '02 / PROFILE',
     title: 'Building software with a security mindset.',
     paragraphs: [
-      'I am Lorenzo Melis, a Computer Engineering graduate currently completing the EPICODE AI Full-Stack Developer programme. I build projects with React, JavaScript, TypeScript, Java, Spring Boot and PostgreSQL.',
-      'I bring my cybersecurity background into development: attention to security, to how data is handled, and to working alongside technical teams. I am looking for a full-stack role where I can contribute to the codebase and keep growing on both frontend and backend.',
+      'I am Lorenzo Melis, a full-stack developer with a degree in Computer Engineering. I completed the EPICODE AI Full-Stack Developer programme, building applications with Java, Spring Boot, React, TypeScript and PostgreSQL.',
+      'I started as a developer at Cybertech – Engineering, writing scripts to automate cybersecurity operations and building integrations between security systems with APIs and SQL queries. I then moved into SOC operations and consulting. With EPICODE I put coding back at the centre of my work.',
+      'I bring that background into development: attention to security, to how data is handled, and to working alongside technical teams. I am looking for a full-stack role where I can contribute to the codebase and keep growing on both frontend and backend.',
     ],
     photos: {
       front: {
@@ -105,36 +106,25 @@ export const en = {
     eyebrow: '03 / PATH',
     title: 'From cybersecurity to development',
     intro:
-      'One continuous technical path: first security analysis and governance, now full-stack development.',
+      'One continuous technical path: first scripting, automation and integrations, then security operations and consulting, now full-stack development.',
     entries: [
       {
         id: 'epicode',
-        period: 'May 2026 — in progress',
+        period: 'May 2026 — Oct 2026',
         role: 'AI Full-Stack Developer',
         organization: 'EPICODE',
         description:
-          'Intensive programme covering HTML/CSS, JavaScript, React, Redux Toolkit, TypeScript, Java, the Spring Framework, relational databases and SQL, Spring Data JPA and REST APIs with Spring Web. Expected completion November 2026.',
+          'Intensive programme covering HTML/CSS, JavaScript, React, Redux Toolkit, TypeScript, Java, the Spring Framework, relational databases and SQL, Spring Data JPA and REST APIs with Spring Web. Exercises, weekly projects and the VinylDex capstone on GitHub.',
         kind: 'formazione',
-        current: true,
       },
       {
         id: 'protiviti',
-        period: 'Sep 2025 — Apr 2026',
+        period: 'Jan 2025 — Apr 2026',
         role: 'Senior Cyber Security Consultant',
         organization: 'Protiviti',
         place: 'Rome',
         description:
-          'Cybersecurity governance and compliance: ICT risk assessments, control evaluations, supplier security audits and support on remediation planning.',
-        kind: 'lavoro',
-      },
-      {
-        id: 'kpmg',
-        period: 'Mar 2025 — Jun 2025',
-        role: 'Cyber Security Consultant',
-        organization: 'KPMG Advisory',
-        place: 'Rome',
-        description:
-          'Information security and technology risk projects: security policy analysis, vulnerability assessments, IAM/IAG, business continuity and disaster recovery.',
+          'Supported financial and aerospace clients on ICT risk and DORA, supplier security controls and audits, remediation and PMO activities.',
         kind: 'lavoro',
       },
       {
@@ -144,7 +134,7 @@ export const en = {
         organization: 'Cybertech – Engineering',
         place: 'Rome',
         description:
-          'SIEM and log analysis, incident handling, Microsoft Azure, IAM/PAM, DLP, security integrations and day-to-day work with technical and operations teams.',
+          '2019–2022, scripting, automation and integrations: scripts to automate cybersecurity operations, APIs, SQL queries and integrations between security systems. 2022–2024, SOC operations: SIEM event and log analysis, incident handling, Azure, IAM/PAM, DLP, Microsoft Defender and reporting with IT and operations teams.',
         kind: 'lavoro',
       },
       {
@@ -225,10 +215,13 @@ export const en = {
       note: 'Listed as they appear on my CV.',
       items: [
         'CompTIA Security+ ce',
-        'Linux LPIC-1',
-        'Cisco CCNA Routing and Switching',
+        'Linux LPIC-1 v.500',
+        'Cisco CCNA (200-125)',
         'Cisco Cyber Threat Management',
         'ITIL v4 Foundation',
+        'ISMS Auditor ISO/IEC 27001',
+        'Lead Auditor ISO 19011 / ISO/IEC 17021',
+        'Internal Auditor UNI EN ISO 9001:2015',
       ],
     },
   },
@@ -299,7 +292,7 @@ export const en = {
 
   cv: {
     available: true,
-    /** The English CV: the original Canva export. */
+    /** The English CV. */
     path: 'cv/lorenzo-melis-cv-en.pdf',
     downloadLabel: 'Download CV',
     requestLabel: 'Request CV',
@@ -320,9 +313,9 @@ export const en = {
   },
 
   seo: {
-    title: 'Lorenzo Melis — Junior Full-Stack Developer',
+    title: 'Lorenzo Melis — Full-Stack Developer',
     description:
-      'Portfolio of Lorenzo Melis, Junior Full-Stack Developer: React, TypeScript and Java Spring Boot projects, with a cybersecurity background.',
+      'Portfolio of Lorenzo Melis, Full-Stack Developer: React, TypeScript and Java Spring Boot projects, with a cybersecurity background.',
   },
 
   footer: {

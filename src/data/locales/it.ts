@@ -20,7 +20,7 @@ export const it = {
   switchToLabel: 'Passa all’inglese',
 
   name: 'Lorenzo Melis',
-  role: 'Junior Full-Stack Developer',
+  role: 'Full-Stack Developer',
   monogram: { light: 'L', accent: 'M' },
 
   /** Stringhe d'interfaccia sparse nei componenti. */
@@ -53,7 +53,7 @@ export const it = {
   intro: {
     name: 'LORENZO MELIS',
     edition: 'PORTFOLIO No.001',
-    role: 'JUNIOR FULL-STACK DEVELOPER',
+    role: 'FULL-STACK DEVELOPER',
     cue: 'SCORRI PER CONTINUARE',
     skipLabel: 'Salta intro',
     /** Descrizione della sequenza per chi usa uno screen reader. */
@@ -63,7 +63,7 @@ export const it = {
 
   hero: {
     eyebrow: 'LORENZO MELIS / PORTFOLIO',
-    titleLines: ['Junior Full-Stack', 'Developer.'],
+    titleLines: ['Full-Stack', 'Developer.'],
     /** Parola resa in ciano nell'H1 (deve comparire in titleLines). */
     accentWord: 'Developer.',
     description:
@@ -71,7 +71,7 @@ export const it = {
     stack: 'React · TypeScript · Spring Boot · PostgreSQL',
     primaryCta: { label: 'Esplora i progetti', href: '#progetti' },
     secondaryCta: { label: 'GitHub', href: 'https://github.com/JusTMeth25' },
-    note: 'In formazione · EPICODE AI Full-Stack Developer',
+    note: 'Formazione completata · EPICODE AI Full-Stack Developer',
     /** Etichette HTML sopra la scena: le "tracce" del disco. */
     sceneLabels: ['A1 · Frontend', 'A2 · API', 'A3 · Database'],
   },
@@ -80,8 +80,9 @@ export const it = {
     eyebrow: '02 / PROFILO',
     title: 'Sviluppo con una prospettiva sulla sicurezza.',
     paragraphs: [
-      'Sono Lorenzo Melis, laureato in ingegneria informatica e attualmente in formazione nel percorso EPICODE AI Full-Stack Developer. Sviluppo progetti con React, JavaScript, TypeScript, Java, Spring Boot e PostgreSQL.',
-      'Porto nello sviluppo l’esperienza maturata nella cybersecurity, con attenzione alla sicurezza, alla gestione dei dati e alla collaborazione con team tecnici. Cerco un ruolo come full stack in cui contribuire al codice e continuare a crescere su frontend e backend.',
+      'Sono Lorenzo Melis, full stack developer laureato in Ingegneria Informatica. Ho completato il percorso EPICODE AI Full-Stack Developer, sviluppando applicazioni con Java, Spring Boot, React, TypeScript e PostgreSQL.',
+      'Ho iniziato come sviluppatore in Cybertech – Engineering, scrivendo script per automatizzare le operazioni di cybersecurity e integrazioni tra sistemi di sicurezza tramite API e query SQL. Sono poi passato alle operations SOC e alla consulenza. Con EPICODE ho rimesso il codice al centro del mio lavoro.',
+      'Porto nello sviluppo questa esperienza, con attenzione alla sicurezza, alla gestione dei dati e alla collaborazione con team tecnici. Cerco un ruolo come full stack in cui contribuire al codice e continuare a crescere su frontend e backend.',
     ],
     photos: {
       /** Faccia iniziale: la foto vera. */
@@ -115,36 +116,25 @@ export const it = {
     eyebrow: '03 / PERCORSO',
     title: 'Dalla sicurezza informatica allo sviluppo',
     intro:
-      'Un percorso tecnico continuo: prima analisi e governance della sicurezza, oggi sviluppo full stack.',
+      'Un percorso tecnico continuo: prima script, automazioni e integrazioni, poi sicurezza operativa e consulenza, oggi sviluppo full stack.',
     entries: [
       {
         id: 'epicode',
-        period: 'Mag 2026 — in corso',
+        period: 'Mag 2026 — Ott 2026',
         role: 'AI Full-Stack Developer',
         organization: 'EPICODE',
         description:
-          'Percorso intensivo su HTML/CSS, JavaScript, React, Redux Toolkit, TypeScript, Java, Spring Framework, database relazionali e SQL, Spring Data JPA e REST API con Spring Web. Completamento previsto novembre 2026.',
+          'Percorso intensivo su HTML/CSS, JavaScript, React, Redux Toolkit, TypeScript, Java, Spring Framework, database relazionali e SQL, Spring Data JPA e REST API con Spring Web. Esercizi, progetti settimanali e capstone VinylDex su GitHub.',
         kind: 'formazione',
-        current: true,
       },
       {
         id: 'protiviti',
-        period: 'Set 2025 — Apr 2026',
+        period: 'Gen 2025 — Apr 2026',
         role: 'Senior Cyber Security Consultant',
         organization: 'Protiviti',
         place: 'Roma',
         description:
-          'Governance e compliance cybersecurity: valutazioni del rischio ICT, valutazione dei controlli, audit di sicurezza sui fornitori e supporto alla pianificazione della remediation.',
-        kind: 'lavoro',
-      },
-      {
-        id: 'kpmg',
-        period: 'Mar 2025 — Giu 2025',
-        role: 'Cyber Security Consultant',
-        organization: 'KPMG Advisory',
-        place: 'Roma',
-        description:
-          'Progetti di information security e technology risk: analisi delle policy di sicurezza, vulnerability assessment, IAM/IAG, continuità operativa e disaster recovery.',
+          'Supporto a clienti del settore finanziario e aerospaziale su rischio ICT e DORA, controlli di sicurezza e audit sui fornitori, remediation e attività di PMO.',
         kind: 'lavoro',
       },
       {
@@ -154,7 +144,7 @@ export const it = {
         organization: 'Cybertech – Engineering',
         place: 'Roma',
         description:
-          'Analisi SIEM e dei log, incident handling, Microsoft Azure, IAM/PAM, DLP, integrazioni di sicurezza e collaborazione quotidiana con team tecnici e operativi.',
+          '2019–2022, script, automazioni e integrazioni: script per automatizzare le operazioni di cybersecurity, API, query SQL e integrazioni tra sistemi di sicurezza. 2022–2024, operations SOC: analisi di eventi SIEM e log, gestione degli incidenti, Azure, IAM/PAM, DLP, Microsoft Defender e reportistica con i team IT e operativi.',
         kind: 'lavoro',
       },
       {
@@ -235,10 +225,13 @@ export const it = {
       note: 'Riportate come indicate nel CV.',
       items: [
         'CompTIA Security+ ce',
-        'Linux LPIC-1',
-        'Cisco CCNA Routing and Switching',
+        'Linux LPIC-1 v.500',
+        'Cisco CCNA (200-125)',
         'Cisco Cyber Threat Management',
         'ITIL v4 Foundation',
+        'ISMS Auditor ISO/IEC 27001',
+        'Lead Auditor ISO 19011 / ISO/IEC 17021',
+        'Auditor Interno UNI EN ISO 9001:2015',
       ],
     },
   },
@@ -339,9 +332,9 @@ export const it = {
   },
 
   seo: {
-    title: 'Lorenzo Melis — Junior Full-Stack Developer',
+    title: 'Lorenzo Melis — Full-Stack Developer',
     description:
-      'Portfolio di Lorenzo Melis, Junior Full-Stack Developer: progetti React, TypeScript e Java Spring Boot, con un background in cybersecurity.',
+      'Portfolio di Lorenzo Melis, Full-Stack Developer: progetti React, TypeScript e Java Spring Boot, con un background in cybersecurity.',
   },
 
   footer: {

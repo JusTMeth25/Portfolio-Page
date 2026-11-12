@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 
+import type { TimelineEntry } from '../data/profile'
 import { useI18n } from '../i18n/useI18n'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { Reveal } from './effects/Reveal'
@@ -40,7 +41,7 @@ export function Timeline() {
             aria-hidden="true"
           />
 
-          {timeline.entries.map((entry, index) => (
+          {timeline.entries.map((entry: TimelineEntry, index) => (
             <Reveal
               as="li"
               key={entry.id}

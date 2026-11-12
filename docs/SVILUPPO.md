@@ -210,21 +210,12 @@ cv: {
   contatti mostrano "Richiedi CV" con un `mailto:`, senza link rotti e senza
   cambiare il layout.
 
-Il PDF inglese deriva dall'export Canva, con la sezione
-*Selected Development Projects* riscritta sui tre progetti del portfolio (Solco, Nova, VinylDex) e i link "Repository"
-aggiornati ai repository corrispondenti. Nell'operazione i font incorporati sono
-stati ricostruiti: rispetto all'originale il testo del PDF è ora estraibile
-correttamente anche dai parser automatici (nell'export Canva la mappa
-`ToUnicode` era incompleta e le cifre venivano lette in modo errato).
+I due PDF (italiano e inglese) sono file autonomi forniti già pronti, uno per
+lingua: per aggiornarli basta sovrascriverli mantenendo il nome.
 
-La versione italiana si genera **dal PDF inglese** con `tools/cv/cvtranslate.py`,
-che traduce **tutte** le righe del documento mantenendo layout, font, colori,
-sottolineature dei link e annotazioni. Le posizioni orizzontali non vengono
-copiate ma ricalcolate dalle metriche dei glifi, così una traduzione più lunga o
-più corta non sfasa la riga.
-
-Gli script stanno in `tools/cv/`, con le istruzioni per rigenerare entrambi i
-PDF se aggiorni il CV su Canva.
+Gli script in `tools/cv/` servivano a generare le versioni precedenti a partire
+dall'export Canva (riscrittura della sezione progetti e traduzione in italiano)
+e non si applicano ai PDF attuali.
 
 ---
 

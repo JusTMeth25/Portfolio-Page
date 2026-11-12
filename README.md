@@ -1,12 +1,13 @@
-# Lorenzo Melis — Junior Full-Stack Developer
+# Lorenzo Melis — Full-Stack Developer
 
 **Dal mondo cybersecurity allo sviluppo di applicazioni complete.**
 
-Laureato in ingegneria informatica, in formazione nel percorso EPICODE
-AI Full-Stack Developer. Sviluppo con React, JavaScript, TypeScript, Java,
-Spring Boot e PostgreSQL, portando nel codice l'esperienza maturata in
-cybersecurity: attenzione alla sicurezza, alla gestione dei dati e alla
-collaborazione con team tecnici.
+Full stack developer laureato in ingegneria informatica, con il percorso
+EPICODE AI Full-Stack Developer completato. Sviluppo con React, JavaScript,
+TypeScript, Java, Spring Boot e PostgreSQL. Ho iniziato come sviluppatore in
+Cybertech – Engineering (script, automazioni e integrazioni tra sistemi di
+sicurezza), poi operations SOC e consulenza: porto nel codice attenzione alla
+sicurezza, alla gestione dei dati e alla collaborazione con team tecnici.
 
 Cerco un ruolo **full stack, frontend o backend**.
 
@@ -118,9 +119,8 @@ ITIL v4 Foundation
 
 | Periodo | Ruolo | Dove |
 |---|---|---|
-| Mag 2026 — in corso | AI Full-Stack Developer *(formazione)* | EPICODE |
-| Set 2025 — Apr 2026 | Senior Cyber Security Consultant | Protiviti, Roma |
-| Mar 2025 — Giu 2025 | Cyber Security Consultant | KPMG Advisory, Roma |
+| Mag 2026 — Ott 2026 | AI Full-Stack Developer *(formazione)* | EPICODE |
+| Gen 2025 — Apr 2026 | Senior Cyber Security Consultant | Protiviti, Roma |
 | Mag 2019 — Dic 2024 | Cyber Security Analyst → Specialist → Consultant | Cybertech – Engineering, Roma |
 | 2023 — 2026 | Laurea in Ingegneria Informatica L-08 — 105/110 | Universitas Mercatorum |
 | 2018 — 2019 | Master in Networks and Information Systems | ELIS College, Roma |
