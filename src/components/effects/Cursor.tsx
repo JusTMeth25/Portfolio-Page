@@ -7,7 +7,7 @@ import './cursor.css'
 
 /** Elementi su cui compare la manina. */
 const INTERACTIVE =
-  'a, button, [role="button"], input, select, textarea, summary, label[for]'
+  'a, button, [role="button"], input, select, textarea, summary, label[for], [data-cursor="pointer"]'
 
 /**
  * Cursore del sito: sostituisce del tutto la freccia di sistema.

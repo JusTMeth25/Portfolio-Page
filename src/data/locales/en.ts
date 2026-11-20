@@ -312,6 +312,48 @@ export const en = {
     closeLabel: 'Close the menu',
   },
 
+  world: {
+    toClassic: 'Classic version',
+    toWorld: '3D version',
+    toClassicLabel: 'Switch to the classic version of the site, without 3D',
+    toWorldLabel: 'Switch to the 3D version of the site',
+    loading: 'Dropping the record on the platter…',
+    scrollHint: 'Scroll to follow the groove',
+    previous: 'Previous',
+    next: 'Next',
+    selectHint: 'Click the 3D objects or use the buttons',
+    openDetails: 'Open details',
+    flipPhoto: 'Flip the photo',
+    sceneLabel:
+      '3D world: a giant vinyl record; the camera follows the groove from one section to the next. All content is also available in the page text.',
+    stations: {
+      hero: 'SIDE A',
+      progetti: 'TRACK 01',
+      profilo: 'TRACK 02',
+      percorso: 'TRACK 03',
+      competenze: 'TRACK 04',
+      'colonna-sonora': 'TRACK 05',
+      contatti: 'LABEL',
+    },
+    kpi: {
+      technologies: 'technologies',
+      certifications: 'certifications',
+      projects: 'full-stack projects',
+      groups: 'skill areas',
+    },
+    boards: {
+      skills: 'SKILLS DASHBOARD',
+      timeline: 'JOURNEY · TIMELINE',
+      profile: 'PROFILE CARD',
+      spectrum: 'SPECTRUM ANALYZER',
+      terminal: 'contact',
+      certifications: 'CERTIFICATIONS',
+      items: 'items',
+    },
+    nowPlaying: 'Now playing',
+    play: 'Put it on the platter',
+  },
+
   seo: {
     title: 'Lorenzo Melis — Full-Stack Developer',
     description:

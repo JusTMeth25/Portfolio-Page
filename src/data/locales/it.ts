@@ -331,6 +331,49 @@ export const it = {
     closeLabel: 'Chiudi il menu',
   },
 
+  /** Testi del mondo 3D (src/world): pulsanti, dashboard ed etichette. */
+  world: {
+    toClassic: 'Versione classica',
+    toWorld: 'Versione 3D',
+    toClassicLabel: 'Passa alla versione classica del sito, senza 3D',
+    toWorldLabel: 'Passa alla versione 3D del sito',
+    loading: 'Il disco si sta posando sul piatto…',
+    scrollHint: 'Scorri per seguire il solco',
+    previous: 'Precedente',
+    next: 'Successivo',
+    selectHint: 'Clicca gli oggetti 3D o usa i pulsanti',
+    openDetails: 'Apri i dettagli',
+    flipPhoto: 'Gira la foto',
+    sceneLabel:
+      'Mondo 3D: un grande disco in vinile; la telecamera segue il solco da una sezione all’altra. Tutti i contenuti sono anche nel testo della pagina.',
+    stations: {
+      hero: 'LATO A',
+      progetti: 'TRACCIA 01',
+      profilo: 'TRACCIA 02',
+      percorso: 'TRACCIA 03',
+      competenze: 'TRACCIA 04',
+      'colonna-sonora': 'TRACCIA 05',
+      contatti: 'ETICHETTA',
+    },
+    kpi: {
+      technologies: 'tecnologie',
+      certifications: 'certificazioni',
+      projects: 'progetti full stack',
+      groups: 'aree di competenza',
+    },
+    boards: {
+      skills: 'DASHBOARD COMPETENZE',
+      timeline: 'PERCORSO · LINEA DEL TEMPO',
+      profile: 'SCHEDA PROFILO',
+      spectrum: 'ANALIZZATORE DI SPETTRO',
+      terminal: 'contatti',
+      certifications: 'CERTIFICAZIONI',
+      items: 'voci',
+    },
+    nowPlaying: 'In riproduzione',
+    play: 'Metti sul piatto',
+  },
+
   seo: {
     title: 'Lorenzo Melis — Full-Stack Developer',
     description:

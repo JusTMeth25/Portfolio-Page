@@ -171,3 +171,41 @@
     display: inline-flex;
   }
 }
+
+/* Selettore mondo 3D / versione classica. */
+.navbar__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.4em 0.85em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgb(16 25 32 / 70%);
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.navbar__mode:hover {
+  border-color: var(--accent);
+  background: rgb(34 211 238 / 10%);
+}
+
+.navbar__mode .icon {
+  width: 1.05em;
+  height: 1.05em;
+  color: var(--accent);
+}
+
+@media (max-width: 1100px) {
+  .navbar__mode-text {
+    display: none;
+  }
+
+  .navbar__mode {
+    padding: 0.5em;
+  }
+}

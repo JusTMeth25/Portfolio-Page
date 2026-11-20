@@ -9,6 +9,7 @@ Per la presentazione del profilo vedi il [README](../README.md).
 
 - [Comandi](#comandi)
 - [Struttura](#struttura)
+- [Mondo 3D](#mondo-3d)
 - [Modificare profilo e contatti](#modificare-profilo-e-contatti)
 - [Modificare i progetti](#modificare-i-progetti)
 - [Sostituire le copertine](#sostituire-le-copertine)
@@ -53,6 +54,8 @@ src/
   i18n/                  LanguageProvider, useI18n
   data/projects.ts       elenco dei progetti (unica sorgente)
   hooks/                 usePrefersReducedMotion, useMediaQuery
+  world/                 versione "mondo 3D": WorldSite (testo HTML), WorldCanvas
+                         (scena Three.js), layout (solco e pose), scene/ (stazioni)
   lib/asset.ts           risolve i percorsi rispetto alla base path
   lib/scrollRestoration.ts  al refresh si riparte dalla hero
   lib/ticker.ts          il ciclo di animazione condiviso
@@ -67,6 +70,37 @@ public/
 docs/                    documentazione e immagini del README
 tools/cv/                script one-off che riscrive la sezione progetti del CV
 ```
+
+---
+
+## Mondo 3D
+
+Di default il sito è un **mondo 3D** (`src/world/`): un grande disco in vinile
+su cui le sezioni sono "stazioni" lungo il solco, dal bordo (hero) fino
+all'etichetta centrale (contatti). Lo scroll muove la telecamera da una
+stazione all'altra; la puntina luminosa segue il solco.
+
+- **Testo e scena separati.** `WorldSite.tsx` rende il testo vero in HTML (un
+  pannello per stazione, sticky): link, pulsanti e contenuti restano
+  accessibili da tastiera e screen reader. `WorldCanvas.tsx` è la tela WebGL
+  fissa sotto, caricata in lazy.
+- **Dashboard in Three.js.** Testi e grafici dentro la scena sono texture
+  disegnate con il canvas 2D (`canvasTexture.ts`): monitor dei progetti,
+  scheda profilo, diagramma di Gantt del percorso
+  (`timelineSpans.ts` contiene inizio e fine di ogni tappa), grafico a blocchi
+  delle competenze con KPI e nastro delle certificazioni, analizzatore di
+  spettro per la colonna sonora, terminale e tasti dei contatti.
+- **Scelte condivise.** Cliccare un oggetto 3D o un pulsante del pannello
+  cambia lo stesso stato (`selection.ts`): progetto in primo piano, tappa,
+  gruppo di competenze, disco sul piatto, lato della foto.
+- **Geometria.** Posizioni delle stazioni e pose della telecamera sono in
+  `layout.ts` (`STATION_POLAR`, `buildPoses`). L'avanzamento dallo scroll è in
+  `scrollProgress.ts`.
+- **Versione classica.** Il pulsante in navbar passa al sito classico (le
+  sezioni originali) e la scelta resta salvata (`localStorage`,
+  chiave `lm-modalita`). Il sito classico si usa anche in automatico se WebGL
+  manca, se il contesto WebGL si perde o con `prefers-reduced-motion`.
+- I testi del mondo 3D sono in `world` dentro `src/data/locales/it.ts` ed `en.ts`.
 
 ---
 

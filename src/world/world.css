@@ -1,0 +1,510 @@
+/* Mondo 3D: tela WebGL fissa sotto, pannelli di testo "sticky" sopra. */
+
+.world {
+  position: relative;
+}
+
+.world__canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(60rem 40rem at 70% 30%, var(--glow-cyan), transparent 62%),
+    var(--bg);
+}
+
+.world__canvas canvas {
+  max-width: none;
+}
+
+.world__loading {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--space-xl);
+  color: var(--muted);
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  animation: world-pulse 1.6s var(--ease) infinite alternate;
+}
+
+@keyframes world-pulse {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Il livello del testo lascia passare il puntatore alla tela 3D: solo i
+   pannelli e la tracklist lo intercettano. */
+.world__stations {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------- stazioni */
+
+.station {
+  --focus: 1;
+  position: relative;
+  min-height: 175vh;
+  padding-inline: var(--gutter);
+  scroll-margin-top: 0;
+}
+
+.station#hero {
+  min-height: 150vh;
+}
+
+.station#contatti {
+  min-height: 100vh;
+}
+
+.station__caption {
+  position: sticky;
+  top: calc(var(--nav-height) + 1.5rem);
+  width: min(460px, 38vw);
+  max-height: calc(100svh - var(--nav-height) - 3rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: clamp(1.25rem, 0.9rem + 1vw, 1.9rem);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgb(20 32 41 / 78%), rgb(8 14 19 / 82%));
+  backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: var(--shadow-card);
+  opacity: var(--focus);
+  transform: translateY(calc((1 - var(--focus)) * 18px));
+  pointer-events: auto;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.station[data-focus='off'] .station__caption {
+  pointer-events: none;
+}
+
+.station__caption--wide {
+  width: min(560px, 44vw);
+}
+
+.station__caption .eyebrow {
+  margin-bottom: 0;
+}
+
+.station__hero-title {
+  display: grid;
+  font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4.4rem);
+}
+
+.station__title {
+  font-size: var(--step-2);
+}
+
+.station__lede {
+  color: var(--muted-strong);
+  font-size: var(--step-1);
+}
+
+.station__stack,
+.station__note,
+.station__hint,
+.station__related {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.station__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.station__hint .icon {
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--accent);
+  animation: world-spin 3.2s linear infinite;
+}
+
+@keyframes world-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.station__intro,
+.station__prose {
+  color: var(--muted-strong);
+}
+
+.station__prose {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.station__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-2xs);
+}
+
+.station__card {
+  display: grid;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: rgb(8 14 19 / 55%);
+}
+
+.station__label {
+  color: var(--accent);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.station__label[data-kind='lavoro'] {
+  color: var(--accent-amber);
+}
+
+.station__card-title {
+  font-size: var(--step-1);
+}
+
+.station__org {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.station__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.station__chips li {
+  padding: 0.25em 0.7em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted-strong);
+  font-size: var(--step--1);
+}
+
+.station__related span {
+  color: var(--muted-strong);
+}
+
+.station__chevron {
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.station__chevron[data-open='true'] {
+  transform: rotate(180deg);
+}
+
+.station__details .project-card__details {
+  margin-top: var(--space-xs);
+}
+
+/* Scelte (tappe, interessi) e schede (gruppi di competenze). */
+
+.station__choices {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.station__choice {
+  --choice: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.8rem;
+  width: 100%;
+  padding: 0.55em 0.85em;
+  border: 1px solid var(--border-soft);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgb(8 14 19 / 45%);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.station__choice[data-kind='lavoro'],
+.station__choice[data-accent='amber'] {
+  --choice: var(--accent-amber);
+}
+
+.station__choice[data-accent='magenta'] {
+  --choice: var(--accent-magenta);
+}
+
+.station__choice[data-accent='violet'] {
+  --choice: var(--accent-violet);
+}
+
+.station__choice:hover {
+  border-color: var(--choice);
+}
+
+.station__choice[aria-pressed='true'] {
+  border-left-color: var(--choice);
+  background: color-mix(in srgb, var(--choice) 12%, transparent);
+}
+
+.station__choice-title {
+  font-weight: 650;
+}
+
+.station__choice-meta {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.station__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.station__tab {
+  padding: 0.4em 0.9em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.station__tab:hover {
+  border-color: var(--accent);
+}
+
+.station__tab[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.station__more summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: var(--step--1);
+}
+
+.station__more ul {
+  display: grid;
+  gap: 0.3rem;
+  margin-block: var(--space-xs);
+  color: var(--muted-strong);
+  font-size: var(--step--1);
+}
+
+/* Contatti. */
+
+.station__links {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.station__link {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65em 0.9em;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: rgb(8 14 19 / 45%);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.station__link:hover {
+  border-color: var(--accent);
+}
+
+.station__link .icon {
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--accent);
+}
+
+.station__link-label {
+  color: var(--muted);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.station__link-value {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.station__status {
+  min-height: 1.4em;
+  color: var(--accent);
+  font-size: var(--step--1);
+}
+
+/* Avanti / indietro. */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.stepper__button {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgb(8 14 19 / 60%);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.stepper__button:hover {
+  border-color: var(--accent);
+}
+
+.stepper__button .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.stepper__count {
+  min-width: 3.5em;
+  text-align: center;
+  color: var(--muted-strong);
+  font-size: var(--step--1);
+}
+
+/* ----------------------------------------------------------- tracklist */
+
+.world__rail {
+  position: fixed;
+  right: clamp(0.6rem, 0.2rem + 1vw, 1.5rem);
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+}
+
+.world__rail ol {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.world__rail a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.25rem;
+  flex-direction: row-reverse;
+}
+
+.world__rail-dot {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.world__rail-label {
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  opacity: 0;
+  transform: translateX(6px);
+  transition:
+    opacity var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.world__rail a:hover .world__rail-label,
+.world__rail a:focus-visible .world__rail-label,
+.world__rail a[aria-current] .world__rail-label {
+  opacity: 1;
+  transform: none;
+}
+
+.world__rail a[aria-current] .world__rail-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.35);
+}
+
+.world__rail a[aria-current] .world__rail-label {
+  color: var(--accent);
+}
+
+/* Footer sopra la tela. */
+.world-footer {
+  position: relative;
+  z-index: 1;
+  background: rgb(8 14 19 / 88%);
+  backdrop-filter: blur(10px);
+}
+
+/* ------------------------------------------------------ schermi stretti */
+
+@media (max-width: 900px) {
+  .station {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 190vh;
+    padding-inline: 12px;
+  }
+
+  .station#contatti {
+    min-height: 130vh;
+  }
+
+  .station__caption,
+  .station__caption--wide {
+    top: auto;
+    bottom: 12px;
+    width: 100%;
+    max-height: 48svh;
+    margin-inline: auto;
+    max-width: 560px;
+  }
+
+  .station#hero .station__caption {
+    max-height: 62svh;
+  }
+
+  .station__hero-title {
+    font-size: clamp(2rem, 1.4rem + 4vw, 3rem);
+  }
+
+  .world__rail {
+    display: none;
+  }
+}

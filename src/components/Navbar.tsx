@@ -1,13 +1,20 @@
-import { Download, Mail, Menu, X } from 'lucide-react'
+import { Box, Download, LayoutList, Mail, Menu, X } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 
 import { useI18n } from '../i18n/useI18n'
 import { profiles, type Language } from '../data/profile'
 import { asset } from '../lib/asset'
+import type { SiteMode } from '../world/useSiteMode'
 import { ScrollProgress } from './effects/ScrollProgress'
 import './navbar.css'
 
-export function Navbar() {
+type NavbarProps = {
+  /** Versione corrente del sito; senza, il selettore 3D / classico non compare. */
+  mode?: SiteMode
+  onToggleMode?: () => void
+}
+
+export function Navbar({ mode, onToggleMode }: NavbarProps = {}) {
   const { profile, language, toggleLanguage } = useI18n()
   const other: Language = language === 'it' ? 'en' : 'it'
   const { nav, cv, monogram, name } = profile
@@ -70,6 +77,25 @@ export function Navbar() {
             </li>
           </ul>
         </nav>
+
+        {mode && onToggleMode && (
+          <button
+            type="button"
+            className="navbar__mode"
+            onClick={onToggleMode}
+            aria-label={mode === 'world' ? profile.world.toClassicLabel : profile.world.toWorldLabel}
+            title={mode === 'world' ? profile.world.toClassicLabel : profile.world.toWorldLabel}
+          >
+            {mode === 'world' ? (
+              <LayoutList className="icon" aria-hidden="true" />
+            ) : (
+              <Box className="icon" aria-hidden="true" />
+            )}
+            <span className="navbar__mode-text" aria-hidden="true">
+              {mode === 'world' ? profile.world.toClassic : profile.world.toWorld}
+            </span>
+          </button>
+        )}
 
         <button
           type="button"
